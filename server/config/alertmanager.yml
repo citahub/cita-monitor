@@ -1,0 +1,12 @@
+global:
+  slack_api_url: "https://hooks.slack.com/services/xx?channel=xx"
+route:
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 10s
+  receiver: alertmanager_test
+receivers:
+  - name: alertmanager_test
+    slack_configs:
+    - api_url: 'https://hooks.slack.com/services/xx'
+      channel: '#xx'
