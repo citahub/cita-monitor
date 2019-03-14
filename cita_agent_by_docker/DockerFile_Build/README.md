@@ -22,3 +22,4 @@ docker run -d --name="cita-agent_port1338" \
 -e OpenPort=2921 \
 cita_agent:by_cita-cli
 ```
+容器启动成功后，直接访问映射的端口即可，例如： http://192.168.2.161:2921/metrics
