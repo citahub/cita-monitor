@@ -1,0 +1,17 @@
+version: "3"
+services:
+        rabbitmq:
+                image: kbudde/rabbitmq-exporter
+                environment:
+                        PUBLISH_PORT: 19419
+                network_mode: "host"
+        process:
+                image: ncabatoff/process-exporter
+                pid: "host"
+                network_mode: "host"
+                volumes:
+                        - ./process_config/:/config
+        node:
+                image: quay.io/prometheus/node-exporter
+                network_mode: "host"
+                pid: "host"
