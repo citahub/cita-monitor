@@ -3,6 +3,7 @@
 docker build -t cita_agent:by_cita-cli .
 ```
 ## 创建容器
+Node 用于指定监控的目标节点IP和端口
 ```buildoutcfg
 docker run -d --name="cita-agent_port1337" \
 --pid="host" \
