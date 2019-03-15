@@ -1,13 +1,13 @@
 ## CITA monitor 容器编排部署
  编排创建4个容器，分别是 prometheus_node_exporter、prometheus_process_exporter、prometheus_rabbitmq_exporter、prometheus_citaMonitorAgent_port1337_exporter
 * prometheus_node_exporter
-	* 监控主机资源
+	* 监控主机资源 | 参考: https://github.com/prometheus/node_exporter
 * prometheus_process_exporter
-	* 监控指定进程资源
+	* 监控指定进程资源 | 参考: https://github.com/rberwald/process-exporter
 * prometheus_rabbitmq_exporter
-	* 监控 rabbitmq 服务
+	* 监控 rabbitmq 服务 | 参考: https://github.com/kbudde/rabbitmq_exporter
 * prometheus_citaMonitorAgent_port1337_exporter
-	* 监控运行 cita 服务的 node 状态信息
+	* 监控运行 cita 服务的 node 状态信息 | 参考: https://github.com/cryptape/cita-monitor/tree/dev_test/cita_agent_by_docker/DockerFile_Build
 
 ---
 ### 部署命令
