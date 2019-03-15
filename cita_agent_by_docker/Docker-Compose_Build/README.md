@@ -52,6 +52,18 @@ ports:
 network_mode:
 environment:
 ```
+* prometheus_citaMonitorAgent_port1337_exporter
+```
+hostname:
+container_name:
+ports:
+environment:
+
+请在 environment 下的变量中填写监控的目标节点信息
+Node=IP:Port
+OpenPort=映射的端口，默认1920
+```
+
 ### 访问端口
 * prometheus_node_exporter
 	* `http://*.*.*.:9100`
