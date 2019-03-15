@@ -52,3 +52,12 @@ ports:
 network_mode:
 environment:
 ```
+### 访问端口
+* prometheus_node_exporter
+	* http://*.*.*.:9100
+* prometheus_process_exporter
+	* http://*.*.*.:9256
+* prometheus_rabbitmq_exporter
+	* http://*.*.*.:9419
+* prometheus_citaMonitorAgent_port1337_exporter
+	* http://*.*.*.:1920
