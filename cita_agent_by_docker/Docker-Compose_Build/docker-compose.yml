@@ -34,7 +34,7 @@ services:
                   environment:
                           - "RABBIT_CAPABILITIES=bert,no_sort"
                           - "PUBLISH_PORT=9419"
-           prometheus_citaMonitorAgent_port1337_exporter:
+          prometheus_citaMonitorAgent_port1337_exporter:
                   image: blankwu/cita_agent_by:cita-cli
                   hostname: citaMonitorAgent_port1337_exporter
                   container_name: prometheus_citaMonitorAgent_port1337_exporter
