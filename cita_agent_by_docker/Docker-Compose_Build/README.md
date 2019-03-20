@@ -73,3 +73,6 @@ OpenPort=映射的端口，默认1920
 	* `http://*.*.*.:9419`
 * prometheus_citaMonitorAgent_port1337_exporter
 	* `http://*.*.*.:1920`
+	
+### 建议
+修改容器 hostname ，便于在面板中查看
