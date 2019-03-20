@@ -29,7 +29,7 @@ services:
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
-      - GF_INSTALL_PLUGINS=grafana-worldmap-panel,grafana-piechart-panel
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
     volumes:
       - ./config/grafana:/etc/grafana
       - ./config/dashboards:/var/lib/grafana/dashboards
