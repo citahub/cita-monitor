@@ -67,7 +67,7 @@ def Node_Get():
                                 registry=CITA_Chain)
     Node_Get_LastBlocknumber = Gauge("Node_Get_LastBlocknumber",
                                      "Get the latest block height;",
-                                     ["NodeIP", "NodePort"],
+                                     ["NodeIP", "NodePort", "FirstBlocknumberHash"],
                                      registry=CITA_Chain)
     Node_Get_LastBlocknumberDetails = Gauge("Node_Get_LastBlocknumberDetails",
                                             "Get the hash and timestamp of the last block;",
@@ -104,7 +104,7 @@ def Node_Get():
         Node_Get_LastBlocknumber_by_blockNumber = GetResult.blockNumber()
         if Node_Get_LastBlocknumber_by_blockNumber != -99:
             Blocknumber = Node_Get_LastBlocknumber_by_blockNumber['result']
-            Node_Get_LastBlocknumber.labels(NodeIP=NodeIP, NodePort=NodePort).set(int(Blocknumber,16))
+            Node_Get_LastBlocknumber.labels(NodeIP=NodeIP, NodePort=NodePort, FirstBlocknumberHash=FirstBlocknumberHash).set(int(Blocknumber,16))
         Node_Get_LastBlocknumberDetails_by_getBlockByNumber = GetResult.getBlockByNumber(Blocknumber)
         if Node_Get_LastBlocknumberDetails_by_getBlockByNumber != -99:
             LastBlocknumberHash = Node_Get_LastBlocknumberDetails_by_getBlockByNumber['result']['hash']
