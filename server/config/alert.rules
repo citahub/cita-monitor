@@ -1,2 +1,0 @@
-ALERT service_down
-  IF up == 0

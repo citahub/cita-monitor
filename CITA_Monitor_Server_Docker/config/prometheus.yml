@@ -1,0 +1,31 @@
+global:
+  scrape_interval: 5s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 5s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  scrape_timeout: 4s
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  - job_name: 'node_exporter'
+    static_configs:
+    - targets: ['192.168.2.123:9100','192.168.2.174:9100']
+
+  - job_name: 'rabbitmq_exporter'
+    static_configs:
+    - targets: ['192.168.2.123:9419','192.168.2.174:9419']
+
+  - job_name: 'process_exporter'
+    static_configs:
+    - targets: ['192.168.2.123:9256','192.168.2.174:9256']
+
+  - job_name: 'citaMonitorAgent_exporter'
+    static_configs:
+    - targets: ['192.168.2.123:1920','192.168.2.174:1920','192.168.2.123:1921','192.168.2.174:1921','192.168.2.123:1922','192.168.2.123:1923']
