@@ -2,10 +2,10 @@ version: "3"
 services:
           prometheus_node_exporter:
                   image: prom/node-exporter
-                  hostname: node_exporter
+                  hostname: ${hostname}
                   container_name: prometheus_node_exporter
                   ports:
-                          - "9100:9100"
+                          - "${node_out_port}:${node_in_port}"
                   volumes:
                           - "/proc:/host/proc"
                           - "/sys:/host/sys"
@@ -15,10 +15,10 @@ services:
 
           prometheus_process_exporter:
                   image: ncabatoff/process-exporter
-                  hostname: process_exporter
+                  hostname: ${hostname}
                   container_name: prometheus_process_exporter
                   ports:
-                          - "9256:9256"
+                          - "${process_out_port}:${process_in_port}"
                   volumes:
                           - "/proc:/host/proc"
                           - "./process_exporter_config:/config"
@@ -26,21 +26,21 @@ services:
 
           prometheus_rabbitmq_exporter:
                   image: kbudde/rabbitmq-exporter
-                  hostname: rabbitmq_exporter
+                  hostname: ${hostname}
                   container_name: prometheus_rabbitmq_exporter
                   network_mode: "host"
                   ports:
-                          - "9419:9419"
+                          - "${rabbitmq_out_port}:${rabbitmq_in_port}"
                   environment:
                           - "RABBIT_CAPABILITIES=bert,no_sort"
-                          - "PUBLISH_PORT=9419"
-          prometheus_citaMonitorAgent_port1337_exporter:
+                          - "PUBLISH_PORT=${rabbitmq_in_port}"
+          prometheus_citaMonitorAgent_exporter:
                   image: blankwu/cita_agent_by:cita-cli
-                  hostname: citaMonitorAgent_port1337_exporter
-                  container_name: prometheus_citaMonitorAgent_port1337_exporter
+                  hostname: ${hostname}_citaMonitorAgent_${target_port}
+                  container_name: prometheus_citaMonitorAgent_exporter__${target_ip}_${target_port}
                   pid: "host"
                   ports:
-                          - "1920:1920"
+                          - "${agent_out_port}:${agent_in_port}"
                   environment:
-                          - "Node=192.168.2.123:1337"
-                          - "OpenPort=1920"
+                          - "Node=${target_ip}:${target_port}"
+                          - "OpenPort=${agent_in_port}"
