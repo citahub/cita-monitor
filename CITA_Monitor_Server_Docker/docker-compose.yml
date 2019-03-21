@@ -3,6 +3,7 @@ services:
   prometheus:
     user: root
     image: prom/prometheus:v2.6.0
+    hostname: prometheus_server
     privileged: true
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -13,19 +14,21 @@ services:
     depends_on:
       - alertmanager
     ports:
-      - '9090:9090'
+      - '${prometheus_out_port}:${prometheus_in_port}'
 
   alertmanager:
     image: prom/alertmanager:v0.15.3
+    hostname: prometheus_alertmanager_server
     volumes:
       - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     ports:
-      - '9093:9093'
+      - '${alertmanager_out_port}:${alertmanager_in_port}'
 
   grafana:
     image: grafana/grafana:5.4.2
+    hostname: grafana_server
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
@@ -36,7 +39,7 @@ services:
     depends_on:
       - prometheus
     ports:
-      - '1919:3000'
+      - '${grafana_out_port}:${grafana_in_port}'
 
 volumes:
   grafana_data: {}
