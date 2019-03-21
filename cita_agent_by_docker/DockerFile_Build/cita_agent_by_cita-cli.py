@@ -113,7 +113,7 @@ def Node_Get():
         Node_Get_NodePeers_by_peerCount = GetResult.peerCount()
         if Node_Get_NodePeers_by_peerCount != -99:
             NodePeers = Node_Get_NodePeers_by_peerCount['result']
-            Node_Get_NodePeers.labels(NodeIP=NodeIP, NodePort=NodePort).set(int(NodePeers, 16) + 1)
+            Node_Get_NodePeers.labels(NodeIP=NodeIP, NodePort=NodePort).set(int(NodePeers, 16))
     return Response(prometheus_client.generate_latest(CITA_Chain), mimetype="text/plain")
 ##########
 @NodeFlask.route("/")
