@@ -6,33 +6,23 @@
 	* 监控指定进程资源 | 参考: https://github.com/rberwald/process-exporter
 * prometheus_rabbitmq_exporter
 	* 监控 rabbitmq 服务 | 参考: https://github.com/kbudde/rabbitmq_exporter
-* prometheus_citaMonitorAgent_port1337_exporter
-	* 监控运行 cita 服务的 node 状态信息 | 参考: https://github.com/cryptape/cita-monitor/tree/dev_test/cita_agent_by_docker/DockerFile_Build
+* prometheus_citaMonitorAgent_exporter
+	* 监控运行 cita 服务的 node 状态信息 | 参考: https://github.com/cryptape/cita-monitor/tree/docker_feature/CITA_Monitor_Agent_Docker/DockerImage_Build_Files
 
 ---
-### 部署命令
+### 启动命令
 ```
 docker-compose up -d
 ```
 
-### 可修改参数（修改 docker-compose.yml）
-* prometheus_node_exporter
+### 停止命令
 ```
-hostname:
-container_name:
-ports:
-volumes:
+docker-compose down
+```
 
-entrypoint 或者 command 选择任意一个
-```
-* prometheus_process_exporter
-```
-hostname:
-container_name:
-ports:
-volumes:
-```
-* 目录 process_exporter_config 下的配置文件 process_list.yml 格式如下：
+### 可修改参数（修改 .env 文件）
+* 在 target ip 和 port 变量中填写监控的目标 CITA node 信息；
+* 目录 process_exporter_config 下的配置文件 process_list.yml 格式如下,建议阅读原文：
 ```
 process_names:
         - comm:
@@ -44,34 +34,15 @@ process_names:
                 - cita-auth
                 - cita-executor
 ```
-* prometheus_rabbitmq_exporter
-```
-hostname:
-container_name:
-ports:
-network_mode:
-environment:
-```
-* prometheus_citaMonitorAgent_port1337_exporter
-```
-hostname:
-container_name:
-ports:
-environment:
 
-请在 environment 下的变量中填写监控的目标节点信息
-Node=IP:Port
-OpenPort=映射的端口，默认1920
-```
-
-### 访问端口
+### 访问采集数据（填入宿主机IP）
 * prometheus_node_exporter
 	* `http://*.*.*.:9100`
 * prometheus_process_exporter
 	* `http://*.*.*.:9256`
 * prometheus_rabbitmq_exporter
 	* `http://*.*.*.:9419`
-* prometheus_citaMonitorAgent_port1337_exporter
+* prometheus_citaMonitorAgent_exporter
 	* `http://*.*.*.:1920`
 	
 ### 建议

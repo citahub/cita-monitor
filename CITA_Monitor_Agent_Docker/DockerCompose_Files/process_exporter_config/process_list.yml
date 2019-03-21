@@ -7,5 +7,3 @@ process_names:
                 - cita-chain
                 - cita-auth
                 - cita-executor
-        - exec:
-                - /usr/sbin/rabbitmq-server
