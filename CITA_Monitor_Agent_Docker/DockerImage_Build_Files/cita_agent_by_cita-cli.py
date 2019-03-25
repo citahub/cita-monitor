@@ -10,6 +10,7 @@ import os
 import sys
 ##########
 Node = sys.argv[1]
+receive_path = sys.argv[3]
 ##########
 NodeFlask = Flask(__name__)
 ##########
@@ -41,6 +42,25 @@ class Monitor_Function(object):
     def NodeManager_listNode(self):
         payload = "scm NodeManager listNode"
         return self.cita_cli_Request(payload)
+    def NodeDir_analysis(self, dir_path):
+        global TotalFileSize
+        global FilesNumber
+        global DirNumber
+        for lists in os.listdir(dir_path):
+            sub_path = os.path.join(dir_path, lists)
+            if os.path.isfile(sub_path):
+                FilesNumber = FilesNumber+1
+                TotalFileSize = TotalFileSize+os.path.getsize(sub_path)
+            elif os.path.isdir(sub_path):
+                DirNumber = DirNumber+1
+                Monitor_Function.NodeDir_analysis(self, sub_path)
+    def NodeDir_init(self):
+        global TotalFileSize
+        global FilesNumber
+        global DirNumber
+        TotalFileSize = 0
+        FilesNumber = 0
+        DirNumber = 0
 ##########
 @NodeFlask.route("/metrics")
 def Node_Get():
@@ -73,6 +93,18 @@ def Node_Get():
                                             "Get the hash and timestamp of the last block;",
                                             ["NodeIP", "NodePort", "LastBlocknumber", "LastBlocknumberInt","LastBlocknumberHash"],
                                             registry=CITA_Chain)
+    Node_Get_DirInfo_TotalFileSize = Gauge("Node_Get_DirInfo_TotalFileSize",
+                             "Get TotalFileSize by Node Dir;",
+                                           ["NodeIP", "NodePort", "NodeDir"],
+                                           registry=CITA_Chain)
+    Node_Get_DirInfo_FilesNumber = Gauge("Node_Get_DirInfo_FilesNumber",
+                                           "Get FilesNumber by Node Dir;",
+                                           ["NodeIP", "NodePort", "NodeDir"],
+                                           registry=CITA_Chain)
+    Node_Get_DirInfo_DirNumber = Gauge("Node_Get_DirInfo_DirNumber",
+                                           "Get DirNumber by Node Dir;",
+                                           ["NodeIP", "NodePort", "NodeDir"],
+                                           registry=CITA_Chain)
     NodeIP = str(Node.split(':')[0])
     NodePort = str(Node.split(':')[1])
     Check_CITA_Process = os.popen("ps alx |grep 'cita-chain' |grep -c -v grep")
@@ -114,6 +146,21 @@ def Node_Get():
         if Node_Get_NodePeers_by_peerCount != -99:
             NodePeers = Node_Get_NodePeers_by_peerCount['result']
             Node_Get_NodePeers.labels(NodeIP=NodeIP, NodePort=NodePort).set(int(NodePeers, 16))
+        if ',' in receive_path:
+            path_list = receive_path.split(',')
+            for dir_path in path_list:
+                GetResult.NodeDir_init()
+                GetResult.NodeDir_analysis(dir_path)
+                Node_Get_DirInfo_TotalFileSize.labels(NodeIP=NodeIP, NodePort=NodePort, NodeDir=dir_path).set(TotalFileSize)
+                Node_Get_DirInfo_FilesNumber.labels(NodeIP=NodeIP, NodePort=NodePort, NodeDir=dir_path).set(FilesNumber)
+                Node_Get_DirInfo_DirNumber.labels(NodeIP=NodeIP, NodePort=NodePort, NodeDir=dir_path).set(DirNumber)
+        else:
+            dir_path = receive_path
+            GetResult.NodeDir_init()
+            GetResult.NodeDir_analysis(dir_path)
+            Node_Get_DirInfo_TotalFileSize.labels(NodeIP=NodeIP, NodePort=NodePort, NodeDir=dir_path).set(TotalFileSize)
+            Node_Get_DirInfo_FilesNumber.labels(NodeIP=NodeIP, NodePort=NodePort, NodeDir=dir_path).set(FilesNumber)
+            Node_Get_DirInfo_DirNumber.labels(NodeIP=NodeIP, NodePort=NodePort, NodeDir=dir_path).set(DirNumber)
     return Response(prometheus_client.generate_latest(CITA_Chain), mimetype="text/plain")
 ##########
 @NodeFlask.route("/")

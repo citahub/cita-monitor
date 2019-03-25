@@ -40,6 +40,9 @@ services:
                   pid: "host"
                   ports:
                           - "${agent_out_port}:${agent_in_port}"
+                  volumes:
+                          - "${node_dir}:${node_dir}:ro"
                   environment:
                           - "Node=${target_ip}:${target_port}"
                           - "OpenPort=${agent_in_port}"
+                          - "Dir=${node_dir}"
