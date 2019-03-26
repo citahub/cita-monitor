@@ -1,9 +1,9 @@
 version: "3"
 services:
-          prometheus_node_exporter:
+          prometheus_host_exporter:
                   image: prom/node-exporter
                   hostname: ${hostname}
-                  container_name: prometheus_node_exporter
+                  container_name: prometheus_host_exporter
                   ports:
                           - "${node_out_port}:${node_in_port}"
                   volumes:

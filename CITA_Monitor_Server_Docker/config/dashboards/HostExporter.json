@@ -12,7 +12,7 @@
       }
     ]
   },
-  "description": "Node Exporter 监控展示看板",
+  "description": "Host Exporter 监控展示看板",
   "editable": true,
   "gnetId": 8919,
   "graphTooltip": 0,
@@ -1809,7 +1809,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Node Exporter 监控展示看板",
+  "title": "Host Exporter 监控展示看板",
   "uid": "9CWBz0bik",
   "version": 1
 }
