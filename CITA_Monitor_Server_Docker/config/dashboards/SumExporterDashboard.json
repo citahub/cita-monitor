@@ -12,11 +12,11 @@
       }
     ]
   },
-  "description": "Sum Exporter 监控展示面板",
+  "description": "Sum Exporter Dashboard",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1553049945722,
+  "iteration": 1553669833515,
   "links": [],
   "panels": [
     {
@@ -70,11 +70,11 @@
     },
     {
       "aliasColors": {},
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "fill": 1,
+      "fill": 0,
       "gridPos": {
         "h": 8,
         "w": 11,
@@ -93,17 +93,17 @@
         "total": false,
         "values": true
       },
-      "lines": false,
+      "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
-      "points": false,
+      "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
@@ -321,6 +321,27 @@
           "thresholds": [],
           "type": "number",
           "unit": "short"
+        },
+        {
+          "alias": "Chain node id",
+          "colorMode": "value",
+          "colors": [
+            "#890f02",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "",
+          "linkUrl": "",
+          "mappingType": 1,
+          "pattern": "NodeID",
+          "thresholds": [
+            ""
+          ],
+          "type": "number",
+          "unit": "short"
         }
       ],
       "targets": [
@@ -342,7 +363,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "fill": 1,
+      "fill": 0,
       "gridPos": {
         "h": 9,
         "w": 24,
@@ -371,7 +392,7 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
@@ -462,7 +483,6 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
           "text": "0xc45c6d819213b6725925f86f5e78a68036036efbdcd43aa6b2fb90c8791c660e",
           "value": "0xc45c6d819213b6725925f86f5e78a68036036efbdcd43aa6b2fb90c8791c660e"
         },
@@ -470,7 +490,7 @@
         "definition": "label_values(Node_Get_LastBlocknumber,FirstBlocknumberHash)",
         "hide": 0,
         "includeAll": false,
-        "label": "链",
+        "label": "Chain(创世块 Hash)",
         "multi": false,
         "name": "Chain",
         "options": [],
@@ -517,7 +537,7 @@
     ]
   },
   "timezone": "",
-  "title": "Sum Exporter 监控展示面板",
+  "title": "Sum Exporter Dashboard",
   "uid": "dLEMP5qik",
   "version": 1
 }
