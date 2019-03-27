@@ -11,6 +11,7 @@ import sys
 ##########
 Node = sys.argv[1]
 receive_path = sys.argv[3]
+node_id = sys.argv[4]
 ##########
 NodeFlask = Flask(__name__)
 ##########
@@ -87,11 +88,11 @@ def Node_Get():
                                 registry=CITA_Chain)
     Node_Get_LastBlocknumber = Gauge("Node_Get_LastBlocknumber",
                                      "Get the latest block height;",
-                                     ["NodeIP", "NodePort", "FirstBlocknumberHash"],
+                                     ["NodeIP", "NodePort", "FirstBlocknumberHash", "NodeID"],
                                      registry=CITA_Chain)
     Node_Get_LastBlocknumberDetails = Gauge("Node_Get_LastBlocknumberDetails",
                                             "Get the hash and timestamp of the last block;",
-                                            ["NodeIP", "NodePort", "LastBlocknumber", "LastBlocknumberInt","LastBlocknumberHash"],
+                                            ["NodeIP", "NodePort", "LastBlocknumber", "LastBlocknumberInt", "LastBlocknumberHash", "NodeID"],
                                             registry=CITA_Chain)
     Node_Get_DirInfo_TotalFileSize = Gauge("Node_Get_DirInfo_TotalFileSize",
                              "Get TotalFileSize by Node Dir;",
@@ -136,12 +137,12 @@ def Node_Get():
         Node_Get_LastBlocknumber_by_blockNumber = GetResult.blockNumber()
         if Node_Get_LastBlocknumber_by_blockNumber != -99:
             Blocknumber = Node_Get_LastBlocknumber_by_blockNumber['result']
-            Node_Get_LastBlocknumber.labels(NodeIP=NodeIP, NodePort=NodePort, FirstBlocknumberHash=FirstBlocknumberHash).set(int(Blocknumber,16))
+            Node_Get_LastBlocknumber.labels(NodeIP=NodeIP, NodePort=NodePort, FirstBlocknumberHash=FirstBlocknumberHash, NodeID=node_id).set(int(Blocknumber,16))
         Node_Get_LastBlocknumberDetails_by_getBlockByNumber = GetResult.getBlockByNumber(Blocknumber)
         if Node_Get_LastBlocknumberDetails_by_getBlockByNumber != -99:
             LastBlocknumberHash = Node_Get_LastBlocknumberDetails_by_getBlockByNumber['result']['hash']
             LastBlocknumberTimestamp = Node_Get_LastBlocknumberDetails_by_getBlockByNumber['result']['header']['timestamp']
-            Node_Get_LastBlocknumberDetails.labels(NodeIP=NodeIP, NodePort=NodePort, LastBlocknumber=Blocknumber,LastBlocknumberInt=int(Blocknumber,16), LastBlocknumberHash=LastBlocknumberHash).set(LastBlocknumberTimestamp)
+            Node_Get_LastBlocknumberDetails.labels(NodeIP=NodeIP, NodePort=NodePort, LastBlocknumber=Blocknumber,LastBlocknumberInt=int(Blocknumber,16), LastBlocknumberHash=LastBlocknumberHash, NodeID=node_id).set(LastBlocknumberTimestamp)
         Node_Get_NodePeers_by_peerCount = GetResult.peerCount()
         if Node_Get_NodePeers_by_peerCount != -99:
             NodePeers = Node_Get_NodePeers_by_peerCount['result']

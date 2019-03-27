@@ -46,3 +46,4 @@ services:
                           - "Node=${target_ip}:${target_port}"
                           - "OpenPort=${agent_in_port}"
                           - "Dir=${node_dir}"
+                          - "NodeID=${node_id}"
