@@ -12,11 +12,12 @@
       }
     ]
   },
-  "description": "CitaAgent Exporter 监控展示面板",
+  "description": "CitaAgent Exporter Dashboard",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1553051068518,
+  "id": 6,
+  "iteration": 1553670710684,
   "links": [
     {
       "icon": "external link",
@@ -426,7 +427,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
+        "w": 4,
         "x": 0,
         "y": 16
       },
@@ -508,7 +509,7 @@
       "gridPos": {
         "h": 7,
         "w": 8,
-        "x": 8,
+        "x": 4,
         "y": 16
       },
       "id": 6,
@@ -588,8 +589,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 12,
         "y": 16
       },
       "id": 10,
@@ -647,6 +648,191 @@
         }
       ],
       "valueName": "avg"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "Prometheus",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 16
+      },
+      "id": 19,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "$node_id",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "title": "Node ID",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 21,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "Node_Get_DirInfo_DirNumber{NodeDir=\"/github/cita_secp256k1_sha3/monitor_chain_02/0\"}",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "目录文件夹数量",
+          "refId": "C"
+        },
+        {
+          "expr": "Node_Get_DirInfo_FilesNumber{NodeDir=\"/github/cita_secp256k1_sha3/monitor_chain_02/0\"}",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "目录文件数量",
+          "refId": "B"
+        },
+        {
+          "expr": "Node_Get_DirInfo_TotalFileSize{NodeDir=\"/github/cita_secp256k1_sha3/monitor_chain_02/0\"}",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "目录使用总量",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "目录 [ $node_dir ]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 5,
+          "format": "decbytes",
+          "label": "",
+          "logBase": 2,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "5s",
@@ -886,8 +1072,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "0x006dd6f93e9f06d8be1b533f686fc80d233a0a6c9787d27d7efa2b85fc4e40c1",
-          "value": "0x006dd6f93e9f06d8be1b533f686fc80d233a0a6c9787d27d7efa2b85fc4e40c1"
+          "text": "0xb84a2dfb80fbd85ec1915d396a939861440a66ef8f154cc97c0b207b3f915351",
+          "value": "0xb84a2dfb80fbd85ec1915d396a939861440a66ef8f154cc97c0b207b3f915351"
         },
         "datasource": "Prometheus",
         "definition": "label_values(Node_Get_LastBlocknumberDetails,LastBlocknumberHash) ",
@@ -898,6 +1084,56 @@
         "name": "LastBlocknumberHash",
         "options": [],
         "query": "label_values(Node_Get_LastBlocknumberDetails,LastBlocknumberHash) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(Node_Get_LastBlocknumber,NodeID) ",
+        "hide": 2,
+        "includeAll": false,
+        "label": "NodeID",
+        "multi": false,
+        "name": "node_id",
+        "options": [],
+        "query": "label_values(Node_Get_LastBlocknumber,NodeID) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "/github/cita_secp256k1_sha3/monitor_chain_02/0",
+          "value": "/github/cita_secp256k1_sha3/monitor_chain_02/0"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(Node_Get_DirInfo_TotalFileSize{instance=~'$node:$port'},NodeDir) ",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Node Dir",
+        "multi": false,
+        "name": "node_dir",
+        "options": [],
+        "query": "label_values(Node_Get_DirInfo_TotalFileSize{instance=~'$node:$port'},NodeDir) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -940,7 +1176,7 @@
     ]
   },
   "timezone": "",
-  "title": "CitaAgent Exporter 监控展示面板",
-  "uid": "VXdVrO3iz",
-  "version": 1
+  "title": "CitaAgent Exporter Dashboard",
+  "uid": "VXdVrO3iz1",
+  "version": 2
 }
