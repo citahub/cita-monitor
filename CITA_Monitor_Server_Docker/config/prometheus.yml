@@ -14,7 +14,7 @@ rule_files:
   # - "second_rules.yml"
 
 scrape_configs:
-  - job_name: 'node_exporter'
+  - job_name: 'host_exporter'
     static_configs:
     - targets: ['192.168.2.123:9100','192.168.2.174:9100']
 

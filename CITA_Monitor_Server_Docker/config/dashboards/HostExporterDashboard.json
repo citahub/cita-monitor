@@ -12,11 +12,11 @@
       }
     ]
   },
-  "description": "Node Exporter Dashboard",
+  "description": "Host Exporter Dashboard",
   "editable": true,
   "gnetId": 8919,
   "graphTooltip": 0,
-  "iteration": 1553670115554,
+  "iteration": 1553841130984,
   "links": [
     {
       "asDropdown": false,
@@ -1820,7 +1820,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Node Exporter Dashboard",
+  "title": "Host Exporter Dashboard",
   "uid": "9CWBz0bik",
   "version": 1
 }
