@@ -1,23 +1,15 @@
 # CITA-Monitor 服务端部署说明
 
-## 服务端防火墙需要开通端口
-```
-1919 grafana
-9093 alertmanager
-9090 prometheus
-自定义端口可在server根目录修改.env
-```
-
 ## 获取源码 
 ```
 cd /data/
-git clone https://github.com/cryptape/cita-monitor.git
+git clone https://jiangxianliang@bitbucket.org/cryptape/cita-monitor.git
 ```
 
-## 修改prometheus.yml 中默认的Job(node_exporter、rabbitmq_exporter、process_exporter、citaMonitorAgent_exporter)地址为CITA 节点IP地址
+## 修改prometheus.yml 中默认的agent节点ip为监控客户端服务器IP地址
 ```
-cd cita-monitor/CITA_Monitor_Server_Docker
-vim config/prometheus.yml 
+
+sed -i "s/172.24.7.210/监控客户端服务器IP地址/g" prometheus/prometheus.yml 
 ```
 ## 启动服务端
 ```
@@ -27,7 +19,7 @@ docker-compose up -d
 ````
 Prometheus Console
 http://127.0.0.1:9090
-当agent启动后在 Prometheus Console 搜索Node_Get_LastBlocknumber 点击Execute可以看到块高
+当agent启动后在 Prometheus Console 搜索cita_blockMumber 点击Execute可以看到块高
 Prometheus Alertmanager
 http://127.0.0.1:9093
 

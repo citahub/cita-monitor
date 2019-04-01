@@ -12,11 +12,11 @@
       }
     ]
   },
-  "description": "Node Exporter 监控展示看板",
+  "description": "Host Exporter Dashboard",
   "editable": true,
   "gnetId": 8919,
   "graphTooltip": 0,
-  "iteration": 1553051095310,
+  "iteration": 1553841130984,
   "links": [
     {
       "asDropdown": false,
@@ -50,8 +50,8 @@
       "scopedVars": {
         "node": {
           "selected": true,
-          "text": "192.168.2.123",
-          "value": "192.168.2.123"
+          "text": "192.168.2.174",
+          "value": "192.168.2.174"
         }
       },
       "style": {},
@@ -294,7 +294,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "100 - (avg(irate(node_cpu_seconds_total{instance=~\"$node:$port\",mode=\"idle\"}[5m])) * 100)",
+          "expr": "100 - (avg(irate(node_cpu_seconds_total{instance=~\"$node:$port\",mode=\"idle\"}[1m])) * 100)",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -305,7 +305,7 @@
         }
       ],
       "thresholds": "50,80",
-      "title": "CPU使用率（5m）",
+      "title": "CPU使用率",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1396,39 +1396,47 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "内存_Avaliable": "#6ED0E0",
+        "内存_Cached": "#EF843C",
+        "内存_Free": "#629E51",
+        "内存_Total": "#6d1f62",
+        "内存_Used": "#eab839",
+        "可用": "#9ac48a",
+        "总内存": "#bf1b00"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "fill": 0,
+      "decimals": 2,
+      "fill": 3,
       "gridPos": {
         "h": 11,
         "w": 12,
         "x": 0,
         "y": 20
       },
-      "id": 169,
+      "height": "300",
+      "id": 173,
       "legend": {
-        "alignAsTable": true,
-        "avg": true,
+        "alignAsTable": false,
+        "avg": false,
         "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": true,
+        "max": false,
         "min": false,
-        "rightSide": true,
+        "rightSide": false,
         "show": true,
         "total": false,
         "values": true
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 3,
       "links": [],
-      "nullPointMode": "null as zero",
+      "nullPointMode": "null",
       "percentage": false,
-      "pointradius": 0.5,
-      "points": false,
+      "pointradius": 5,
+      "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
@@ -1436,18 +1444,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "node_hwmon_temp_celsius{instance=\"$node:$port\"}",
+          "expr": "100 - (avg(irate(node_cpu_seconds_total{instance=~\"$node:$port\",mode=\"idle\"}[1m])) * 100)",
           "format": "time_series",
+          "hide": false,
+          "instant": false,
           "intervalFactor": 1,
-          "legendFormat": "{{chip}} {{sensor}}",
-          "refId": "A"
+          "legendFormat": "CPU 使用率/每分钟",
+          "refId": "A",
+          "step": 4
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "硬件温度",
+      "title": "CPU使用率",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1463,16 +1474,16 @@
       },
       "yaxes": [
         {
-          "format": "celsius",
-          "label": null,
+          "format": "percent",
+          "label": "cpu use percent / min",
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
           "format": "short",
-          "label": null,
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1638,7 +1649,7 @@
       }
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
@@ -1676,8 +1687,8 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "node_exporter_01",
-          "value": "node_exporter_01"
+          "text": "EP_Host_192_168_2_174",
+          "value": "EP_Host_192_168_2_174"
         },
         "datasource": "Prometheus",
         "definition": "label_values(node_uname_info{job=~'$job'},nodename)",
@@ -1703,14 +1714,14 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "192.168.2.123",
-          "value": "192.168.2.123"
+          "text": "192.168.2.174",
+          "value": "192.168.2.174"
         },
         "datasource": "Prometheus",
         "definition": "label_values(node_uname_info{nodename='$name'},instance)",
         "hide": 0,
         "includeAll": false,
-        "label": "节点",
+        "label": "主机",
         "multi": false,
         "multiFormat": "regex values",
         "name": "node",
@@ -1809,7 +1820,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Node Exporter 监控展示看板",
+  "title": "Host Exporter Dashboard",
   "uid": "9CWBz0bik",
   "version": 1
 }
