@@ -3,7 +3,7 @@
 Hostname=`hostname`
 NodeIP=`ifconfig eth0|grep "inet addr:"|awk -F":" '{print $2}'|awk '{print $1}'`
 #NodeIP=`ifconfig ens32|grep "inet"|head -n 1 |awk -F" " '{print $2}'|awk '{print $1}'`
-OtherNode=0
+OtherNode=1
 
 install_agent(){
     cd ./CITA_Monitor_Agent_Docker/DockerCompose_Files
@@ -35,7 +35,7 @@ then
         docker run -d --name="prometheus_citaMonitorAgent_exporter__${NodeIP}_1338" \
 --pid="host" \
 -p 1921:1920 \
--v "/data2/cita_secp256k1_sha3/test-chain/1":"/data2/cita_secp256k1_sha3/test-chain/1" 
+-v "/data2/cita_secp256k1_sha3/test-chain/1":"/data2/cita_secp256k1_sha3/test-chain/1" \
 -e Node="${NodeIP}:1338" \
 -e Dir="/data2/cita_secp256k1_sha3/test-chain/1" \
 -e NodeID=1 \
@@ -44,7 +44,7 @@ blankwu/cita_agent_by:cita-cli
 	docker run -d --name="prometheus_citaMonitorAgent_exporter__${NodeIP}_1339" \
 --pid="host" \
 -p 1922:1920 \
--v "/data2/cita_secp256k1_sha3/test-chain/2":"/data2/cita_secp256k1_sha3/test-chain/2" 
+-v "/data2/cita_secp256k1_sha3/test-chain/2":"/data2/cita_secp256k1_sha3/test-chain/2" \
 -e Node="${NodeIP}:1339" \
 -e Dir="/data2/cita_secp256k1_sha3/test-chain/2" \
 -e NodeID=2 \
@@ -53,7 +53,7 @@ blankwu/cita_agent_by:cita-cli
 	docker run -d --name="prometheus_citaMonitorAgent_exporter__${NodeIP}_1340" \
 --pid="host" \
 -p 1923:1920 \
--v "/data2/cita_secp256k1_sha3/test-chain/3":"/data2/cita_secp256k1_sha3/test-chain/3" 
+-v "/data2/cita_secp256k1_sha3/test-chain/3":"/data2/cita_secp256k1_sha3/test-chain/3" \
 -e Node="${NodeIP}:1340" \
 -e Dir="/data2/cita_secp256k1_sha3/test-chain/3" \
 -e NodeID=3 \
