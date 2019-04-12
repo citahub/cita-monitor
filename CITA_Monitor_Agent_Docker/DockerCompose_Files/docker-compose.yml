@@ -41,9 +41,11 @@ services:
                   ports:
                           - "${agent_out_port}:${agent_in_port}"
                   volumes:
-                          - "${node_dir}:${node_dir}:ro"
+                          - "${node_dir}:/tmp/node:ro"
+                          - "${soft_path}:/tmp/softpath:ro"
+                          - "${disk_path}:/tmp/diskpath:ro"
+                          - "./cita_agent_by_cita-cli.py:/config/cita_agent_by_cita-cli.py:ro"
                   environment:
                           - "Node=${target_ip}:${target_port}"
                           - "OpenPort=${agent_in_port}"
-                          - "Dir=${node_dir}"
                           - "NodeID=${node_id}"

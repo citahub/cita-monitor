@@ -12,11 +12,11 @@
       }
     ]
   },
-  "description": "Process Exporter Dashboard",
+  "description": "Process Info Dashboard",
   "editable": true,
   "gnetId": 249,
   "graphTooltip": 1,
-  "iteration": 1553671701679,
+  "iteration": 1555036776018,
   "links": [
     {
       "asDropdown": false,
@@ -673,9 +673,8 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
-          "text": "192.168.2.174",
-          "value": "192.168.2.174"
+          "text": "116.62.221.89",
+          "value": "116.62.221.89"
         },
         "datasource": "Prometheus",
         "definition": "label_values(up{job=~'process_exporter'},instance)",
@@ -753,7 +752,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Process Exporter Dashboard",
+  "title": "Process Info Dashboard",
   "uid": "eKkL1dqiz",
   "version": 1
 }

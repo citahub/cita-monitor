@@ -8,7 +8,9 @@ ADD . /config
 RUN pip3 install -r requirements.txt
 RUN mv cita-cli /bin/cita-cli && chmod +x /bin/cita-cli
 ENV OpenPort=1920
-ENV Dir='/tmp'
+ENV Dir='/tmp/node'
 ENV NodeID=0
+ENV SoftPath='/tmp/softpath'
+ENV DiskPath='/tmp/diskpath'
 ## 运行命令
-CMD "python3" "cita_agent_by_cita-cli.py" "$Node" "$OpenPort" "$Dir" "$NodeID"
+CMD "python3" "cita_agent_by_cita-cli.py" "$Node" "$OpenPort" "$Dir" "$NodeID" "$SoftPath" "$DiskPath"

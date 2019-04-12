@@ -16,16 +16,16 @@ rule_files:
 scrape_configs:
   - job_name: 'host_exporter'
     static_configs:
-    - targets: ['1.1.1.1:9100']
-
-  - job_name: 'rabbitmq_exporter'
-    static_configs:
-    - targets: ['1.1.1.1:9419']
+    - targets: ['host_exporter_ip:port']
 
   - job_name: 'process_exporter'
     static_configs:
-    - targets: ['1.1.1.1:9256']
+    - targets: ['process_exporter_ip:port']
+
+  - job_name: 'rabbitmq_exporter'
+    static_configs:
+    - targets: ['rabbitmq_exporter_ip:port']
 
   - job_name: 'citaMonitorAgent_exporter'
     static_configs:
-    - targets: ['1.1.1.1:1920','1.1.1.1:1921','1.1.1.1:1922','1.1.1.1:1923']
+    - targets: ['citaMonitorAgent_exporter_ip:port']

@@ -12,11 +12,11 @@
       }
     ]
   },
-  "description": "RabbitMQ Exporter Dashboard",
+  "description": "RabbitMQ Dashboard",
   "editable": true,
   "gnetId": 2121,
   "graphTooltip": 0,
-  "iteration": 1553671759145,
+  "iteration": 1555036774931,
   "links": [
     {
       "icon": "external link",
@@ -1229,10 +1229,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
-          "text": "192.168.2.174",
-          "value": "192.168.2.174"
+          "text": "116.62.221.89",
+          "value": "116.62.221.89"
         },
         "datasource": "Prometheus",
         "definition": "label_values(up{job=~'rabbitmq_exporter'},instance)",
@@ -1285,7 +1283,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "RabbitMQ Exporter Dashboard",
+  "title": "RabbitMQ Dashboard",
   "uid": "JJ0tJOqmz",
   "version": 1
 }
