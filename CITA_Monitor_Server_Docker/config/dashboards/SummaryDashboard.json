@@ -12,62 +12,20 @@
       }
     ]
   },
-  "description": "Sum Exporter Dashboard",
+  "description": "Summary Dashboard",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1553669833515,
-  "links": [],
-  "panels": [
+  "links": [
     {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 14,
-      "panels": [
-        {
-          "folderId": null,
-          "gridPos": {
-            "h": 6,
-            "w": 24,
-            "x": 0,
-            "y": 1
-          },
-          "headings": false,
-          "id": 12,
-          "limit": 10,
-          "links": [],
-          "query": "Exporter",
-          "recent": false,
-          "repeat": null,
-          "search": true,
-          "starred": false,
-          "tags": [],
-          "title": "",
-          "transparent": true,
-          "type": "dashlist"
-        }
+      "icon": "external link",
+      "tags": [
+        "Exporter"
       ],
-      "title": "面板列表",
-      "type": "row"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 1
-      },
-      "id": 16,
-      "panels": [],
-      "title": "区块产出预览",
-      "type": "row"
-    },
+      "type": "dashboards"
+    }
+  ],
+  "panels": [
     {
       "aliasColors": {},
       "bars": false,
@@ -79,7 +37,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 2
+        "y": 0
       },
       "id": 2,
       "legend": {
@@ -90,6 +48,8 @@
         "min": false,
         "rightSide": true,
         "show": true,
+        "sort": "current",
+        "sortDesc": false,
         "total": false,
         "values": true
       },
@@ -107,11 +67,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "up{job=~\"$job\"}",
+          "expr": "up",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{instance}} - {{job}}",
           "refId": "A"
         }
       ],
@@ -119,7 +79,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "( $job ) Running Status",
+      "title": "Running Status",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -167,19 +127,21 @@
         "h": 8,
         "w": 13,
         "x": 11,
-        "y": 2
+        "y": 0
       },
       "id": 4,
       "legend": {
         "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
         "max": false,
         "min": false,
         "rightSide": true,
         "show": true,
+        "sort": "current",
+        "sortDesc": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -207,7 +169,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "CPU use percent by 5min avg",
+      "title": "CPU use percent",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -245,14 +207,104 @@
       }
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 10,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": false,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "Node_Get_LastBlocknumber",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{NodeIP}}:{{NodePort}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Last Block Number",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
       "columns": [],
       "datasource": "Prometheus",
       "fontSize": "100%",
       "gridPos": {
-        "h": 6,
+        "h": 11,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 17
       },
       "id": 8,
       "links": [],
@@ -260,7 +312,7 @@
       "scroll": true,
       "showHeader": true,
       "sort": {
-        "col": null,
+        "col": 6,
         "desc": false
       },
       "styles": [
@@ -346,104 +398,16 @@
       ],
       "targets": [
         {
-          "expr": "Node_Get_LastBlocknumber{FirstBlocknumberHash=~'$Chain'}",
+          "expr": "Node_Get_LastBlocknumberDetails",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
       ],
-      "title": "Last Block Number From Nodes",
+      "title": "Last Block Info",
       "transform": "table",
       "type": "table"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
-      "fill": 0,
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
-      "id": 10,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 5,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "Node_Get_LastBlocknumber{FirstBlocknumberHash=~'$Chain'}",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Last Block Number From Nodes",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": null,
-          "format": "none",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     }
   ],
   "refresh": "5s",
@@ -454,58 +418,7 @@
     "Exporter"
   ],
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {
-          "text": "process_exporter",
-          "value": "process_exporter"
-        },
-        "datasource": "Prometheus",
-        "definition": "label_values(up,job)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "job",
-        "multi": false,
-        "name": "job",
-        "options": [],
-        "query": "label_values(up,job)",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "text": "0xc45c6d819213b6725925f86f5e78a68036036efbdcd43aa6b2fb90c8791c660e",
-          "value": "0xc45c6d819213b6725925f86f5e78a68036036efbdcd43aa6b2fb90c8791c660e"
-        },
-        "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumber,FirstBlocknumberHash)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Chain(创世块 Hash)",
-        "multi": false,
-        "name": "Chain",
-        "options": [],
-        "query": "label_values(Node_Get_LastBlocknumber,FirstBlocknumberHash)",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "now-5m",
@@ -537,7 +450,7 @@
     ]
   },
   "timezone": "",
-  "title": "Sum Exporter Dashboard",
+  "title": "Summary Dashboard",
   "uid": "dLEMP5qik",
-  "version": 1
+  "version": 4750
 }
