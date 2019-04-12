@@ -3,7 +3,7 @@
 Hostname=`hostname`
 NodeIP=`ifconfig eth0|grep "inet addr:"|awk -F":" '{print $2}'|awk '{print $1}'`
 #NodeIP=`ifconfig ens32|grep "inet"|head -n 1 |awk -F" " '{print $2}'|awk '{print $1}'`
-OtherNode=0
+OtherNode=1
 
 install_agent(){
     cd ./CITA_Monitor_Agent_Docker/DockerCompose_Files
@@ -12,7 +12,7 @@ install_agent(){
     docker-compose up -d
     docker ps
     sleep 2
-    check_container=`curl -I -m 10 -o /dev/null -s -w %{http_code} ${NodeIP}:9123`
+    check_container=`curl -I -m 10 -o /dev/null -s -w %{http_code} ${NodeIP}:check_env_port`
     if [[ ${check_container} -eq 200 ]]
     then
         echo "Agent 安装成功"
@@ -25,7 +25,7 @@ install_agent(){
                 -v "/data2/cita_secp256k1_sha3/test-chain/1":"/tmp/node" \
                 -v "/data2/cita_secp256k1_sha3/":"/tmp/softpath" \
                 -v "/data2":"/tmp/diskpath" \
-		-v "./cita_agent_by_cita-cli.py":"/config/cita_agent_by_cita-cli.py" \
+		-v "cita_agent_by_cita-cli.py":"/config" \
                 -e Node="${NodeIP}:1338" \
                 -e NodeID=1 \
                 blankwu/cita_agent_by:cita-cli
@@ -35,7 +35,7 @@ install_agent(){
                 -v "/data2/cita_secp256k1_sha3/test-chain/2":"/tmp/node" \
                 -v "/data2/cita_secp256k1_sha3/":"/tmp/softpath" \
                 -v "/data2":"/tmp/diskpath" \
-		-v "./cita_agent_by_cita-cli.py":"/config/cita_agent_by_cita-cli.py" \
+		-v "cita_agent_by_cita-cli.py":"/config" \
                 -e Node="${NodeIP}:1339" \
                 -e NodeID=2 \
                 blankwu/cita_agent_by:cita-cli
@@ -46,7 +46,7 @@ install_agent(){
                 -v "/data2/cita_secp256k1_sha3/test-chain/3":"/tmp/node" \
                 -v "/data2/cita_secp256k1_sha3/":"/tmp/softpath" \
                 -v "/data2":"/tmp/diskpath" \
-		-v "./cita_agent_by_cita-cli.py":"/config/cita_agent_by_cita-cli.py" \
+		-v "cita_agent_by_cita-cli.py":"/config" \
                 -e Node="${NodeIP}:1340" \
                 -e NodeID=3 \
                 blankwu/cita_agent_by:cita-cli
