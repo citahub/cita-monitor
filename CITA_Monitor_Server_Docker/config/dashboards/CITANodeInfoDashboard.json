@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1555036720996,
+  "iteration": 1555072826517,
   "links": [
     {
       "icon": "external link",
@@ -1503,7 +1503,7 @@
       "fontSize": "80%",
       "format": "bytes",
       "gridPos": {
-        "h": 9,
+        "h": 10,
         "w": 4,
         "x": 0,
         "y": 26
@@ -1551,7 +1551,7 @@
       "decimals": 2,
       "fill": 0,
       "gridPos": {
-        "h": 9,
+        "h": 10,
         "w": 6,
         "x": 4,
         "y": 26
@@ -1612,7 +1612,7 @@
       "yaxes": [
         {
           "decimals": null,
-          "format": "decbytes",
+          "format": "kbytes",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -1848,7 +1848,7 @@
     {
       "content": "<center>\n<br>\n<h3>$HostPlatform</h3>\n</center>",
       "gridPos": {
-        "h": 2,
+        "h": 3,
         "w": 14,
         "x": 10,
         "y": 33
