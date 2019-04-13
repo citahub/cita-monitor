@@ -6,7 +6,7 @@ NodeIP=`ifconfig eth0|grep "inet addr:"|awk -F":" '{print $2}'|awk '{print $1}'`
 OtherNode=1
 
 install_agent(){
-    cd ./CITA_Monitor_Agent_Docker/DockerCompose_Files
+    cd ./cita-monitor-agent/docker-compose
     sed -i "s/1.1.1.1/${NodeIP}/g" .env
     sed -i "s/nodehostname/${Hostname}/g" .env
     docker-compose up -d
@@ -59,8 +59,7 @@ fi
 }
 
 install_server(){
-    cd ./CITA_Monitor_Server_Docker
-    sed -i "s/1.1.1.1/${1}/g" ./config/prometheus.yml 
+    cd ./cita-monitor-server
     docker-compose up -d
     docker ps
 }

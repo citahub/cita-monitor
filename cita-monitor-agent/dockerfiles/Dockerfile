@@ -1,5 +1,5 @@
 ## 一个基础的 python 运行环境
-FROM python
+FROM python:3
 ## 设置工作目录
 WORKDIR /config
 ## 将当前系统文件夹内容复制到容器的 app 目录
