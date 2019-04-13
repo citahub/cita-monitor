@@ -1,51 +1,53 @@
 version: "3"
 services:
-          prometheus_host_exporter:
-                  image: prom/node-exporter
-                  hostname: ${hostname}
-                  container_name: prometheus_host_exporter
-                  ports:
-                          - "${node_out_port}:${node_in_port}"
-                  volumes:
-                          - "/proc:/host/proc"
-                          - "/sys:/host/sys"
-                          - "/:/host/rootfs"
-                  command: "--path.procfs='/host/proc' --path.sysfs='/host/sys' --path.rootfs='/host/rootfs'"
 
-          prometheus_process_exporter:
-                  image: ncabatoff/process-exporter
-                  hostname: ${hostname}
-                  container_name: prometheus_process_exporter
-                  ports:
-                          - "${process_out_port}:${process_in_port}"
-                  volumes:
-                          - "/proc:/host/proc"
-                          - "./process_exporter_config:/config"
-                  command: "--procfs /host/proc --config.path /config/process_list.yml"
+  prometheus_host_exporter:
+    image: prom/node-exporter
+    hostname: ${hostname}
+    container_name: prometheus_host_exporter
+    ports:
+      - "${node_out_port}:${node_in_port}"
+    volumes:
+      - "/proc:/host/proc"
+      - "/sys:/host/sys"
+      - "/:/host/rootfs"
+    command: "--path.procfs='/host/proc' --path.sysfs='/host/sys' --path.rootfs='/host/rootfs'"
 
-          prometheus_rabbitmq_exporter:
-                  image: kbudde/rabbitmq-exporter
-                  hostname: ${hostname}
-                  container_name: prometheus_rabbitmq_exporter
-                  network_mode: "host"
-                  ports:
-                          - "${rabbitmq_out_port}:${rabbitmq_in_port}"
-                  environment:
-                          - "RABBIT_CAPABILITIES=bert,no_sort"
-                          - "PUBLISH_PORT=${rabbitmq_in_port}"
-          prometheus_citaMonitorAgent_exporter:
-                  image: blankwu/cita_agent_by:cita-cli
-                  hostname: ${hostname}_citaMonitorAgent_${target_port}
-                  container_name: prometheus_citaMonitorAgent_exporter__${target_ip}_${target_port}
-                  pid: "host"
-                  ports:
-                          - "${agent_out_port}:${agent_in_port}"
-                  volumes:
-                          - "${node_dir}:/tmp/node:ro"
-                          - "${soft_path}:/tmp/softpath:ro"
-                          - "${disk_path}:/tmp/diskpath:ro"
-                          - "./cita_agent_by_cita-cli.py:/config/cita_agent_by_cita-cli.py:ro"
-                  environment:
-                          - "Node=${target_ip}:${target_port}"
-                          - "OpenPort=${agent_in_port}"
-                          - "NodeID=${node_id}"
+  prometheus_process_exporter:
+    image: ncabatoff/process-exporter
+    hostname: ${hostname}
+    container_name: prometheus_process_exporter
+    ports:
+      - "${process_out_port}:${process_in_port}"
+    volumes:
+      - "/proc:/host/proc"
+      - "./process_exporter_config:/config"
+    command: "--procfs /host/proc --config.path /config/process_list.yml"
+
+  prometheus_rabbitmq_exporter:
+    image: kbudde/rabbitmq-exporter
+    hostname: ${hostname}
+    container_name: prometheus_rabbitmq_exporter
+    network_mode: "host"
+    ports:
+      - "${rabbitmq_out_port}:${rabbitmq_in_port}"
+    environment:
+      - "RABBIT_CAPABILITIES=bert,no_sort"
+      - "PUBLISH_PORT=${rabbitmq_in_port}"
+
+  prometheus_citaMonitorAgent_exporter:
+    image: blankwu/cita_agent_by:cita-cli
+    hostname: ${hostname}_citaMonitorAgent_${target_port}
+    container_name: prometheus_citaMonitorAgent_exporter__${target_ip}_${target_port}
+    pid: "host"
+    ports:
+      - "${agent_out_port}:${agent_in_port}"
+    volumes:
+      - "${node_dir}:/tmp/node:ro"
+      - "${soft_path}:/tmp/softpath:ro"
+      - "${disk_path}:/tmp/diskpath:ro"
+      - "./cita_agent_by_cita-cli.py:/config/cita_agent_by_cita-cli.py:ro"
+    environment:
+      - "Node=${target_ip}:${target_port}"
+      - "OpenPort=${agent_in_port}"
+      - "NodeID=${node_id}"
