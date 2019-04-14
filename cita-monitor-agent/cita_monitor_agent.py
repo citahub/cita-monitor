@@ -11,6 +11,7 @@ import sys
 import platform
 import re
 import psutil
+
 ##########
 Node = sys.argv[1]
 receive_path = sys.argv[3]
@@ -27,11 +28,14 @@ try:
     SoftVersion = str(GetSoftVersion_exec.read().split(' ')[1].split('\n')[0])
 except:
     SoftVersion = 'null'
+    
 ##########
 class Monitor_Function(object):
+
     def __init__(self, NodeIP, NodePort):
         self.NodeIP = NodeIP
         self.NodePort = NodePort
+
     def cita_cli_Request(self, payload):
         r = "timeout 3 cita-cli %s --url http://%s:%s" %(payload,self.NodeIP,self.NodePort)
         try:
@@ -41,28 +45,41 @@ class Monitor_Function(object):
         else:
             PayloadResult = json.loads(rResult.read())
             return PayloadResult
+
     def blockNumber(self):
         payload = "rpc blockNumber"
         return self.cita_cli_Request(payload)
+
     def peerCount(self):
         payload = "rpc peerCount"
         return self.cita_cli_Request(payload)
+
     def getBlockByNumber(self,Height):
         payload = "rpc getBlockByNumber --height %s" %(Height)
         return self.cita_cli_Request(payload)
+
     def getMetaData(self):
         payload = "rpc getMetaData"
         return self.cita_cli_Request(payload)
+
     def NodeManager_listNode(self):
         payload = "scm NodeManager listNode"
         return self.cita_cli_Request(payload)
+
     def NodeDir_analysis(self, dir_path):
         global TotalFileSize
         global NodeAddress
         global NodeDisk
-        address = "cat %s/address" %(dir_path)
-        addressResult = os.popen(address)
-        NodeAddress = str(addressResult.read().split('0x')[1].split('\n')[0])
+
+        privkey = "cat %s/privkey" %(dir_path)
+        privkeyResult = os.popen(privkey)
+        nodeprivkey = str(privkeyResult.read())
+        NodeAddress = "cita-cli key from-private --private-key %s" % nodeprivkey
+        f = os.popen(NodeAddress)
+        Addressinfo = json.loads(f.read())
+        NodeAddress = Addressinfo['address']
+        NodeAddress = str(NodeAddress.split('0x')[1].split('\n')[0])
+
         NodeDisk = psutil.disk_usage(disk_path).total
         TotalFileSize_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" %(dir_path)
         try:
