@@ -6,7 +6,7 @@ services:
     hostname: ${hostname}
     container_name: prometheus_host_exporter
     ports:
-      - "${node_out_port}:${node_in_port}"
+      - "${host_HostPort}:${host_ContainerPort}"
     volumes:
       - "/proc:/host/proc"
       - "/sys:/host/sys"
@@ -18,7 +18,7 @@ services:
     hostname: ${hostname}
     container_name: prometheus_process_exporter
     ports:
-      - "${process_out_port}:${process_in_port}"
+      - "${process_HostPort}:${process_ContainerPort}"
     volumes:
       - "/proc:/host/proc"
       - "./process_exporter_config:/config"
@@ -30,24 +30,26 @@ services:
     container_name: prometheus_rabbitmq_exporter
     network_mode: "host"
     ports:
-      - "${rabbitmq_out_port}:${rabbitmq_in_port}"
+      - "${rabbitmq_HostPort}:${rabbitmq_ContainerPort}"
     environment:
       - "RABBIT_CAPABILITIES=bert,no_sort"
-      - "PUBLISH_PORT=${rabbitmq_in_port}"
+      - "PUBLISH_PORT=${rabbitmq_ContainerPort}"
 
-  prometheus_citaMonitorAgent_exporter:
-    image: blankwu/cita_agent_by:cita-cli
-    hostname: ${hostname}_citaMonitorAgent_${target_port}
-    container_name: prometheus_citaMonitorAgent_exporter__${target_ip}_${target_port}
+  prometheus_cita_exporter:
+    #image: blankwu/cita_agent_by:cita-cli3
+    build: ./cita_exporter
+    image: blankwu/cita-exporter:latest
+    hostname: ${hostname}_citaMonitorAgent_${node_Port}
+    container_name: prometheus_cita_exporter__${node_ip}_${node_Port}
     pid: "host"
     ports:
-      - "${agent_out_port}:${agent_in_port}"
+      - "${agent_HostPort}:${agent_ContainerPort}"
     volumes:
       - "${node_dir}:/tmp/node:ro"
       - "${soft_path}:/tmp/softpath:ro"
       - "${disk_path}:/tmp/diskpath:ro"
-      - "./cita_agent_by_cita-cli.py:/config/cita_agent_by_cita-cli.py:ro"
+      - "./cita_monitor_agent.py:/config/cita_monitor_agent.py:ro"
     environment:
-      - "Node=${target_ip}:${target_port}"
-      - "OpenPort=${agent_in_port}"
+      - "Node=${node_ip}:${node_Port}"
+      - "OpenPort=${agent_ContainerPort}"
       - "NodeID=${node_id}"
