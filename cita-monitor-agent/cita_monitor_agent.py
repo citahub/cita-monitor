@@ -28,7 +28,7 @@ try:
     SoftVersion = str(GetSoftVersion_exec.read().split(' ')[1].split('\n')[0])
 except:
     SoftVersion = 'null'
-    
+
 ##########
 class Monitor_Function(object):
 

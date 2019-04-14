@@ -11,6 +11,8 @@ install_agent(){
     sed -i "s/nodehostname/${Hostname}/g" .env
     docker-compose up -d
     docker ps
+    current_dir=`pwd`
+    echo $current_dir
     sleep 2
     check_container=`curl -I -m 10 -o /dev/null -s -w %{http_code} ${NodeIP}:check_env_port`
     if [[ ${check_container} -eq 200 ]]
@@ -25,20 +27,20 @@ install_agent(){
                 -v "/data2/cita_secp256k1_sha3/test-chain/1":"/tmp/node" \
                 -v "/data2/cita_secp256k1_sha3/":"/tmp/softpath" \
                 -v "/data2":"/tmp/diskpath" \
-		-v "cita_monitor_agent.py":"/config" \
+		        -v "${current_dir}/cita_monitor_agent.py":"/config/cita_monitor_agent.py" \
                 -e Node="${NodeIP}:1338" \
                 -e NodeID=1 \
-                blankwu/cita_agent_by:cita-cli
+                blankwu/cita-exporter:latest
             docker run -d --name="prometheus_cita_exporter__${NodeIP}_1339" \
                 --pid="host" \
                 -p 1922:1920 \
                 -v "/data2/cita_secp256k1_sha3/test-chain/2":"/tmp/node" \
                 -v "/data2/cita_secp256k1_sha3/":"/tmp/softpath" \
                 -v "/data2":"/tmp/diskpath" \
-		-v "cita_monitor_agent.py":"/config" \
+		        -v "${current_dir}/cita_monitor_agent.py":"/config/cita_monitor_agent.py" \
                 -e Node="${NodeIP}:1339" \
                 -e NodeID=2 \
-                blankwu/cita_agent_by:cita-cli
+                blankwu/cita-exporter:latest
 
             docker run -d --name="prometheus_cita_exporter__${NodeIP}_1340" \
                 --pid="host" \
@@ -46,10 +48,10 @@ install_agent(){
                 -v "/data2/cita_secp256k1_sha3/test-chain/3":"/tmp/node" \
                 -v "/data2/cita_secp256k1_sha3/":"/tmp/softpath" \
                 -v "/data2":"/tmp/diskpath" \
-		-v "cita_monitor_agent.py":"/config" \
+         		-v "${current_dir}/cita_monitor_agent.py":"/config/cita_monitor_agent.py" \
                 -e Node="${NodeIP}:1340" \
                 -e NodeID=3 \
-                blankwu/cita_agent_by:cita-cli
+                blankwu/cita-exporter:latest
     else
         echo "不启动其他 node 监控"
     fi
