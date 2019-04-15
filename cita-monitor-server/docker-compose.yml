@@ -15,7 +15,7 @@ services:
     depends_on:
       - alertmanager
     ports:
-      - '${prometheus_out_port}:${prometheus_in_port}'
+      - '${prometheus_HostPort}:${prometheus_ContainerPort}'
 
   alertmanager:
     image: prom/alertmanager:v0.15.3
@@ -26,7 +26,7 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     ports:
-      - '${alertmanager_out_port}:${alertmanager_in_port}'
+      - '${alertmanager_HostPort}:${alertmanager_ContainerPort}'
 
   grafana:
     image: grafana/grafana:5.4.2
@@ -42,7 +42,7 @@ services:
     depends_on:
       - prometheus
     ports:
-      - '${grafana_out_port}:${grafana_in_port}'
+      - '${grafana_HostPort}:${grafana_ContainerPort}'
 
 volumes:
   grafana_data: {}

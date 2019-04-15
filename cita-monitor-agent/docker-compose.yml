@@ -1,0 +1,55 @@
+version: "3"
+services:
+
+  prometheus_host_exporter:
+    image: prom/node-exporter
+    hostname: ${hostname}
+    container_name: prometheus_host_exporter
+    ports:
+      - "${host_HostPort}:${host_ContainerPort}"
+    volumes:
+      - "/proc:/host/proc"
+      - "/sys:/host/sys"
+      - "/:/host/rootfs"
+    command: "--path.procfs='/host/proc' --path.sysfs='/host/sys' --path.rootfs='/host/rootfs'"
+
+  prometheus_process_exporter:
+    image: ncabatoff/process-exporter
+    hostname: ${hostname}
+    container_name: prometheus_process_exporter
+    ports:
+      - "${process_HostPort}:${process_ContainerPort}"
+    volumes:
+      - "/proc:/host/proc"
+      - "./process_exporter_config:/config"
+    command: "--procfs /host/proc --config.path /config/process_list.yml"
+
+  prometheus_rabbitmq_exporter:
+    image: kbudde/rabbitmq-exporter
+    hostname: ${hostname}
+    container_name: prometheus_rabbitmq_exporter
+    network_mode: "host"
+    ports:
+      - "${rabbitmq_HostPort}:${rabbitmq_ContainerPort}"
+    environment:
+      - "RABBIT_CAPABILITIES=bert,no_sort"
+      - "PUBLISH_PORT=${rabbitmq_ContainerPort}"
+
+  prometheus_cita_exporter:
+    #image: blankwu/cita_agent_by:cita-cli3
+    build: ./cita_exporter
+    image: blankwu/cita-exporter:latest
+    hostname: ${hostname}_citaMonitorAgent_${node_Port}
+    container_name: prometheus_cita_exporter__${node_ip}_${node_Port}
+    pid: "host"
+    ports:
+      - "${agent_HostPort}:${agent_ContainerPort}"
+    volumes:
+      - "${node_dir}:/tmp/node:ro"
+      - "${soft_path}:/tmp/softpath:ro"
+      - "${disk_path}:/tmp/diskpath:ro"
+      - "./cita_monitor_agent.py:/config/cita_monitor_agent.py:ro"
+    environment:
+      - "Node=${node_ip}:${node_Port}"
+      - "OpenPort=${agent_ContainerPort}"
+      - "NodeID=${node_id}"

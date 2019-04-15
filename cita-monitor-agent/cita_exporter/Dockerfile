@@ -1,5 +1,5 @@
 ## 一个基础的 python 运行环境
-FROM python
+FROM python:3
 ## 设置工作目录
 WORKDIR /config
 ## 将当前系统文件夹内容复制到容器的 app 目录
@@ -13,4 +13,4 @@ ENV NodeID=0
 ENV SoftPath='/tmp/softpath'
 ENV DiskPath='/tmp/diskpath'
 ## 运行命令
-CMD "python3" "cita_agent_by_cita-cli.py" "$Node" "$OpenPort" "$Dir" "$NodeID" "$SoftPath" "$DiskPath"
+CMD "python3" "cita_monitor_agent.py" "$Node" "$OpenPort" "$Dir" "$NodeID" "$SoftPath" "$DiskPath"
