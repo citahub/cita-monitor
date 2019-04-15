@@ -13,4 +13,4 @@ ENV NodeID=0
 ENV SoftPath='/tmp/softpath'
 ENV DiskPath='/tmp/diskpath'
 ## 运行命令
-CMD "python3" "cita_agent_by_cita-cli.py" "$Node" "$OpenPort" "$Dir" "$NodeID" "$SoftPath" "$DiskPath"
+CMD "python3" "cita_monitor_agent.py" "$Node" "$OpenPort" "$Dir" "$NodeID" "$SoftPath" "$DiskPath"

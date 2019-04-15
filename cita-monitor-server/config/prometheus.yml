@@ -26,6 +26,6 @@ scrape_configs:
     static_configs:
     - targets: ['rabbitmq_exporter_ip:port']
 
-  - job_name: 'citaMonitorAgent_exporter'
+  - job_name: 'cita_exporter'
     static_configs:
-    - targets: ['citaMonitorAgent_exporter_ip:port']
+    - targets: ['cita_exporter_ip:port']
