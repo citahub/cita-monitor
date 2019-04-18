@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1555072826517,
+  "iteration": 1555555590726,
   "links": [
     {
       "icon": "external link",
@@ -1872,8 +1872,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "citaMonitorAgent_exporter",
-          "value": "citaMonitorAgent_exporter"
+          "text": "cita_exporter",
+          "value": "cita_exporter"
         },
         "datasource": "Prometheus",
         "definition": "label_values(Node_Get_ServiceStatus,job)",
@@ -1922,8 +1922,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "9123",
-          "value": "9123"
+          "text": "1923",
+          "value": "1923"
         },
         "datasource": "Prometheus",
         "definition": "label_values(Node_Get_ServiceStatus{job=~'$job',instance=~'$node.+'},instance)",
