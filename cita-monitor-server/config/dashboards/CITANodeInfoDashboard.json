@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1555072826517,
+  "iteration": 1555557293378,
   "links": [
     {
       "icon": "external link",
@@ -1324,7 +1324,7 @@
       "datasource": "Prometheus",
       "fill": 0,
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 14,
         "x": 10,
         "y": 18
@@ -1348,7 +1348,7 @@
       "links": [],
       "nullPointMode": "null",
       "percentage": false,
-      "pointradius": 5,
+      "pointradius": 2,
       "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
@@ -1387,8 +1387,8 @@
           "format": "ms",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "30000",
+          "min": "0",
           "show": true
         },
         {
@@ -1655,7 +1655,7 @@
         "h": 3,
         "w": 3,
         "x": 10,
-        "y": 27
+        "y": 26
       },
       "id": 45,
       "interval": null,
@@ -1729,7 +1729,7 @@
         "h": 3,
         "w": 11,
         "x": 13,
-        "y": 27
+        "y": 26
       },
       "id": 57,
       "links": [],
@@ -1759,7 +1759,7 @@
         "h": 3,
         "w": 3,
         "x": 10,
-        "y": 30
+        "y": 29
       },
       "id": 36,
       "interval": null,
@@ -1823,7 +1823,7 @@
         "h": 3,
         "w": 4,
         "x": 13,
-        "y": 30
+        "y": 29
       },
       "id": 52,
       "links": [],
@@ -1837,7 +1837,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 30
+        "y": 29
       },
       "id": 54,
       "links": [],
@@ -1846,12 +1846,12 @@
       "type": "text"
     },
     {
-      "content": "<center>\n<br>\n<h3>$HostPlatform</h3>\n</center>",
+      "content": "<center>\n<br><br>\n<h3>$HostPlatform</h3>\n</center>",
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 14,
         "x": 10,
-        "y": 33
+        "y": 32
       },
       "id": 53,
       "links": [],
@@ -1872,8 +1872,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "citaMonitorAgent_exporter",
-          "value": "citaMonitorAgent_exporter"
+          "text": "cita_exporter",
+          "value": "cita_exporter"
         },
         "datasource": "Prometheus",
         "definition": "label_values(Node_Get_ServiceStatus,job)",
@@ -1922,8 +1922,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "9123",
-          "value": "9123"
+          "text": "1923",
+          "value": "1923"
         },
         "datasource": "Prometheus",
         "definition": "label_values(Node_Get_ServiceStatus{job=~'$job',instance=~'$node.+'},instance)",
