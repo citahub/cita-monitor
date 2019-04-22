@@ -247,7 +247,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "Node_Get_LastBlocknumber",
+          "expr": "Node_Get_LastBlockNumber",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{NodeIP}}:{{NodePort}}",
@@ -321,7 +321,7 @@
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "link": false,
           "pattern": "Time",
-          "type": "date"
+          "type": "hidden"
         },
         {
           "alias": "最新区块高度",
@@ -339,11 +339,11 @@
           "preserveFormat": false,
           "sanitize": false,
           "thresholds": [],
-          "type": "string",
+          "type": "hidden",
           "unit": "short"
         },
         {
-          "alias": "节点IP",
+          "alias": "Node IP",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -355,11 +355,11 @@
           "mappingType": 1,
           "pattern": "NodeIP",
           "thresholds": [],
-          "type": "number",
+          "type": "string",
           "unit": "short"
         },
         {
-          "alias": "节点端口",
+          "alias": "Node Port",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -367,15 +367,15 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
+          "decimals": 0,
           "mappingType": 1,
           "pattern": "NodePort",
           "thresholds": [],
           "type": "number",
-          "unit": "short"
+          "unit": "none"
         },
         {
-          "alias": "Chain node id",
+          "alias": "Node ID",
           "colorMode": "value",
           "colors": [
             "#890f02",
@@ -383,7 +383,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
+          "decimals": 0,
           "link": false,
           "linkTooltip": "",
           "linkUrl": "",
@@ -393,12 +393,126 @@
             ""
           ],
           "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "__name__",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "instance",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "job",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Consensus",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "ConsensusStatus",
+          "thresholds": [
+            "1"
+          ],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "HostName",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "LastBlockProposer",
+          "thresholds": [],
+          "type": "hidden",
           "unit": "short"
         }
       ],
       "targets": [
         {
-          "expr": "Node_Get_LastBlocknumberDetails",
+          "expr": "Node_Get_LastBlockNumberDetails",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -452,5 +566,5 @@
   "timezone": "",
   "title": "Summary Dashboard",
   "uid": "dLEMP5qik",
-  "version": 4750
+  "version": 1
 }
