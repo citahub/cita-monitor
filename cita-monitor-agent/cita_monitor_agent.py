@@ -56,6 +56,14 @@ class Monitor_Function(object):
                 payloadResult = json.loads(rResult)
                 return payloadResult
     #
+    def getQuotaPrice(self):
+        payload = "scm PriceManager getQuotaPrice"
+        return self.citaCliRequest(payload)
+    #
+    def getBlockLimit(self):
+        payload = "scm QuotaManager getBQL"
+        return self.citaCliRequest(payload)
+    #
     def blockNumber(self):
         payload = "rpc blockNumber"
         return self.citaCliRequest(payload)
@@ -190,6 +198,27 @@ def Node_Get():
         ["NodeIP", "NodePort"],
         registry=CITARegistry
     )
+    #
+    Node_Get_LastBlocknumberQuotaUsed = Gauge(
+        "Node_Get_LastBlocknumberQuotaUsed",
+        "Get current block quotaused,value is quotaused count;",
+        ["NodeIP", "NodePort"],
+        registry=CITARegistry
+    )
+    #
+    Node_Get_QuotaPrice = Gauge(
+        "Node_Get_QuotaPrice",
+        "Get Quota price of current chain;",
+        ["NodeIP", "NodePort"],
+        registry=CITARegistry
+    )
+    #
+    Node_Get_BlockQuotaLimit = Gauge(
+        "Node_Get_BlockQuotaLimit",
+        "Get block quota limit of current chain;",
+        ["NodeIP", "NodePort"],
+        registry=CITARegistry
+    )
 #---
     # 切割 node 信息
     NodeIP = str(node.split(':')[0])
@@ -301,6 +330,10 @@ def Node_Get():
                 NodeIP=NodeIP, NodePort=NodePort
             ).set(lastBlockNumberTransactions)
             #
+            Node_Get_LastBlocknumberQuotaUsed.labels(
+                NodeIP=NodeIP, NodePort=NodePort
+            ).set(lastBlockQuotaUsed)
+            #
             match = re.search(NodeAddress, lastBlockProposer)
             if match:
                 checkProposer = 1
@@ -317,6 +350,20 @@ def Node_Get():
             Node_Get_NodePeers.labels(
                 NodeIP=NodeIP, NodePort=NodePort
             ).set(int(nodePeers, 16))
+        # 获取链上的 quota price
+        fncGetQuotaPrice =  getResult.getQuotaPrice()
+        if fncGetQuotaPrice != -99:
+            quotaPrice = fncGetQuotaPrice['result']
+            Node_Get_QuotaPrice.labels(
+                NodeIP=NodeIP, NodePort=NodePort
+            ).set(int(quotaPrice, 16))
+        # 获取链上的单个 block quota limit
+        fncGetBlockLimit = getResult.getBlockLimit()
+        if fncGetBlockLimit != -99:
+            blockQuotaLimit = fncGetBlockLimit['result']
+            Node_Get_BlockQuotaLimit.labels(
+                NodeIP=NodeIP, NodePort=NodePort
+            ).set(int(blockQuotaLimit, 16))
     # 返回标签数据
     return Response(prometheus_client.generate_latest(CITARegistry), mimetype="text/plain")
 
