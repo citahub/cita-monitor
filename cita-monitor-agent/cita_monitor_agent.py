@@ -56,6 +56,14 @@ class Monitor_Function(object):
                 payloadResult = json.loads(rResult)
                 return payloadResult
     #
+    def getQuotaPrice(self):
+        payload = "scm PriceManager getQuotaPrice"
+        return self.citaCliRequest(payload)
+    #
+    def getBlockLimit(self):
+        payload = "scm QuotaManager getBQL"
+        return self.citaCliRequest(payload)
+    #
     def blockNumber(self):
         payload = "rpc blockNumber"
         return self.citaCliRequest(payload)
@@ -110,8 +118,8 @@ def Node_Get():
         registry=CITARegistry
     )
     #
-    Node_Get_FirstBlocknumberDetails = Gauge(
-        "Node_Get_FirstBlocknumberDetails",
+    Node_Get_FirstBlockNumberDetails = Gauge(
+        "Node_Get_FirstBlockNumberDetails",
         "Get the hash and timestamp of the first block, value is timestamp;",
         ["NodeIP", "NodePort", "FirstBlockNumberHash"],
         registry=CITARegistry
@@ -138,22 +146,22 @@ def Node_Get():
         registry=CITARegistry
     )
     #
-    Node_Get_LastBlocknumber = Gauge(
-        "Node_Get_LastBlocknumber",
+    Node_Get_LastBlockNumber = Gauge(
+        "Node_Get_LastBlockNumber",
         "Get the latest block height, value is block number;",
         ["NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID", "NodeAddress"],
         registry=CITARegistry
     )
     #
-    Node_checkProposer = Gauge(
-        "Node_checkProposer",
-        "checkProposer, value is 1 or 0;",
+    Node_CheckProposer = Gauge(
+        "Node_CheckProposer",
+        "check proposer, value is 1 or 0;",
         ["NodeIP", "NodePort"],
         registry=CITARegistry
     )
     #
-    Node_Get_LastBlocknumberDetails = Gauge(
-        "Node_Get_LastBlocknumberDetails",
+    Node_Get_LastBlockNumberDetails = Gauge(
+        "Node_Get_LastBlockNumberDetails",
         "Get the hash and timestamp of the last block, value is last block timestamp;",
         [
             "NodeIP", "NodePort", "LastBlocknumber", "LastBlockProposer",
@@ -177,16 +185,37 @@ def Node_Get():
         registry=CITARegistry
     )
     #
-    Node_Get_BlocktimeDifference = Gauge(
-        "Node_Get_BlocktimeDifference",
+    Node_Get_BlockTimeDifference = Gauge(
+        "Node_Get_BlockTimeDifference",
         "Get current block time and previous block time,value is Calculate the difference into seconds;",
         ["NodeIP", "NodePort"],
         registry=CITARegistry
     )
     #
-    Node_Get_lastBlockNumberTransactions = Gauge(
-        "Node_Get_lastBlockNumberTransactions",
+    Node_Get_LastBlockNumberTransactions = Gauge(
+        "Node_Get_LastBlockNumberTransactions",
         "Get current block transactions,value is transactions len;",
+        ["NodeIP", "NodePort"],
+        registry=CITARegistry
+    )
+    #
+    Node_Get_LastBlockNumberQuotaUsed = Gauge(
+        "Node_Get_LastBlockNumberQuotaUsed",
+        "Get current block quotaused,value is quotaused count;",
+        ["NodeIP", "NodePort"],
+        registry=CITARegistry
+    )
+    #
+    Node_Get_QuotaPrice = Gauge(
+        "Node_Get_QuotaPrice",
+        "Get Quota price of current chain;",
+        ["NodeIP", "NodePort"],
+        registry=CITARegistry
+    )
+    #
+    Node_Get_BlockQuotaLimit = Gauge(
+        "Node_Get_BlockQuotaLimit",
+        "Get block quota limit of current chain;",
         ["NodeIP", "NodePort"],
         registry=CITARegistry
     )
@@ -224,7 +253,7 @@ def Node_Get():
         if fncGetBlockByNumber != -99:
             firstBlockNumberHash = fncGetBlockByNumber['result']['hash']
             firstBlockNumberTimestamp = fncGetBlockByNumber['result']['header']['timestamp']
-            Node_Get_FirstBlocknumberDetails.labels(
+            Node_Get_FirstBlockNumberDetails.labels(
                 NodeIP=NodeIP, NodePort=NodePort,FirstBlockNumberHash=firstBlockNumberHash
             ).set(firstBlockNumberTimestamp)
         # 获取链信息
@@ -256,7 +285,7 @@ def Node_Get():
             blockNumber = fncBlockNumber['result']
             # 获取上一个区块高度
             previousBlockNumber = hex(int(blockNumber,16) - 1)
-            Node_Get_LastBlocknumber.labels(
+            Node_Get_LastBlockNumber.labels(
                 NodeIP=NodeIP, NodePort=NodePort,
                 FirstBlockNumberHash=firstBlockNumberHash,
                 NodeID=nodeId, NodeAddress=('0x' + NodeAddress)
@@ -279,7 +308,7 @@ def Node_Get():
             else:
                 consensusStatus = 0
             #
-            Node_Get_LastBlocknumberDetails.labels(
+            Node_Get_LastBlockNumberDetails.labels(
                 NodeIP=NodeIP, NodePort=NodePort,
                 LastBlocknumber=int(blockNumber,16), LastBlockProposer=lastBlockProposer,
                 LastBlockHash=lastBlockHash, NodeID=nodeId,
@@ -293,13 +322,17 @@ def Node_Get():
                 PreviousHeight=int(previousBlockNumber,16)
             ).set(timeDifference)
             #
-            Node_Get_BlocktimeDifference.labels(
+            Node_Get_BlockTimeDifference.labels(
                 NodeIP=NodeIP, NodePort=NodePort
             ).set(timeDifference)
             #
-            Node_Get_lastBlockNumberTransactions.labels(
+            Node_Get_LastBlockNumberTransactions.labels(
                 NodeIP=NodeIP, NodePort=NodePort
             ).set(lastBlockNumberTransactions)
+            #
+            Node_Get_LastBlockNumberQuotaUsed.labels(
+                NodeIP=NodeIP, NodePort=NodePort
+            ).set(lastBlockQuotaUsed)
             #
             match = re.search(NodeAddress, lastBlockProposer)
             if match:
@@ -307,7 +340,7 @@ def Node_Get():
             else:
                 checkProposer = 0
             #
-            Node_checkProposer.labels(
+            Node_CheckProposer.labels(
                 NodeIP=NodeIP, NodePort=NodePort
             ).set(checkProposer)
         # 获取节点的 peer 数量
@@ -317,6 +350,20 @@ def Node_Get():
             Node_Get_NodePeers.labels(
                 NodeIP=NodeIP, NodePort=NodePort
             ).set(int(nodePeers, 16))
+        # 获取链上的 quota price
+        fncGetQuotaPrice =  getResult.getQuotaPrice()
+        if fncGetQuotaPrice != -99:
+            quotaPrice = fncGetQuotaPrice['result']
+            Node_Get_QuotaPrice.labels(
+                NodeIP=NodeIP, NodePort=NodePort
+            ).set(int(quotaPrice, 16))
+        # 获取链上的单个 block quota limit
+        fncGetBlockLimit = getResult.getBlockLimit()
+        if fncGetBlockLimit != -99:
+            blockQuotaLimit = fncGetBlockLimit['result']
+            Node_Get_BlockQuotaLimit.labels(
+                NodeIP=NodeIP, NodePort=NodePort
+            ).set(int(blockQuotaLimit, 16))
     # 返回标签数据
     return Response(prometheus_client.generate_latest(CITARegistry), mimetype="text/plain")
 
