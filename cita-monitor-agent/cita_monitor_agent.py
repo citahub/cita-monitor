@@ -35,6 +35,7 @@ print("node is : ", node)
 print("node directory is : ", node_file_path)
 print("node id is : ", node_id)
 
+
 # 定义 cita-cli 请求功能类
 class MonitorFunction(object):
     # 定义初始化变量
@@ -44,7 +45,8 @@ class MonitorFunction(object):
 
     #
     def cli_request(self, payload):
-        r = "timeout 3 cita-cli %s --url http://%s:%s" % (payload, self.node_ip, self.node_port)
+        r = "timeout 3 cita-cli %s --url http://%s:%s" % (
+            payload, self.node_ip, self.node_port)
         print(r)
         try:
             req_result = os.popen(r).read()
@@ -125,20 +127,14 @@ def GetLabels():
     Node_Get_ServiceStatus = Gauge(
         "Node_Get_ServiceStatus",
         "Check local running cita services, value return 1 when running; return 0 is not running;",
-        [
-            "NodeIP", "NodePort"
-        ],
-        registry=registry
-        )
+        ["NodeIP", "NodePort"],
+        registry=registry)
     #
     Node_Get_FirstBlockNumberDetails = Gauge(
         "Node_Get_FirstBlockNumberDetails",
         "Get the hash and timestamp of the first block, value is timestamp;",
-        [
-            "NodeIP", "NodePort", "FirstBlockNumberHash"
-        ],
-        registry=registry
-        )
+        ["NodeIP", "NodePort", "FirstBlockNumberHash"],
+        registry=registry)
     #
     Node_Get_ChainInfo = Gauge(
         "Node_Get_ChainInfo",
@@ -147,36 +143,27 @@ def GetLabels():
             "NodeIP", "NodePort", "ChainName", "Operator", "TokenName",
             "TokenSymbol", "Version"
         ],
-        registry=registry
-        )
+        registry=registry)
     #
     Node_Get_NodePeers = Gauge(
         "Node_Get_NodePeers",
         "Get the number of node connections, value is local connect node conuts;",
-        [
-            "NodeIP", "NodePort"
-        ],
-        registry=registry
-        )
+        ["NodeIP", "NodePort"],
+        registry=registry)
     #
     Node_Get_ChainNodes = Gauge(
         "Node_Get_ChainNodes",
         "Get the number of CITA service Consensus nodes, value is node counts by chain;",
-        [
-            "NodeIP", "NodePort"
-        ],
-        registry=registry
-        )
+        ["NodeIP", "NodePort"],
+        registry=registry)
     #
     Node_Get_LastBlockNumber = Gauge(
         "Node_Get_LastBlockNumber",
-        "Get the latest block height, value is block number;", 
-        [
+        "Get the latest block height, value is block number;", [
             "NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID",
             "NodeAddress"
         ],
-        registry=registry
-        )
+        registry=registry)
     #
     Node_CheckProposer = Gauge("Node_CheckProposer",
                                "check proposer, value is 1 or 0;",
@@ -187,75 +174,51 @@ def GetLabels():
         "Node_Get_LastBlockNumberDetails",
         "Get the hash and timestamp of the last block, value is last block timestamp;",
         [
-            "NodeIP", "NodePort", "LastBlocknumber",
-            "LastBlockProposer","LastBlockHash",
-            "NodeID", "HostPlatform", "HostName",
+            "NodeIP", "NodePort", "LastBlocknumber", "LastBlockProposer",
+            "LastBlockHash", "NodeID", "HostPlatform", "HostName",
             "ConsensusStatus", "SoftVersion"
         ],
-        registry=registry
-        )
+        registry=registry)
     #
     Node_Get_BlockDifference = Gauge(
         "Node_Get_BlockDifference",
         "Get current block time and previous block time,label include CurrentHeight, PreviousHeight. value is Calculate the difference into seconds;",
-        [
-            "NodeIP", "NodePort", "CurrentHeight", "PreviousHeight"
-        ],
-        registry=registry
-        )
+        ["NodeIP", "NodePort", "CurrentHeight", "PreviousHeight"],
+        registry=registry)
     #
     Node_Get_DirInfo_TotalFileSize = Gauge(
         "Node_Get_DirInfo_TotalFileSize",
         "Get TotalFileSize by Node Dir, value is TotalFileSize;",
-        [
-            "NodeIP", "NodePort", "NodeDir", "NodeDisk"
-        ],
-        registry=registry
-        )
+        ["NodeIP", "NodePort", "NodeDir", "NodeDisk"],
+        registry=registry)
     #
     Node_Get_BlockTimeDifference = Gauge(
         "Node_Get_BlockTimeDifference",
         "Get current block time and previous block time,value is Calculate the difference into seconds;",
-        [
-            "NodeIP", "NodePort"
-        ],
-        registry=registry
-        )
+        ["NodeIP", "NodePort"],
+        registry=registry)
     #
     Node_Get_LastBlockNumberTransactions = Gauge(
         "Node_Get_LastBlockNumberTransactions",
         "Get current block transactions,value is transactions len;",
-        [
-            "NodeIP", "NodePort"
-        ],
-        registry=registry
-        )
+        ["NodeIP", "NodePort"],
+        registry=registry)
     #
     Node_Get_LastBlockNumberQuotaUsed = Gauge(
         "Node_Get_LastBlockNumberQuotaUsed",
         "Get current block quotaused,value is quotaused count;",
-        [
-            "NodeIP", "NodePort"
-        ],
+        ["NodeIP", "NodePort"],
         registry=registry)
     #
-    Node_Get_QuotaPrice = Gauge(
-        "Node_Get_QuotaPrice",
-        "Get Quota price of current chain;",
-        [
-            "NodeIP", "NodePort"
-        ],
-        registry=registry
-        )
+    Node_Get_QuotaPrice = Gauge("Node_Get_QuotaPrice",
+                                "Get Quota price of current chain;",
+                                ["NodeIP", "NodePort"],
+                                registry=registry)
     #
-    Node_Get_BlockQuotaLimit = Gauge(
-        "Node_Get_BlockQuotaLimit",
-        "Get block quota limit of current chain;",
-        [
-            "NodeIP", "NodePort"
-        ],
-        registry=registry
-        )
+    Node_Get_BlockQuotaLimit = Gauge("Node_Get_BlockQuotaLimit",
+                                     "Get block quota limit of current chain;",
+                                     ["NodeIP", "NodePort"],
+                                     registry=registry)
     #---
     # 切割 node 信息
     node_ip = str(node.split(':')[0])
@@ -263,19 +226,14 @@ def GetLabels():
     # 检查本地是否存在 CITA 服务进程
     check_process = os.popen("ps alx |grep 'cita-chain' |grep -c -v grep")
     if check_process.read() == '0\n':
-        Node_Get_ServiceStatus.labels(
-            NodeIP=node_ip,
-            NodePort=node_port
-            ).set(0)
-        return Response(
-            prometheus_client.generate_latest(registry),mimetype="text/plain"
-            )
+        Node_Get_ServiceStatus.labels(NodeIP=node_ip,
+                                      NodePort=node_port).set(0)
+        return Response(prometheus_client.generate_latest(registry),
+                        mimetype="text/plain")
     # 执行 prometheus 标签功能请求
     else:
-        Node_Get_ServiceStatus.labels(
-            NodeIP=node_ip,
-            NodePort=node_port
-            ).set(1)
+        Node_Get_ServiceStatus.labels(NodeIP=node_ip,
+                                      NodePort=node_port).set(1)
         class_result = MonitorFunction(node_ip, node_port)
         # 获取目录容量
         if ',' in node_file_path:
@@ -286,8 +244,7 @@ def GetLabels():
                     NodeIP=node_ip,
                     NodePort=node_port,
                     NodeDir=path,
-                    NodeDisk=disk_total
-                    ).set(file_size_total)
+                    NodeDisk=disk_total).set(file_size_total)
         else:
             path = node_file_path
             class_result.dir_analysis(path)
@@ -295,18 +252,17 @@ def GetLabels():
                 NodeIP=node_ip,
                 NodePort=node_port,
                 NodeDir=path,
-                NodeDisk=disk_total
-                ).set(file_size_total)
+                NodeDisk=disk_total).set(file_size_total)
         # 获取创世块信息
         first_block_info = class_result.block_number_detail('0x0')
         if first_block_info != -99:
             first_block_hash = first_block_info['result']['hash']
-            first_block_time = first_block_info['result']['header']['timestamp']
+            first_block_time = first_block_info['result']['header'][
+                'timestamp']
             Node_Get_FirstBlockNumberDetails.labels(
                 NodeIP=node_ip,
                 NodePort=node_port,
-                FirstBlockNumberHash=first_block_hash
-                ).set(first_block_time)
+                FirstBlockNumberHash=first_block_hash).set(first_block_time)
         # 获取链信息
         metadata_info = class_result.metadata()
         if metadata_info != -99:
@@ -323,17 +279,14 @@ def GetLabels():
                 Operator=operator,
                 TokenName=token_name,
                 TokenSymbol=token_symbol,
-                Version=chain_version
-                ).set(economical_model)
+                Version=chain_version).set(economical_model)
         # 获取链上节点列表
         node_list_info = class_result.node_list()
         if node_list_info != -99:
             node_list = str(node_list_info['result'].split('0x')[1])
             node_count = (len(node_list) / 64 - 2)
-            Node_Get_ChainNodes.labels(
-                NodeIP=node_ip,
-                NodePort=node_port
-                ).set(node_count)
+            Node_Get_ChainNodes.labels(NodeIP=node_ip,
+                                       NodePort=node_port).set(node_count)
         # 获取最新区块高度
         block_number_info = class_result.block_number()
         if block_number_info != -99:
@@ -345,19 +298,21 @@ def GetLabels():
                 NodePort=node_port,
                 FirstBlockNumberHash=first_block_hash,
                 NodeID=node_id,
-                NodeAddress=str('0x' + address)
-                ).set(int(hex_number, 16))
+                NodeAddress=str('0x' + address)).set(int(hex_number, 16))
         # 获取最新区块详细信息
         block_info = class_result.block_number_detail(hex_number)
         previous_block_info = class_result.block_number_detail(
             previous_hex_number)
         if block_info != -99 and previous_block_info != -99:
-            block_quota_used = int(block_info['result']['header']['quotaUsed'],16)
+            block_quota_used = int(block_info['result']['header']['quotaUsed'],
+                                   16)
             block_hash = block_info['result']['hash']
             block_time = int(block_info['result']['header']['timestamp'])
-            block_transactions = int(len(block_info['result']['body']['transactions']))
+            block_transactions = int(
+                len(block_info['result']['body']['transactions']))
             block_proposer = block_info['result']['header']['proposer']
-            previous_block_time = int(previous_block_info['result']['header']['timestamp'])
+            previous_block_time = int(
+                previous_block_info['result']['header']['timestamp'])
             interval = abs(block_time - previous_block_time)
             #
             match = re.search(address, node_list)
@@ -376,30 +331,23 @@ def GetLabels():
                 HostPlatform=host_os,
                 HostName=agent_name,
                 ConsensusStatus=consensus,
-                SoftVersion=soft_version
-                ).set(block_time)
+                SoftVersion=soft_version).set(block_time)
             #
-            Node_Get_BlockDifference.labels(
-                NodeIP=node_ip,
-                NodePort=node_port,
-                CurrentHeight=int(hex_number, 16),
-                PreviousHeight=int(previous_hex_number,16)
-                ).set(interval)
+            Node_Get_BlockDifference.labels(NodeIP=node_ip,
+                                            NodePort=node_port,
+                                            CurrentHeight=int(hex_number, 16),
+                                            PreviousHeight=int(
+                                                previous_hex_number,
+                                                16)).set(interval)
             #
             Node_Get_BlockTimeDifference.labels(
-                NodeIP=node_ip,
-                NodePort=node_port
-                ).set(interval)
+                NodeIP=node_ip, NodePort=node_port).set(interval)
             #
             Node_Get_LastBlockNumberTransactions.labels(
-                NodeIP=node_ip,
-                NodePort=node_port
-                ).set(block_transactions)
+                NodeIP=node_ip, NodePort=node_port).set(block_transactions)
             #
             Node_Get_LastBlockNumberQuotaUsed.labels(
-                NodeIP=node_ip,
-                NodePort=node_port
-                ).set(block_quota_used)
+                NodeIP=node_ip, NodePort=node_port).set(block_quota_used)
             #
             match = re.search(address, block_proposer)
             if match:
@@ -407,38 +355,30 @@ def GetLabels():
             else:
                 proposer = 0
             #
-            Node_CheckProposer.labels(
-                NodeIP=node_ip,
-                NodePort=node_port
-                ).set(proposer)
+            Node_CheckProposer.labels(NodeIP=node_ip,
+                                      NodePort=node_port).set(proposer)
         # 获取节点的 peer 数量
         peer_info = class_result.peer_count()
         if peer_info != -99:
             peers = peer_info['result']
-            Node_Get_NodePeers.labels(
-                NodeIP=node_ip,
-                NodePort=node_port
-                ).set(int(peers, 16))
+            Node_Get_NodePeers.labels(NodeIP=node_ip,
+                                      NodePort=node_port).set(int(peers, 16))
         # 获取链上的 quota price
         quota_price = class_result.quota_price()
         if quota_price != -99:
             price = quota_price['result']
-            Node_Get_QuotaPrice.labels(
-                NodeIP=node_ip,
-                NodePort=node_port
-                ).set(int(price, 16))
+            Node_Get_QuotaPrice.labels(NodeIP=node_ip,
+                                       NodePort=node_port).set(int(price, 16))
         # 获取链上的单个 block quota limit
         block_limit = class_result.block_limit()
         if block_limit != -99:
             limit = block_limit['result']
-            Node_Get_BlockQuotaLimit.labels(
-                NodeIP=node_ip,
-                NodePort=node_port
-                ).set(int(limit, 16))
+            Node_Get_BlockQuotaLimit.labels(NodeIP=node_ip,
+                                            NodePort=node_port).set(
+                                                int(limit, 16))
     # 返回标签数据
-    return Response(
-        prometheus_client.generate_latest(registry),mimetype="text/plain"
-        )
+    return Response(prometheus_client.generate_latest(registry),
+                    mimetype="text/plain")
 
 
 # flask 对象
