@@ -51,11 +51,18 @@ git clone git@github.com:cryptape/cita-monitor.git
 
 ### Coding style
 
+#### Coding style for Shell
+
+* coding style guide: [Google Shell Style guide](https://google.github.io/styleguide/shell.xml)
+* code formatter: [`shfmt -i 2 -ci`](https://github.com/mvdan/sh#shfmt), vscode extension: shell-format
+* linter: [ShellCheck](https://github.com/koalaman/shellcheck), vscode extension: shell-format
+
+
 #### Coding style for Python
 
 * coding style guide: http://google.github.io/styleguide/pyguide.html
 * code formatter: [yapf](https://github.com/google/yapf)
-* lint tool: [pylint](https://www.pylint.org/)
+* linter: [pylint](https://www.pylint.org/)
 
 #### Coding style for Docker
 
