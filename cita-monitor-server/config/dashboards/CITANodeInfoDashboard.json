@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1555557293378,
+  "iteration": 1555931238248,
   "links": [
     {
       "icon": "external link",
@@ -116,7 +116,7 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "Node_Get_FirstBlocknumberDetails{job=\"$job\",instance=\"$node:$port\"}",
+              "expr": "Node_Get_FirstBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"}",
               "format": "time_series",
               "instant": true,
               "intervalFactor": 1,
@@ -198,7 +198,7 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "time() - (Node_Get_FirstBlocknumberDetails{job=\"$job\",instance=\"$node:$port\"} / 1000)",
+              "expr": "time() - (Node_Get_FirstBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"} / 1000)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -435,7 +435,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "max(Node_Get_LastBlocknumber{job=\"$job\"})",
+          "expr": "max(Node_Get_LastBlockNumber{job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -578,7 +578,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "Node_Get_LastBlocknumber{job=\"$job\"}",
+          "expr": "Node_Get_LastBlockNumber{job=\"$job\"}",
           "format": "time_series",
           "interval": "3s",
           "intervalFactor": 1,
@@ -698,10 +698,10 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "FirstBlocknumberHash",
+      "tableColumn": "FirstBlockNumberHash",
       "targets": [
         {
-          "expr": "Node_Get_LastBlocknumber{job=\"$job\",instance=\"$node:$port\"}",
+          "expr": "Node_Get_LastBlockNumber{job=\"$job\",instance=\"$node:$port\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -781,7 +781,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "time() - (Node_Get_LastBlocknumberDetails{job=\"$job\",instance=\"$node:$port\"} / 1000)",
+          "expr": "time() - (Node_Get_LastBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"} / 1000)",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -859,13 +859,14 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "FirstBlocknumberHash",
+      "tableColumn": "FirstBlockNumberHash",
       "targets": [
         {
           "expr": "Node_CheckProposer{job=\"$job\",instance=\"$node:$port\"}",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
+          "legendFormat": "",
           "refId": "A"
         }
       ],
@@ -932,7 +933,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "Node_Get_LastBlocknumber{job=\"$job\",instance=\"$node:$port\"}",
+          "expr": "Node_Get_LastBlockNumber{job=\"$job\",instance=\"$node:$port\"}",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
@@ -1043,7 +1044,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "Node_Get_LastBlocknumberTransactions{job=\"$job\",instance=\"$node:$port\"}",
+          "expr": "Node_Get_LastBlockNumberTransactions{job=\"$job\",instance=\"$node:$port\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -1103,7 +1104,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "Node_Get_LastBlocknumberTransactions{job=\"$job\",instance=\"$node:$port\"}",
+          "expr": "Node_Get_LastBlockNumberTransactions{job=\"$job\",instance=\"$node:$port\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{NodeIP}}:{{NodePort}}",
@@ -1416,7 +1417,7 @@
       ],
       "datasource": "Prometheus",
       "decimals": null,
-      "description": "sum_over_time(Node_Get_LastBlocknumberTransactions{job=\"$job\",instance=\"$instance\"}[1m]) / 60",
+      "description": "sum_over_time(Node_Get_LastBlockNumberTransactions{job=\"$job\",instance=\"$instance\"}[1m]) / 60",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1468,7 +1469,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum_over_time(Node_Get_LastBlocknumberTransactions{job=\"$job\",instance=\"$node:$port\"}[1m]) / 60",
+          "expr": "sum_over_time(Node_Get_LastBlockNumberTransactions{job=\"$job\",instance=\"$node:$port\"}[1m]) / 60",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -1493,6 +1494,178 @@
     },
     {
       "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 19,
+        "x": 0,
+        "y": 26
+      },
+      "id": 68,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "Node_Get_BlockQuotaLimit{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Block Limit",
+          "refId": "A"
+        },
+        {
+          "expr": "Node_Get_LastBlockNumberQuotaUsed{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Quota Used",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Quota Info",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "Prometheus",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 19,
+        "y": 26
+      },
+      "id": 70,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "Node_Get_QuotaPrice{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "title": "Quota Price",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "aliasColors": {},
       "breakPoint": "50%",
       "cacheTimeout": null,
       "combine": {
@@ -1506,7 +1679,7 @@
         "h": 10,
         "w": 4,
         "x": 0,
-        "y": 26
+        "y": 35
       },
       "id": 66,
       "interval": null,
@@ -1554,7 +1727,7 @@
         "h": 10,
         "w": 6,
         "x": 4,
-        "y": 26
+        "y": 35
       },
       "id": 58,
       "legend": {
@@ -1655,7 +1828,7 @@
         "h": 3,
         "w": 3,
         "x": 10,
-        "y": 26
+        "y": 35
       },
       "id": 45,
       "interval": null,
@@ -1729,7 +1902,7 @@
         "h": 3,
         "w": 11,
         "x": 13,
-        "y": 26
+        "y": 35
       },
       "id": 57,
       "links": [],
@@ -1759,7 +1932,7 @@
         "h": 3,
         "w": 3,
         "x": 10,
-        "y": 29
+        "y": 38
       },
       "id": 36,
       "interval": null,
@@ -1823,7 +1996,7 @@
         "h": 3,
         "w": 4,
         "x": 13,
-        "y": 29
+        "y": 38
       },
       "id": 52,
       "links": [],
@@ -1837,7 +2010,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 29
+        "y": 38
       },
       "id": 54,
       "links": [],
@@ -1851,7 +2024,7 @@
         "h": 4,
         "w": 14,
         "x": 10,
-        "y": 32
+        "y": 41
       },
       "id": 53,
       "links": [],
@@ -1872,6 +2045,7 @@
       {
         "allValue": null,
         "current": {
+          "tags": [],
           "text": "cita_exporter",
           "value": "cita_exporter"
         },
@@ -1897,8 +2071,9 @@
       {
         "allValue": null,
         "current": {
-          "text": "121.196.200.225",
-          "value": "121.196.200.225"
+          "tags": [],
+          "text": "192.168.10.179",
+          "value": "192.168.10.179"
         },
         "datasource": "Prometheus",
         "definition": "label_values(Node_Get_ServiceStatus{job=~'$job'},instance)",
@@ -1922,6 +2097,7 @@
       {
         "allValue": null,
         "current": {
+          "tags": [],
           "text": "1923",
           "value": "1923"
         },
@@ -2072,18 +2248,19 @@
       {
         "allValue": null,
         "current": {
-          "text": "0x577da8e94c9f256adef23ce144bec5aa95d34375ab5c36610b6975cbb54d4196",
-          "value": "0x577da8e94c9f256adef23ce144bec5aa95d34375ab5c36610b6975cbb54d4196"
+          "isNone": true,
+          "text": "None",
+          "value": ""
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_FirstBlocknumberDetails{instance=~'$node:$port'},FirstBlocknumberHash)",
+        "definition": "label_values(Node_Get_FirstBlockNumberDetails{instance=~'$node:$port'},FirstBlockNumberHash)",
         "hide": 2,
         "includeAll": false,
-        "label": "FirstBlocknumberHash",
+        "label": "FirstBlockNumberHash",
         "multi": false,
-        "name": "FirstBlocknumberHash",
+        "name": "FirstBlockNumberHash",
         "options": [],
-        "query": "label_values(Node_Get_FirstBlocknumberDetails{instance=~'$node:$port'},FirstBlocknumberHash)",
+        "query": "label_values(Node_Get_FirstBlockNumberDetails{instance=~'$node:$port'},FirstBlockNumberHash)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2102,14 +2279,14 @@
           "value": ""
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumberDetails,LastBlocknumberHash) ",
+        "definition": "label_values(Node_Get_LastBlockNumberDetails,LastBlockNumberHash) ",
         "hide": 2,
         "includeAll": false,
-        "label": "LastBlocknumberHash",
+        "label": "LastBlockNumberHash",
         "multi": false,
-        "name": "LastBlocknumberHash",
+        "name": "LastBlockNumberHash",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumberDetails,LastBlocknumberHash) ",
+        "query": "label_values(Node_Get_LastBlockNumberDetails,LastBlockNumberHash) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2127,14 +2304,14 @@
           "value": "0"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumber{instance=~\"$node:$port\"},NodeID) ",
+        "definition": "label_values(Node_Get_LastBlockNumber{instance=~\"$node:$port\"},NodeID) ",
         "hide": 2,
         "includeAll": false,
         "label": "NodeID",
         "multi": false,
         "name": "node_id",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumber{instance=~\"$node:$port\"},NodeID) ",
+        "query": "label_values(Node_Get_LastBlockNumber{instance=~\"$node:$port\"},NodeID) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2177,14 +2354,14 @@
           "value": "1"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumberDetails{instance=~'$node:$port'},ConsensusStatus) ",
+        "definition": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},ConsensusStatus) ",
         "hide": 2,
         "includeAll": false,
         "label": "ConsensusStatus",
         "multi": false,
         "name": "ConsensusStatus",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumberDetails{instance=~'$node:$port'},ConsensusStatus) ",
+        "query": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},ConsensusStatus) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2202,14 +2379,14 @@
           "value": "v0.22.0"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumberDetails{instance=~'$node:$port'},SoftVersion) ",
+        "definition": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},SoftVersion) ",
         "hide": 2,
         "includeAll": false,
         "label": "SoftVersion",
         "multi": false,
         "name": "SoftVersion",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumberDetails{instance=~'$node:$port'},SoftVersion) ",
+        "query": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},SoftVersion) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2223,18 +2400,18 @@
       {
         "allValue": null,
         "current": {
-          "text": "Linux-4.4.0-105-generic-x86_64-with-debian-9.8",
-          "value": "Linux-4.4.0-105-generic-x86_64-with-debian-9.8"
+          "text": "Linux-4.15.0-47-generic-x86_64-with-debian-9.8",
+          "value": "Linux-4.15.0-47-generic-x86_64-with-debian-9.8"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumberDetails{instance=~'$node:$port'},HostPlatform) ",
+        "definition": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},HostPlatform) ",
         "hide": 2,
         "includeAll": false,
         "label": "HostPlatform",
         "multi": false,
         "name": "HostPlatform",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumberDetails{instance=~'$node:$port'},HostPlatform) ",
+        "query": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},HostPlatform) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2248,18 +2425,18 @@
       {
         "allValue": null,
         "current": {
-          "text": "cita-external-0_citaMonitorAgent_1337",
-          "value": "cita-external-0_citaMonitorAgent_1337"
+          "text": "nodehostname_citaMonitorAgent_1337",
+          "value": "nodehostname_citaMonitorAgent_1337"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumberDetails{instance=~'$node:$port'},HostName) ",
+        "definition": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},HostName) ",
         "hide": 2,
         "includeAll": false,
         "label": "HostName",
         "multi": false,
         "name": "HostName",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumberDetails{instance=~'$node:$port'},HostName) ",
+        "query": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},HostName) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2273,18 +2450,18 @@
       {
         "allValue": null,
         "current": {
-          "text": "0x497c68f02bbe335cc879356af120371ebf6cbc29",
-          "value": "0x497c68f02bbe335cc879356af120371ebf6cbc29"
+          "text": "0x1dac5c4021ff29033d191edfcb94c67be6e9ae7e",
+          "value": "0x1dac5c4021ff29033d191edfcb94c67be6e9ae7e"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumber{instance=~'$node:$port'},NodeAddress) ",
+        "definition": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodeAddress) ",
         "hide": 2,
         "includeAll": false,
         "label": "NodeAddress",
         "multi": false,
         "name": "NodeAddress",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumber{instance=~'$node:$port'},NodeAddress) ",
+        "query": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodeAddress) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2298,18 +2475,18 @@
       {
         "allValue": null,
         "current": {
-          "text": "172.16.55.7",
-          "value": "172.16.55.7"
+          "text": "192.168.10.179",
+          "value": "192.168.10.179"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumber{instance=~'$node:$port'},NodeIP) ",
+        "definition": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodeIP) ",
         "hide": 2,
         "includeAll": false,
         "label": "NodeIP",
         "multi": false,
         "name": "NodeIP",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumber{instance=~'$node:$port'},NodeIP) ",
+        "query": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodeIP) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2327,14 +2504,14 @@
           "value": "1337"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_LastBlocknumber{instance=~'$node:$port'},NodePort) ",
+        "definition": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodePort) ",
         "hide": 2,
         "includeAll": false,
         "label": "NodePort",
         "multi": false,
         "name": "NodePort",
         "options": [],
-        "query": "label_values(Node_Get_LastBlocknumber{instance=~'$node:$port'},NodePort) ",
+        "query": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodePort) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2348,8 +2525,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "105553100800",
-          "value": "105553100800"
+          "text": "31570432000",
+          "value": "31570432000"
         },
         "datasource": "Prometheus",
         "definition": "label_values(Node_Get_DirInfo_TotalFileSize{instance=~'$node:$port'},NodeDisk) ",
