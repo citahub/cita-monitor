@@ -247,7 +247,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "Node_Get_LastBlockNumber",
+          "expr": "Node_Get_LastBlocknumber",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{NodeIP}}:{{NodePort}}",
@@ -312,7 +312,7 @@
       "scroll": true,
       "showHeader": true,
       "sort": {
-        "col": 6,
+        "col": null,
         "desc": false
       },
       "styles": [
@@ -343,7 +343,7 @@
           "unit": "short"
         },
         {
-          "alias": "Node IP",
+          "alias": "Node ip",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -355,11 +355,11 @@
           "mappingType": 1,
           "pattern": "NodeIP",
           "thresholds": [],
-          "type": "string",
+          "type": "number",
           "unit": "short"
         },
         {
-          "alias": "Node Port",
+          "alias": "Node port",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -367,15 +367,15 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
+          "decimals": 2,
           "mappingType": 1,
           "pattern": "NodePort",
           "thresholds": [],
           "type": "number",
-          "unit": "none"
+          "unit": "short"
         },
         {
-          "alias": "Node ID",
+          "alias": "ID",
           "colorMode": "value",
           "colors": [
             "#890f02",
@@ -383,7 +383,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
+          "decimals": 2,
           "link": false,
           "linkTooltip": "",
           "linkUrl": "",
@@ -393,7 +393,7 @@
             ""
           ],
           "type": "number",
-          "unit": "none"
+          "unit": "short"
         },
         {
           "alias": "",
@@ -444,7 +444,7 @@
           "unit": "short"
         },
         {
-          "alias": "",
+          "alias": "Block number",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -454,47 +454,13 @@
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 2,
           "mappingType": 1,
-          "pattern": "",
+          "pattern": "LastBlocknumber",
           "thresholds": [],
           "type": "number",
           "unit": "short"
         },
         {
-          "alias": "Consensus",
-          "colorMode": "cell",
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "ConsensusStatus",
-          "thresholds": [
-            "1"
-          ],
-          "type": "number",
-          "unit": "none"
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "HostName",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "alias": "",
+          "alias": "Proposer",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -506,13 +472,61 @@
           "mappingType": 1,
           "pattern": "LastBlockProposer",
           "thresholds": [],
-          "type": "hidden",
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Platform",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "HostPlatform",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Host name",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "HostName",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Consensus",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "ConsensusStatus",
+          "thresholds": [],
+          "type": "number",
           "unit": "short"
         }
       ],
       "targets": [
         {
-          "expr": "Node_Get_LastBlockNumberDetails",
+          "expr": "Node_Get_LastBlocknumberDetails",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
