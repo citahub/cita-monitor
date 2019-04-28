@@ -29,6 +29,7 @@ services:
       - '${alertmanager_HostPort}:${alertmanager_ContainerPort}'
 
   grafana:
+    user: root
     image: grafana/grafana:5.4.2
     container_name: cita_monitor_server_grafana
     hostname: grafana_server
@@ -38,7 +39,7 @@ services:
       - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
     volumes:
       - ./config/grafana:/etc/grafana
-      - ./config/dashboards:/var/lib/grafana/dashboards
+      - ./grafana:/var/lib/grafana
     depends_on:
       - prometheus
     ports:
