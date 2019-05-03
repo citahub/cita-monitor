@@ -15,9 +15,8 @@ import psutil
 # 接收变量传递
 node = sys.argv[1]
 node_file_path = sys.argv[3]
-node_id = sys.argv[4]
-soft_file_path = sys.argv[5]
-disk_file_path = sys.argv[6]
+node_id = sys.argv[3].split('/')[-1]
+soft_file_path = sys.argv[3].rsplit('/',2)[0]
 # 创建 flask 进程
 node_flask = Flask(__name__)
 # 获取主机操作系统平台
@@ -108,7 +107,7 @@ class MonitorFunction(object):
         address_exec = os.popen(address_txt)
         address_result = json.loads(address_exec.read())
         address = str(address_result['address'].split('0x')[1].split('\n')[0])
-        disk_total = psutil.disk_usage(disk_file_path).total
+        disk_total = psutil.disk_usage(soft_file_path).total
         file_size_total_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (
             path)
         try:

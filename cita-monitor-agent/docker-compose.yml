@@ -40,16 +40,15 @@ services:
     build: ./cita_exporter
     image: blankwu/cita-exporter:latest
     hostname: ${hostname}_citaMonitorAgent_${node_Port}
-    container_name: prometheus_cita_exporter__${node_ip}_${node_Port}
+    container_name: prometheus_cita_exporter_${node_ip}_${node_Port}
     pid: "host"
     ports:
       - "${agent_HostPort}:${agent_ContainerPort}"
     volumes:
-      - "${node_dir}:/tmp/node:ro"
-      - "${soft_path}:/tmp/softpath:ro"
-      - "${disk_path}:/tmp/diskpath:ro"
+      - "${node_dir}:${node_dir}:ro"
+      - "${soft_path}:${soft_path}:ro"
       - "./cita_monitor_agent.py:/config/cita_monitor_agent.py:ro"
     environment:
       - "Node=${node_ip}:${node_Port}"
-      - "OpenPort=${agent_ContainerPort}"
-      - "NodeID=${node_id}"
+      - "Port=${agent_ContainerPort}"
+      - "Node_Dir=${node_dir}"
