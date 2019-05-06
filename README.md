@@ -70,6 +70,12 @@ git clone git@github.com:cryptape/cita-monitor.git
 * formatter: https://www.fromlatest.io/
 * best-practices: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 
+#### Coding style for Makefile
+
+* coding style guide: https://style-guides.readthedocs.io/en/latest/makefile.html
+* tutorial: https://makefiletutorial.com/
+* conventions: https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
+* best-practices: https://suva.sh/posts/well-documented-makefiles/
 
 ### Running the tests
 
