@@ -55,6 +55,7 @@ http://*.*.*.*:1918
 Alertmanager
 http://*.*.*.*:1917
 ```
+
 ### 错误信息
 1、容器启动失败
 * 使用 `docker logs container-name` 查看容器错误信息，一般原因是参数传入有误
@@ -69,3 +70,38 @@ http://*.*.*.*:1917
 4、`Grafana` 面板报错
 * 默认提供了 `dashboard` 文件，请在 `config/dashboards` 下查看文件是否存在
 * 查看 `Prometheus` 数据采集是否正常
+
+### alert rules
+示例：
+```
+  - alert: Exporter_Status_Error
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: high
+    annotations:
+      summary: "Exporter process is down"
+      description: "exporter process has been down for more than 1 minutes | [exporter info http://{{ $labels.instance }}/metrics]"
+      value: "{{ $value }}"
+```
+`alert` : 告警名称（必要参数）
+
+`expr` : prometheus 查询语句（必要参数）
+
+`for` : 状态持续时间
+
+`labels` : 告警标签
+
+`severity` : 自定义告警等级
+
+`annotations` : 通告（必要参数）
+
+`summary` : 通告标签和内容
+
+`description` : 通告标签和内容
+
+`value` : 通告标签和内容
+
+`{{ $labels.instance }}` : 获取数据标签 `instance` 的内容，获取其他内容填入标签即可`{{ $labels.* }}`
+
+`{{ $value }}` : `expr` 的查询结果
