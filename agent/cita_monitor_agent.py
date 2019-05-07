@@ -44,8 +44,8 @@ class MonitorFunction(object):
 
     #
     def cli_request(self, payload):
-        r = "timeout 3 cita-cli %s --url http://%s:%s" % (
-            payload, self.node_ip, self.node_port)
+        r = "timeout 3 cita-cli %s --url http://%s:%s" % (payload, self.node_ip,
+                                                          self.node_port)
         print(r)
         try:
             req_result = os.popen(r).read()
@@ -153,10 +153,8 @@ def GetLabels():
     #
     Node_Get_LastBlockNumber = Gauge(
         "Node_Get_LastBlockNumber",
-        "Get the latest block height, value is block number;", [
-            "NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID",
-            "NodeAddress"
-        ],
+        "Get the latest block height, value is block number;",
+        ["NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID", "NodeAddress"],
         registry=registry)
     #
     Node_CheckProposer = Gauge("Node_CheckProposer",
@@ -220,14 +218,12 @@ def GetLabels():
     # 检查本地是否存在 CITA 服务进程
     check_process = os.popen("ps alx |grep 'cita-chain' |grep -c -v grep")
     if check_process.read() == '0\n':
-        Node_Get_ServiceStatus.labels(NodeIP=node_ip,
-                                      NodePort=node_port).set(0)
+        Node_Get_ServiceStatus.labels(NodeIP=node_ip, NodePort=node_port).set(0)
         return Response(prometheus_client.generate_latest(registry),
                         mimetype="text/plain")
     # 执行 prometheus 标签功能请求
     else:
-        Node_Get_ServiceStatus.labels(NodeIP=node_ip,
-                                      NodePort=node_port).set(1)
+        Node_Get_ServiceStatus.labels(NodeIP=node_ip, NodePort=node_port).set(1)
         class_result = MonitorFunction(node_ip, node_port)
         # 获取目录容量
         if ',' in node_file_path:
@@ -251,8 +247,7 @@ def GetLabels():
         first_block_info = class_result.block_number_detail('0x0')
         if first_block_info != -99:
             first_block_hash = first_block_info['result']['hash']
-            first_block_time = first_block_info['result']['header'][
-                'timestamp']
+            first_block_time = first_block_info['result']['header']['timestamp']
             Node_Get_FirstBlockNumberDetails.labels(
                 NodeIP=node_ip,
                 NodePort=node_port,
