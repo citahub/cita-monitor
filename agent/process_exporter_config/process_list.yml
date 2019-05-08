@@ -1,0 +1,33 @@
+process_names:
+
+  - name: "{{.Matches}}"
+    cmdline:
+    - 'rabbitmq-server'
+
+  - name: "{{.Matches}}"
+    cmdline:
+    - 'cita-forever'
+
+  - name: "{{.Matches}}"
+    cmdline:
+    - 'cita-network'
+
+  - name: "{{.Matches}}"
+    cmdline:
+    - 'cita-jsonrpc'
+
+  - name: "{{.Matches}}"
+    cmdline:
+    - 'cita-bft'
+
+  - name: "{{.Matches}}"
+    cmdline:
+    - 'cita-chain'
+
+  - name: "{{.Matches}}"
+    cmdline:
+    - 'cita-auth'
+
+  - name: "{{.Matches}}"
+    cmdline:
+    - 'cita-executor'

@@ -15,9 +15,8 @@ import psutil
 # 接收变量传递
 node = sys.argv[1]
 node_file_path = sys.argv[3]
-node_id = sys.argv[4]
-soft_file_path = sys.argv[5]
-disk_file_path = sys.argv[6]
+node_id = sys.argv[3].split('/')[-1]
+soft_file_path = sys.argv[3].rsplit('/', 2)[0]
 # 创建 flask 进程
 node_flask = Flask(__name__)
 # 获取主机操作系统平台
@@ -45,8 +44,8 @@ class MonitorFunction(object):
 
     #
     def cli_request(self, payload):
-        r = "timeout 3 cita-cli %s --url http://%s:%s" % (
-            payload, self.node_ip, self.node_port)
+        r = "timeout 3 cita-cli %s --url http://%s:%s" % (payload, self.node_ip,
+                                                          self.node_port)
         print(r)
         try:
             req_result = os.popen(r).read()
@@ -90,11 +89,6 @@ class MonitorFunction(object):
         return self.cli_request(payload)
 
     #
-    def node_list(self):
-        payload = "scm NodeManager listNode"
-        return self.cli_request(payload)
-
-    #
     def dir_analysis(self, path):
         # 返回全局变量
         global disk_total
@@ -107,8 +101,8 @@ class MonitorFunction(object):
         address_txt = "cita-cli key from-private --private-key %s" % privkey
         address_exec = os.popen(address_txt)
         address_result = json.loads(address_exec.read())
-        address = str(address_result['address'].split('0x')[1].split('\n')[0])
-        disk_total = psutil.disk_usage(disk_file_path).total
+        address = str(address_result['address'])
+        disk_total = psutil.disk_usage(soft_file_path).total
         file_size_total_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (
             path)
         try:
@@ -159,10 +153,8 @@ def GetLabels():
     #
     Node_Get_LastBlockNumber = Gauge(
         "Node_Get_LastBlockNumber",
-        "Get the latest block height, value is block number;", [
-            "NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID",
-            "NodeAddress"
-        ],
+        "Get the latest block height, value is block number;",
+        ["NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID", "NodeAddress"],
         registry=registry)
     #
     Node_CheckProposer = Gauge("Node_CheckProposer",
@@ -226,14 +218,12 @@ def GetLabels():
     # 检查本地是否存在 CITA 服务进程
     check_process = os.popen("ps alx |grep 'cita-chain' |grep -c -v grep")
     if check_process.read() == '0\n':
-        Node_Get_ServiceStatus.labels(NodeIP=node_ip,
-                                      NodePort=node_port).set(0)
+        Node_Get_ServiceStatus.labels(NodeIP=node_ip, NodePort=node_port).set(0)
         return Response(prometheus_client.generate_latest(registry),
                         mimetype="text/plain")
     # 执行 prometheus 标签功能请求
     else:
-        Node_Get_ServiceStatus.labels(NodeIP=node_ip,
-                                      NodePort=node_port).set(1)
+        Node_Get_ServiceStatus.labels(NodeIP=node_ip, NodePort=node_port).set(1)
         class_result = MonitorFunction(node_ip, node_port)
         # 获取目录容量
         if ',' in node_file_path:
@@ -257,8 +247,7 @@ def GetLabels():
         first_block_info = class_result.block_number_detail('0x0')
         if first_block_info != -99:
             first_block_hash = first_block_info['result']['hash']
-            first_block_time = first_block_info['result']['header'][
-                'timestamp']
+            first_block_time = first_block_info['result']['header']['timestamp']
             Node_Get_FirstBlockNumberDetails.labels(
                 NodeIP=node_ip,
                 NodePort=node_port,
@@ -280,13 +269,10 @@ def GetLabels():
                 TokenName=token_name,
                 TokenSymbol=token_symbol,
                 Version=chain_version).set(economical_model)
-        # 获取链上节点列表
-        node_list_info = class_result.node_list()
-        if node_list_info != -99:
-            node_list = str(node_list_info['result'].split('0x')[1])
-            node_count = (len(node_list) / 64 - 2)
-            Node_Get_ChainNodes.labels(NodeIP=node_ip,
-                                       NodePort=node_port).set(node_count)
+            consensus_node_list = metadata_info['result']['validators']
+            consensus_node_count = len(consensus_node_list)
+            Node_Get_ChainNodes.labels(
+                NodeIP=node_ip, NodePort=node_port).set(consensus_node_count)
         # 获取最新区块高度
         block_number_info = class_result.block_number()
         if block_number_info != -99:
@@ -298,7 +284,7 @@ def GetLabels():
                 NodePort=node_port,
                 FirstBlockNumberHash=first_block_hash,
                 NodeID=node_id,
-                NodeAddress=str('0x' + address)).set(int(hex_number, 16))
+                NodeAddress=address).set(int(hex_number, 16))
         # 获取最新区块详细信息
         block_info = class_result.block_number_detail(hex_number)
         previous_block_info = class_result.block_number_detail(
@@ -315,8 +301,7 @@ def GetLabels():
                 previous_block_info['result']['header']['timestamp'])
             interval = abs(block_time - previous_block_time)
             #
-            match = re.search(address, node_list)
-            if match:
+            if address in consensus_node_list:
                 consensus = 1
             else:
                 consensus = 0
@@ -349,8 +334,7 @@ def GetLabels():
             Node_Get_LastBlockNumberQuotaUsed.labels(
                 NodeIP=node_ip, NodePort=node_port).set(block_quota_used)
             #
-            match = re.search(address, block_proposer)
-            if match:
+            if address == block_proposer:
                 proposer = 1
             else:
                 proposer = 0

@@ -1,0 +1,81 @@
+groups:
+- name: Alerts
+  rules:
+
+  # exporter 采集进程存活告警
+  - alert: Exporter_Status_Error
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: high
+    annotations:
+      summary: "Exporter process is down"
+      description: "Exporter process has been down for more than 1 minutes | [exporter info http://{{ $labels.instance }}/metrics]"
+
+  # CITA 服务运行状态存活告警
+  - alert: Service_Status_Error
+    expr: Node_Get_ServiceStatus == 0
+    labels:
+      severity: high
+    annotations:
+      summary: "CITA services not running"
+      description: "CITA services not running of [node info {{ $labels.NodeIP }}:{{ $labels.NodePort }}] and [exporter info http://{{ $labels.instance }}/metrics];"
+
+  # CITA 服务运行的相关进程存活告警
+  - alert: Service_Process_Error
+    expr: namedprocess_namegroup_num_procs == 0
+    labels:
+      severity: high
+    annotations:
+      summary: "[{{ $labels.groupname }}] process not running"
+      description: "[{{ $labels.groupname }}] process status is down | [exporter info http://{{ $labels.instance }}/metrics]"
+
+  # node 区块高度一致性告警
+  - alert: Block_Height_Error
+    expr: avg_over_time(Node_Get_LastBlockNumber[1m]) == Node_Get_LastBlockNumber
+    labels:
+      severity: high
+    annotations:
+      summary: "Block height no growth"
+      description: "Block height not sync for 1 minute | [node info {{ $labels.NodeIP }}:{{ $labels.NodePort }}]"
+      height: "last block height : {{ $value }}"
+
+  # 区块产出间隔告警
+  - alert: Interval_Error
+    expr: Node_Get_BlockTimeDifference > 6000
+    labels:
+      severity: high
+    annotations:
+      summary: "Block interval is too large"
+      description: "Block interval is more than 6 seconds | [exporter info http://{{ $labels.instance }}/metrics]"
+
+  # 区块内的 quota 利用率告警
+  - alert: Block_Quota_Warning
+    expr: ( Node_Get_LastBlockNumberQuotaUsed / Node_Get_BlockQuotaLimit ) * 100 > 70
+    for: 1m
+    labels:
+      severity: low
+    annotations:
+      summary: "Quota useage overflow"
+      description: "Quota usaage exceeds 70% | [exporter info http://{{ $labels.instance }}/metrics]"
+      useage: "{{ $value }}%"
+
+  # CPU 利用率告警
+  - alert: CPU_Warning
+    expr: 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 70
+    labels:
+      severity: high
+    annotations:
+      summary: "CPU useage overflow"
+      description: "CPU for 1 minutes avg usaage exceeds 70% | [exporter info http://{{ $labels.instance }}/metrics]"
+      useage: "{{ $value }}%"
+
+  # Node 目录文件增量告警
+  - alert: Dir_Warning
+    expr: irate(Node_Get_DirInfo_TotalFileSize[1m]) > 5
+    labels:
+      severity: low
+    annotations:
+      summary: "Directory growth per second overflow"
+      description: "Directory for 1 minutes avg growth of per second exceeds 5 bytes | [exporter info http://{{ $labels.instance }}/metrics]"
+      rate: "{{ $value }} bytes/s"
