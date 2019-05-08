@@ -16,8 +16,7 @@ Monitor Agent 是使用 `Python` 作为脚本语言，使用 `cita-cli` 工具�
 1、自定义采集信息
 ```
 cp .env.example .env
-vim .env
-
+修改 .env 配置文件中 hostname、node_ip、node_Port、node_dir、soft_path 为实际部署的信息
 ---
 
 #采集端显示的主机名
@@ -32,12 +31,6 @@ node_dir=/data/cita_secp256k1_sha3/test-chain/0
 
 #本地运行的 CITA 目录
 soft_path=/data/cita_secp256k1_sha3/
-
-#CITA 目录所在的磁盘挂载目录
-disk_path=/data
-
-#本地运行的 CITA 节点在链上的 node ID
-node_id=0
 ```
 2、启动进程
 ```

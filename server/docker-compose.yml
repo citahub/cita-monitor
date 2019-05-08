@@ -30,16 +30,17 @@ services:
 
   grafana:
     user: root
-    image: grafana/grafana:5.4.2
+    build: ./grafana
+    image: cryptape/grafana:5.4.2
     container_name: cita_monitor_server_grafana
     hostname: grafana_server
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
-      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
     volumes:
       - ./config/grafana:/etc/grafana
-      - ./grafana:/var/lib/grafana
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/grafanadb:/var/lib/grafana/grafanadb
     depends_on:
       - prometheus
     ports:
