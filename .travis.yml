@@ -1,0 +1,62 @@
+################
+# CI Workflow:
+# feature development, trigger by `git push`:
+#   build -> test -> code_audit
+#
+# release deploy, trigger by `git push --tags`
+#   build -> test -> deploy
+#
+# Stages:
+# - test: run `make test`
+# - code_audit: run `make code-quality`
+# - deploy: auto build and publish docker image to Docker Hub after `git push --tags`
+#
+# Principle:
+# - Fail fast.
+# - Done is better than perfect.
+################
+
+stages:
+  - test
+  - code_audit
+  - deploy
+
+# os config
+sudo: false
+
+# language config
+language: python
+python:
+  - "3.6"
+
+# install dependencies
+before_script: make deps
+
+jobs:
+  include:
+    - stage: test
+      script: make test
+    - stage: code_audit
+      if: branch != master # run code_audit for feature branches only
+      # install: make deps
+      script: make code-quality
+
+# deploy:
+#   - provider: releases # doc: https://docs.travis-ci.com/user/deployment/releases/
+#     api_key: $GITHUB_TOKEN
+#     file: "releases/${TRAVIS_TAG}"
+#     skip_cleanup: true
+#     prerelease: true
+#     on:
+#       tags: true
+#       condition: '"$GITHUB_TOKEN" != ""'
+
+#   # Travis CI can deploy static files to GitHub Pages after a successful build.
+#   - provider: pages # doc: https://docs.travis-ci.com/user/deployment/pages/
+#     skip_cleanup: true
+#     github_token: $GITHUB_TOKEN
+#     keep_history: false
+#     on:
+#       branch: master
+#       tags: true
+#       condition: $TRAVIS_PULL_REQUEST = "false"
