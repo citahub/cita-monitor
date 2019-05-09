@@ -2,7 +2,7 @@ version: "3"
 services:
 
   prometheus_host_exporter:
-    image: prom/node-exporter
+    image: prom/node-exporter:v0.17.0
     hostname: ${hostname}
     container_name: prometheus_host_exporter
     ports:
@@ -14,7 +14,7 @@ services:
     command: "--path.procfs='/host/proc' --path.sysfs='/host/sys' --path.rootfs='/host/rootfs'"
 
   prometheus_process_exporter:
-    image: ncabatoff/process-exporter
+    image: ncabatoff/process-exporter:0.4.0
     hostname: ${hostname}
     container_name: prometheus_process_exporter
     ports:
@@ -25,7 +25,7 @@ services:
     command: "--procfs /host/proc --config.path /config/process_list.yml"
 
   prometheus_rabbitmq_exporter:
-    image: kbudde/rabbitmq-exporter
+    image: kbudde/rabbitmq-exporter:1.0.0-RC
     hostname: ${hostname}
     container_name: prometheus_rabbitmq_exporter
     network_mode: "host"
@@ -36,9 +36,8 @@ services:
       - "PUBLISH_PORT=${rabbitmq_ContainerPort}"
 
   prometheus_cita_exporter:
-    #image: blankwu/cita_agent_by:cita-cli3
     build: ./cita_exporter
-    image: blankwu/cita-exporter:latest
+    image: cita-exporter
     hostname: ${hostname}_citaMonitorAgent_${node_Port}
     container_name: prometheus_cita_exporter_${node_ip}_${node_Port}
     pid: "host"
