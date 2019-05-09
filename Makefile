@@ -72,6 +72,11 @@ format-shell-code: ## Run formatter for shell codes.
 	$(info Run formatter for shell codes)
 	shfmt -i 2 -ci -l .
 
+##@ Continuous Integration
+
+ci: ## Run recipes for CI.
+ci: build test code-quality
+
 ##@ Helpers
 
 help:  ## Display help message.

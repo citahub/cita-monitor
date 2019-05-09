@@ -23,6 +23,7 @@ services:
     hostname: prometheus_alertmanager_server
     volumes:
       - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./config/alert.tmpl:/etc/alertmanager/template/alert.tmpl
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     ports:
