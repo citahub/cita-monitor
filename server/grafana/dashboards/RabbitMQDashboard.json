@@ -314,7 +314,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rabbitmq_exchangesTotal{instance=~'$node.+'}",
+          "expr": "rabbitmq_exchanges{instance=~'$node.+'}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}:exchanges",
@@ -403,7 +403,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rabbitmq_channelsTotal{instance=~'$node.+'}",
+          "expr": "rabbitmq_channels{instance=~'$node.+'}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}:channels",
@@ -492,7 +492,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rabbitmq_consumersTotal{instance=~'$node.+'}",
+          "expr": "rabbitmq_consumers{instance=~'$node.+'}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}:consumers",
@@ -580,7 +580,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rabbitmq_connectionsTotal{instance=~'$node.+'}",
+          "expr": "rabbitmq_connections{instance=~'$node.+'}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}:connections",
@@ -668,7 +668,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rabbitmq_queuesTotal{instance=~'$node.+'}",
+          "expr": "rabbitmq_queues{instance=~'$node.+'}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}:queues",
