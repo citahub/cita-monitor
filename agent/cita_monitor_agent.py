@@ -290,13 +290,18 @@ def GetLabels():
         previous_block_info = class_result.block_number_detail(
             previous_hex_number)
         if block_info != -99 and previous_block_info != -99:
-            block_quota_used = int(block_info['result']['header']['quotaUsed'],
-                                   16)
+            block_head_info = block_info['result']['header']
+            if block_head_info.get('quotaUsed'):
+                block_quota_used = int(block_head_info['quotaUsed'], 16)
+            else:
+                #Get the previous version of CITA v0.19.1 gasUsed
+                block_head_info.get('gasUsed')
+                block_quota_used = int(block_head_info['gasUsed'], 16)
             block_hash = block_info['result']['hash']
-            block_time = int(block_info['result']['header']['timestamp'])
+            block_time = int(block_head_info['timestamp'])
             block_transactions = int(
                 len(block_info['result']['body']['transactions']))
-            block_proposer = block_info['result']['header']['proposer']
+            block_proposer = block_head_info['proposer']
             previous_block_time = int(
                 previous_block_info['result']['header']['timestamp'])
             interval = abs(block_time - previous_block_time)
