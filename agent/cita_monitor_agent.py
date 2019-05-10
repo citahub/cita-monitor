@@ -1,258 +1,250 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-import prometheus_client
-from prometheus_client import Counter, Enum, Gauge
-from prometheus_client.core import CollectorRegistry
-from flask import Response, Flask
 import json
 import os
 import sys
 import platform
-import re
 import psutil
+import prometheus_client
+from prometheus_client.core import CollectorRegistry, Gauge
+from flask import Response, Flask
 
-# 接收变量传递
-node = sys.argv[1]
-node_file_path = sys.argv[3]
-node_id = sys.argv[3].split('/')[-1]
-soft_file_path = sys.argv[3].rsplit('/', 2)[0]
-# 创建 flask 进程
-node_flask = Flask(__name__)
-# 获取主机操作系统平台
-host_os = platform.platform()
-# 获取 agent 主机名
-agent_name = platform.node()
-# 获取 CITA 运行软件版本号
-soft_version_txt = '%s/bin/cita-chain -V' % (soft_file_path)
+# exporter value variable
+NODE = sys.argv[1]
+NODE_FILE_PATH = sys.argv[3]
+NODE_ID = sys.argv[3].split('/')[-1]
+SOFT_FILE_PATH = sys.argv[3].rsplit('/', 2)[0]
+NODE_FLASK = Flask(__name__)
+EXPORTER_PLATFORM = platform.platform()
+AGENT_NAME = platform.node()
+SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % (SOFT_FILE_PATH)
 try:
-    soft_version_exec = os.popen(soft_version_txt)
-    soft_version = str(soft_version_exec.read().split(' ')[1].split('\n')[0])
+    SOFT_VERSION_EXEC = os.popen(SOFT_VERSION_TXT)
+    SOFT_VERSION = str(SOFT_VERSION_EXEC.read().split(' ')[1].split('\n')[0])
 except:
-    soft_version = 'null'
-print("node is : ", node)
-print("node directory is : ", node_file_path)
-print("node id is : ", node_id)
+    SOFT_VERSION = 'null'
+
+# exporter label variable
+SERVICE_STATUS_TITLE = "[ value is 1 or 0 ] \
+Check the running status of the CITA service, service up is 1 or down is 0."
+
+FIRST_BLOCK_DETAILS_TITLE = "[ value is first block timestamp ] \
+Get information about the first block."
+
+CHAIN_INFO_TITLE = "[ value is 1 or 0 ] \
+Get the basic information of the chain, the economic model Quota is 0 or Charge is 1."
+
+NODE_PEERS_TITLE = "[ value is local node peer count ] \
+Get the number of peers connected to the local node."
+
+CHAIN_NODES_TITLE = "[ value is node count of chain ] \
+Get the number of consensus nodes on the chain."
+
+LAST_BLOCK_NUMBER_TITLE = "[ value is last block number ] \
+Get the latest block height."
+
+CHECK_PROPOSER_TITLE = "[ value is 1 or 0 ] \
+Check the local node address is proposal, proposal is 1 or listeners is 0."
+
+LAST_BLOCK_DETAILS_TITLE = "[ value is last block timestamp ] \
+Get the latest block details."
+
+BLOCK_HEIGHT_DIFFERENCE_TITLE = "[ value is interval ] \
+Get current block time and previous block time, label include CurrentHeight, PreviousHeight."
+
+DIR_TOTAL_SIZE_TITLE = "[ value is size ] \
+Get the node directory total size."
+
+BLOCK_INTERVAL_TITLE = "[ value is interval ] \
+Get current block time and previous block time."
+
+LAST_BLOCK_TRANSACTIONS_TITLE = "[ value is tx counts ] \
+Get the number of transactions in the current block."
+
+LAST_BLOCK_QUOTA_USED_TITLE = "[ value is quotaused of block ] \
+Get quotaused in current block."
+
+CHAIN_QUOTA_PRICE_TITLE = "[ value is quota price ] \
+Get Quota price of chain."
+
+BLOCK_QUOTA_LIMIT_TITLE = "[ value is block quota limit ] \
+Get block quota limit of chain."
+
+# print exporter info
+print("\n----------")
+print("monitor node rpc is : ", NODE)
+print("node directory is : ", NODE_FILE_PATH)
+print("node id is : ", NODE_ID)
+print("----------\n")
 
 
-# 定义 cita-cli 请求功能类
-class MonitorFunction(object):
-    # 定义初始化变量
+# class
+class ExporterFunctions():
+
     def __init__(self, node_ip, node_port):
         self.node_ip = node_ip
         self.node_port = node_port
 
-    #
     def cli_request(self, payload):
-        r = "timeout 3 cita-cli %s --url http://%s:%s" % (payload, self.node_ip,
-                                                          self.node_port)
-        print(r)
+        req = "timeout 3 cita-cli %s --url http://%s:%s" \
+            %(payload, self.node_ip, self.node_port)
         try:
-            req_result = os.popen(r).read()
+            req_result = os.popen(req).read()
         except:
             return -99
         else:
             if req_result == '':
+                return -98
                 exit()
             else:
                 result = json.loads(req_result)
                 return result
 
-    #
     def quota_price(self):
         payload = "scm PriceManager getQuotaPrice"
         return self.cli_request(payload)
 
-    #
     def block_limit(self):
         payload = "scm QuotaManager getBQL"
         return self.cli_request(payload)
 
-    #
     def block_number(self):
         payload = "rpc blockNumber"
         return self.cli_request(payload)
 
-    #
     def peer_count(self):
         payload = "rpc peerCount"
         return self.cli_request(payload)
 
-    #
-    def block_number_detail(self, Height):
-        payload = "rpc getBlockByNumber --height %s" % (Height)
+    def block_number_detail(self, block_height):
+        payload = "rpc getBlockByNumber --height %s" % (block_height)
         return self.cli_request(payload)
 
-    #
     def metadata(self):
         payload = "rpc getMetaData"
         return self.cli_request(payload)
 
-    #
     def dir_analysis(self, path):
-        # 返回全局变量
-        global disk_total
-        global address
-        global file_size_total
-
-        privkey_txt = "cat %s/privkey" % (path)
-        privkey_exec = os.popen(privkey_txt)
-        privkey = str(privkey_exec.read())
-        address_txt = "cita-cli key from-private --private-key %s" % privkey
-        address_exec = os.popen(address_txt)
-        address_result = json.loads(address_exec.read())
-        address = str(address_result['address'])
-        disk_total = psutil.disk_usage(soft_file_path).total
-        file_size_total_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (
+        global DISK_TOTAL, ADDRESS, FILE_TOTAL_SIZE
+        get_privkey_txt = "cat %s/privkey" % (path)
+        get_privkey_exec = os.popen(get_privkey_txt)
+        privkey = str(get_privkey_exec.read())
+        get_address_txt = "cita-cli key from-private --private-key %s" % privkey
+        get_address_exec = os.popen(get_address_txt)
+        get_address_result = json.loads(get_address_exec.read())
+        ADDRESS = str(get_address_result['address'])
+        DISK_TOTAL = psutil.disk_usage(SOFT_FILE_PATH).total
+        file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (
             path)
         try:
-            file_size_total_exec = os.popen(file_size_total_txt)
-            file_size_total = file_size_total_exec.read().split('\n')[0]
+            file_total_size_exec = os.popen(file_total_size_txt)
+            FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
         except:
-            file_size_total = 0
+            FILE_TOTAL_SIZE = 0
 
 
-# flask 对象
-@node_flask.route("/metrics")
-def GetLabels():
-    # 定义 prometheus 标签
+# flask object
+@NODE_FLASK.route("/metrics")
+def exporter():
+    # definition tag
     registry = CollectorRegistry(auto_describe=False)
-    #
-    Node_Get_ServiceStatus = Gauge(
-        "Node_Get_ServiceStatus",
-        "Check local running cita services, value return 1 when running; return 0 is not running;",
-        ["NodeIP", "NodePort"],
-        registry=registry)
-    #
-    Node_Get_FirstBlockNumberDetails = Gauge(
-        "Node_Get_FirstBlockNumberDetails",
-        "Get the hash and timestamp of the first block, value is timestamp;",
-        ["NodeIP", "NodePort", "FirstBlockNumberHash"],
-        registry=registry)
-    #
-    Node_Get_ChainInfo = Gauge(
-        "Node_Get_ChainInfo",
-        "Get basic information of CITA service running on the node, value is economic model;",
-        [
-            "NodeIP", "NodePort", "ChainName", "Operator", "TokenName",
-            "TokenSymbol", "Version"
-        ],
-        registry=registry)
-    #
-    Node_Get_NodePeers = Gauge(
-        "Node_Get_NodePeers",
-        "Get the number of node connections, value is local connect node conuts;",
-        ["NodeIP", "NodePort"],
-        registry=registry)
-    #
-    Node_Get_ChainNodes = Gauge(
-        "Node_Get_ChainNodes",
-        "Get the number of CITA service Consensus nodes, value is node counts by chain;",
-        ["NodeIP", "NodePort"],
-        registry=registry)
-    #
-    Node_Get_LastBlockNumber = Gauge(
+    service_status = Gauge("Node_Get_ServiceStatus",
+                           SERVICE_STATUS_TITLE, ["NodeIP", "NodePort"],
+                           registry=registry)
+    first_block_details = Gauge("Node_Get_FirstBlockNumberDetails",
+                                FIRST_BLOCK_DETAILS_TITLE,
+                                ["NodeIP", "NodePort", "FirstBlockNumberHash"],
+                                registry=registry)
+    chain_info = Gauge("Node_Get_ChainInfo",
+                       CHAIN_INFO_TITLE, [
+                           "NodeIP", "NodePort", "ChainName", "Operator",
+                           "TokenName", "TokenSymbol", "Version"
+                       ],
+                       registry=registry)
+    node_peers = Gauge("Node_Get_NodePeers",
+                       NODE_PEERS_TITLE, ["NodeIP", "NodePort"],
+                       registry=registry)
+    chain_nodes = Gauge("Node_Get_ChainNodes",
+                        CHAIN_NODES_TITLE, ["NodeIP", "NodePort"],
+                        registry=registry)
+    last_block_number = Gauge(
         "Node_Get_LastBlockNumber",
-        "Get the latest block height, value is block number;",
+        LAST_BLOCK_NUMBER_TITLE,
         ["NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID", "NodeAddress"],
         registry=registry)
-    #
-    Node_CheckProposer = Gauge("Node_CheckProposer",
-                               "check proposer, value is 1 or 0;",
-                               ["NodeIP", "NodePort"],
-                               registry=registry)
-    #
-    Node_Get_LastBlockNumberDetails = Gauge(
+    check_proposer = Gauge("Node_CheckProposer",
+                           CHECK_PROPOSER_TITLE, ["NodeIP", "NodePort"],
+                           registry=registry)
+    last_block_details = Gauge(
         "Node_Get_LastBlockNumberDetails",
-        "Get the hash and timestamp of the last block, value is last block timestamp;",
-        [
+        LAST_BLOCK_DETAILS_TITLE, [
             "NodeIP", "NodePort", "LastBlocknumber", "LastBlockProposer",
             "LastBlockHash", "NodeID", "HostPlatform", "HostName",
             "ConsensusStatus", "SoftVersion"
         ],
         registry=registry)
-    #
-    Node_Get_BlockDifference = Gauge(
+    block_height_difference = Gauge(
         "Node_Get_BlockDifference",
-        "Get current block time and previous block time,label include CurrentHeight, PreviousHeight. value is Calculate the difference into seconds;",
+        BLOCK_HEIGHT_DIFFERENCE_TITLE,
         ["NodeIP", "NodePort", "CurrentHeight", "PreviousHeight"],
         registry=registry)
-    #
-    Node_Get_DirInfo_TotalFileSize = Gauge(
-        "Node_Get_DirInfo_TotalFileSize",
-        "Get TotalFileSize by Node Dir, value is TotalFileSize;",
-        ["NodeIP", "NodePort", "NodeDir", "NodeDisk"],
-        registry=registry)
-    #
-    Node_Get_BlockTimeDifference = Gauge(
-        "Node_Get_BlockTimeDifference",
-        "Get current block time and previous block time,value is Calculate the difference into seconds;",
-        ["NodeIP", "NodePort"],
-        registry=registry)
-    #
-    Node_Get_LastBlockNumberTransactions = Gauge(
-        "Node_Get_LastBlockNumberTransactions",
-        "Get current block transactions,value is transactions len;",
-        ["NodeIP", "NodePort"],
-        registry=registry)
-    #
-    Node_Get_LastBlockNumberQuotaUsed = Gauge(
-        "Node_Get_LastBlockNumberQuotaUsed",
-        "Get current block quotaused,value is quotaused count;",
-        ["NodeIP", "NodePort"],
-        registry=registry)
-    #
-    Node_Get_QuotaPrice = Gauge("Node_Get_QuotaPrice",
-                                "Get Quota price of current chain;",
-                                ["NodeIP", "NodePort"],
-                                registry=registry)
-    #
-    Node_Get_BlockQuotaLimit = Gauge("Node_Get_BlockQuotaLimit",
-                                     "Get block quota limit of current chain;",
-                                     ["NodeIP", "NodePort"],
-                                     registry=registry)
-    #---
-    # 切割 node 信息
-    node_ip = str(node.split(':')[0])
-    node_port = str(node.split(':')[1])
-    # 检查本地是否存在 CITA 服务进程
+    dir_total_size = Gauge("Node_Get_DirInfo_TotalFileSize",
+                           DIR_TOTAL_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir", "NodeDisk"],
+                           registry=registry)
+    block_interval = Gauge("Node_Get_BlockTimeDifference",
+                           BLOCK_INTERVAL_TITLE, ["NodeIP", "NodePort"],
+                           registry=registry)
+    last_block_transactions = Gauge("Node_Get_LastBlockNumberTransactions",
+                                    LAST_BLOCK_TRANSACTIONS_TITLE,
+                                    ["NodeIP", "NodePort"],
+                                    registry=registry)
+    last_block_quota_used = Gauge("Node_Get_LastBlockNumberQuotaUsed",
+                                  LAST_BLOCK_QUOTA_USED_TITLE,
+                                  ["NodeIP", "NodePort"],
+                                  registry=registry)
+    chain_quota_price = Gauge("Node_Get_QuotaPrice",
+                              CHAIN_QUOTA_PRICE_TITLE, ["NodeIP", "NodePort"],
+                              registry=registry)
+    block_quota_limit = Gauge("Node_Get_BlockQuotaLimit",
+                              BLOCK_QUOTA_LIMIT_TITLE, ["NodeIP", "NodePort"],
+                              registry=registry)
+
+    # run exporter
+    node_ip = str(NODE.split(':')[0])
+    node_port = str(NODE.split(':')[1])
     check_process = os.popen("ps alx |grep 'cita-chain' |grep -c -v grep")
     if check_process.read() == '0\n':
-        Node_Get_ServiceStatus.labels(NodeIP=node_ip, NodePort=node_port).set(0)
+        service_status.labels(NodeIP=node_ip, NodePort=node_port).set(0)
         return Response(prometheus_client.generate_latest(registry),
                         mimetype="text/plain")
-    # 执行 prometheus 标签功能请求
     else:
-        Node_Get_ServiceStatus.labels(NodeIP=node_ip, NodePort=node_port).set(1)
-        class_result = MonitorFunction(node_ip, node_port)
-        # 获取目录容量
-        if ',' in node_file_path:
-            path_list = node_file_path.split(',')
+        service_status.labels(NodeIP=node_ip, NodePort=node_port).set(1)
+        class_result = ExporterFunctions(node_ip, node_port)
+        if ',' in NODE_FILE_PATH:
+            path_list = NODE_FILE_PATH.split(',')
             for path in path_list:
                 class_result.dir_analysis(path)
-                Node_Get_DirInfo_TotalFileSize.labels(
-                    NodeIP=node_ip,
-                    NodePort=node_port,
-                    NodeDir=path,
-                    NodeDisk=disk_total).set(file_size_total)
+                dir_total_size.labels(NodeIP=node_ip,
+                                      NodePort=node_port,
+                                      NodeDir=path,
+                                      NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
         else:
-            path = node_file_path
+            path = NODE_FILE_PATH
             class_result.dir_analysis(path)
-            Node_Get_DirInfo_TotalFileSize.labels(
-                NodeIP=node_ip,
-                NodePort=node_port,
-                NodeDir=path,
-                NodeDisk=disk_total).set(file_size_total)
-        # 获取创世块信息
+            dir_total_size.labels(NodeIP=node_ip,
+                                  NodePort=node_port,
+                                  NodeDir=path,
+                                  NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
         first_block_info = class_result.block_number_detail('0x0')
         if first_block_info != -99:
             first_block_hash = first_block_info['result']['hash']
             first_block_time = first_block_info['result']['header']['timestamp']
-            Node_Get_FirstBlockNumberDetails.labels(
+            first_block_details.labels(
                 NodeIP=node_ip,
                 NodePort=node_port,
                 FirstBlockNumberHash=first_block_hash).set(first_block_time)
-        # 获取链信息
         metadata_info = class_result.metadata()
         if metadata_info != -99:
             chain_name = metadata_info['result']['chainName']
@@ -261,31 +253,27 @@ def GetLabels():
             token_symbol = metadata_info['result']['tokenSymbol']
             economical_model = metadata_info['result']['economicalModel']
             chain_version = metadata_info['result']['version']
-            Node_Get_ChainInfo.labels(
-                NodeIP=node_ip,
-                NodePort=node_port,
-                ChainName=chain_name,
-                Operator=operator,
-                TokenName=token_name,
-                TokenSymbol=token_symbol,
-                Version=chain_version).set(economical_model)
+            chain_info.labels(NodeIP=node_ip,
+                              NodePort=node_port,
+                              ChainName=chain_name,
+                              Operator=operator,
+                              TokenName=token_name,
+                              TokenSymbol=token_symbol,
+                              Version=chain_version).set(economical_model)
             consensus_node_list = metadata_info['result']['validators']
             consensus_node_count = len(consensus_node_list)
-            Node_Get_ChainNodes.labels(
-                NodeIP=node_ip, NodePort=node_port).set(consensus_node_count)
-        # 获取最新区块高度
+            chain_nodes.labels(NodeIP=node_ip,
+                               NodePort=node_port).set(consensus_node_count)
         block_number_info = class_result.block_number()
         if block_number_info != -99:
             hex_number = block_number_info['result']
-            # 获取上一个区块高度
             previous_hex_number = hex(int(hex_number, 16) - 1)
-            Node_Get_LastBlockNumber.labels(
-                NodeIP=node_ip,
-                NodePort=node_port,
-                FirstBlockNumberHash=first_block_hash,
-                NodeID=node_id,
-                NodeAddress=address).set(int(hex_number, 16))
-        # 获取最新区块详细信息
+            last_block_number.labels(NodeIP=node_ip,
+                                     NodePort=node_port,
+                                     FirstBlockNumberHash=first_block_hash,
+                                     NodeID=NODE_ID,
+                                     NodeAddress=ADDRESS).set(
+                                         int(hex_number, 16))
         block_info = class_result.block_number_detail(hex_number)
         previous_block_info = class_result.block_number_detail(
             previous_hex_number)
@@ -305,79 +293,65 @@ def GetLabels():
             previous_block_time = int(
                 previous_block_info['result']['header']['timestamp'])
             interval = abs(block_time - previous_block_time)
-            #
-            if address in consensus_node_list:
+            if ADDRESS in consensus_node_list:
                 consensus = 1
             else:
                 consensus = 0
-            #
-            Node_Get_LastBlockNumberDetails.labels(
-                NodeIP=node_ip,
-                NodePort=node_port,
-                LastBlocknumber=int(hex_number, 16),
-                LastBlockProposer=block_proposer,
-                LastBlockHash=block_hash,
-                NodeID=node_id,
-                HostPlatform=host_os,
-                HostName=agent_name,
-                ConsensusStatus=consensus,
-                SoftVersion=soft_version).set(block_time)
-            #
-            Node_Get_BlockDifference.labels(NodeIP=node_ip,
-                                            NodePort=node_port,
-                                            CurrentHeight=int(hex_number, 16),
-                                            PreviousHeight=int(
-                                                previous_hex_number,
-                                                16)).set(interval)
-            #
-            Node_Get_BlockTimeDifference.labels(
-                NodeIP=node_ip, NodePort=node_port).set(interval)
-            #
-            Node_Get_LastBlockNumberTransactions.labels(
+            last_block_details.labels(NodeIP=node_ip,
+                                      NodePort=node_port,
+                                      LastBlocknumber=int(hex_number, 16),
+                                      LastBlockProposer=block_proposer,
+                                      LastBlockHash=block_hash,
+                                      NodeID=NODE_ID,
+                                      HostPlatform=EXPORTER_PLATFORM,
+                                      HostName=AGENT_NAME,
+                                      ConsensusStatus=consensus,
+                                      SoftVersion=SOFT_VERSION).set(block_time)
+            block_height_difference.labels(NodeIP=node_ip,
+                                           NodePort=node_port,
+                                           CurrentHeight=int(hex_number, 16),
+                                           PreviousHeight=int(
+                                               previous_hex_number,
+                                               16)).set(interval)
+            block_interval.labels(NodeIP=node_ip,
+                                  NodePort=node_port).set(interval)
+            last_block_transactions.labels(
                 NodeIP=node_ip, NodePort=node_port).set(block_transactions)
-            #
-            Node_Get_LastBlockNumberQuotaUsed.labels(
+            last_block_quota_used.labels(
                 NodeIP=node_ip, NodePort=node_port).set(block_quota_used)
-            #
-            if address == block_proposer:
+            if ADDRESS == block_proposer:
                 proposer = 1
             else:
                 proposer = 0
-            #
-            Node_CheckProposer.labels(NodeIP=node_ip,
-                                      NodePort=node_port).set(proposer)
-        # 获取节点的 peer 数量
+            check_proposer.labels(NodeIP=node_ip,
+                                  NodePort=node_port).set(proposer)
         peer_info = class_result.peer_count()
         if peer_info != -99:
             peers = peer_info['result']
-            Node_Get_NodePeers.labels(NodeIP=node_ip,
-                                      NodePort=node_port).set(int(peers, 16))
-        # 获取链上的 quota price
+            node_peers.labels(NodeIP=node_ip,
+                              NodePort=node_port).set(int(peers, 16))
         quota_price = class_result.quota_price()
         if quota_price != -99:
             price = quota_price['result']
-            Node_Get_QuotaPrice.labels(NodeIP=node_ip,
-                                       NodePort=node_port).set(int(price, 16))
-        # 获取链上的单个 block quota limit
+            chain_quota_price.labels(NodeIP=node_ip,
+                                     NodePort=node_port).set(int(price, 16))
         block_limit = class_result.block_limit()
         if block_limit != -99:
             limit = block_limit['result']
-            Node_Get_BlockQuotaLimit.labels(NodeIP=node_ip,
-                                            NodePort=node_port).set(
-                                                int(limit, 16))
-    # 返回标签数据
+            block_quota_limit.labels(NodeIP=node_ip,
+                                     NodePort=node_port).set(int(limit, 16))
     return Response(prometheus_client.generate_latest(registry),
                     mimetype="text/plain")
 
 
-# flask 对象
-@node_flask.route("/")
-def Root():
-    index = "<h2>访问 /metrics 路径获取数据采集信息</h2>"
-    return index
+# flask object
+@NODE_FLASK.route("/")
+def index():
+    index_html = "<h2>访问 /metrics 路径获取数据采集信息</h2>"
+    return index_html
 
 
-# Run
+# main
 if __name__ == "__main__":
-    #运行 flask 进程
-    node_flask.run(host="0.0.0.0", port=int(sys.argv[2]))
+    NODE_FLASK.run(host="0.0.0.0", port=int(sys.argv[2]))
+
