@@ -3,10 +3,10 @@ services:
 
   prometheus_host_exporter:
     image: prom/node-exporter:v0.17.0
-    hostname: ${hostname}
+    hostname: host_exporter
     container_name: prometheus_host_exporter
     ports:
-      - "${host_HostPort}:${host_ContainerPort}"
+      - "${HOST_HOSTPORT}:${HOST_CONTAINERPORT}"
     volumes:
       - "/proc:/host/proc"
       - "/sys:/host/sys"
@@ -15,10 +15,10 @@ services:
 
   prometheus_process_exporter:
     image: ncabatoff/process-exporter:0.4.0
-    hostname: ${hostname}
+    hostname: process_exporter
     container_name: prometheus_process_exporter
     ports:
-      - "${process_HostPort}:${process_ContainerPort}"
+      - "${PROCESS_HOSTPORT}:${PROCESS_CONTAINERPORT}"
     volumes:
       - "/proc:/host/proc"
       - "./process_exporter_config:/config"
@@ -26,28 +26,28 @@ services:
 
   prometheus_rabbitmq_exporter:
     image: kbudde/rabbitmq-exporter:1.0.0-RC
-    hostname: ${hostname}
+    hostname: rabbitmq_exporter
     container_name: prometheus_rabbitmq_exporter
     network_mode: "host"
     ports:
-      - "${rabbitmq_HostPort}:${rabbitmq_ContainerPort}"
+      - "${RABBITMQ_HOSTPORT}:${RABBITMQ_CONTAINERPORT}"
     environment:
       - "RABBIT_CAPABILITIES=bert,no_sort"
-      - "PUBLISH_PORT=${rabbitmq_ContainerPort}"
+      - "PUBLISH_PORT=${RABBITMQ_CONTAINERPORT}"
 
   prometheus_cita_exporter:
     build: ./cita_exporter
     image: cita-exporter
-    hostname: ${hostname}_citaMonitorAgent_${node_Port}
-    container_name: prometheus_cita_exporter_${node_ip}_${node_Port}
+    hostname: ${HOSTNAME}
+    container_name: prometheus_cita_exporter_${NODE_IP}_${NODE_PORT}
     pid: "host"
     ports:
-      - "${agent_HostPort}:${agent_ContainerPort}"
+      - "${AGENT_HOSTPORT}:${AGENT_CONTAINERPORT}"
     volumes:
-      - "${node_dir}:${node_dir}:ro"
-      - "${soft_path}:${soft_path}:ro"
+      - "${NODE_DIR}:${NODE_DIR}:ro"
+      - "${SOFT_PATH}:${SOFT_PATH}:ro"
       - "./cita_monitor_agent.py:/config/cita_monitor_agent.py:ro"
     environment:
-      - "Node=${node_ip}:${node_Port}"
-      - "Port=${agent_ContainerPort}"
-      - "Node_Dir=${node_dir}"
+      - NODE_IP_PORT=${NODE_IP}:${NODE_PORT}
+      - NODE_DIR
+
