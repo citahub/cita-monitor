@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
+"""This is the agent script for the CITA-Monitor monitoring system.
+The data on the chain is obtained by cita-cli and then pulled by prometheus."""
 import json
 import os
 import sys
@@ -18,11 +20,14 @@ SOFT_FILE_PATH = sys.argv[3].rsplit('/', 2)[0]
 NODE_FLASK = Flask(__name__)
 EXPORTER_PLATFORM = platform.platform()
 AGENT_NAME = platform.node()
+DISK_TOTAL = None
+ADDRESS = None
+FILE_TOTAL_SIZE = None
 SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % (SOFT_FILE_PATH)
 try:
     SOFT_VERSION_EXEC = os.popen(SOFT_VERSION_TXT)
     SOFT_VERSION = str(SOFT_VERSION_EXEC.read().split(' ')[1].split('\n')[0])
-except:
+except IndexError:
     SOFT_VERSION = 'null'
 
 # exporter label variable
@@ -81,72 +86,80 @@ print("----------\n")
 
 # class
 class ExporterFunctions():
-
+    """This class is to get CITA data"""
     def __init__(self, node_ip, node_port):
         self.node_ip = node_ip
         self.node_port = node_port
 
     def cli_request(self, payload):
+        """Cita-cli request method"""
         req = "timeout 3 cita-cli %s --url http://%s:%s" \
             %(payload, self.node_ip, self.node_port)
         try:
             req_result = os.popen(req).read()
-        except:
+        except OSError:
             return -99
         else:
             if req_result == '':
                 return -98
-                exit()
             else:
                 result = json.loads(req_result)
                 return result
 
     def quota_price(self):
+        """Get CITA quota price via cita-cli"""
         payload = "scm PriceManager getQuotaPrice"
         return self.cli_request(payload)
 
     def block_limit(self):
+        """Get the quota limit for cita blocks with cita-cli"""
         payload = "scm QuotaManager getBQL"
         return self.cli_request(payload)
 
     def block_number(self):
+        """Get the current block height with cita-cli"""
         payload = "rpc blockNumber"
         return self.cli_request(payload)
 
     def peer_count(self):
+        """Get the number of nodes connecting the current node through cita-cli"""
         payload = "rpc peerCount"
         return self.cli_request(payload)
 
     def block_number_detail(self, block_height):
+        """Get detailed information about CITA blocks with cita-cli"""
         payload = "rpc getBlockByNumber --height %s" % (block_height)
         return self.cli_request(payload)
 
     def metadata(self):
+        """Get metadate with cita-cli"""
         payload = "rpc getMetaData"
         return self.cli_request(payload)
 
-    def dir_analysis(self, path):
-        global DISK_TOTAL, ADDRESS, FILE_TOTAL_SIZE
-        get_privkey_txt = "cat %s/privkey" % (path)
-        get_privkey_exec = os.popen(get_privkey_txt)
-        privkey = str(get_privkey_exec.read())
-        get_address_txt = "cita-cli key from-private --private-key %s" % privkey
-        get_address_exec = os.popen(get_address_txt)
-        get_address_result = json.loads(get_address_exec.read())
-        ADDRESS = str(get_address_result['address'])
-        DISK_TOTAL = psutil.disk_usage(SOFT_FILE_PATH).total
-        file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (
-            path)
-        try:
-            file_total_size_exec = os.popen(file_total_size_txt)
-            FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
-        except:
-            FILE_TOTAL_SIZE = 0
+def dir_analysis(path):
+    """Analyze CITA directory size"""
+    global DISK_TOTAL, ADDRESS, FILE_TOTAL_SIZE
+    get_privkey_txt = "cat %s/privkey" % (path)
+    get_privkey_exec = os.popen(get_privkey_txt)
+    privkey = str(get_privkey_exec.read())
+    get_address_txt = "cita-cli key from-private --private-key %s" % privkey
+    get_address_exec = os.popen(get_address_txt)
+    get_address_result = json.loads(get_address_exec.read())
+    ADDRESS = str(get_address_result['address'])
+    DISK_TOTAL = psutil.disk_usage(SOFT_FILE_PATH).total
+    file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (
+        path)
+    try:
+        file_total_size_exec = os.popen(file_total_size_txt)
+        FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
+    except OSError:
+        FILE_TOTAL_SIZE = 0
 
 
 # flask object
 @NODE_FLASK.route("/metrics")
 def exporter():
+    """Agent execution function"""
     # definition tag
     registry = CollectorRegistry(auto_describe=False)
     service_status = Gauge("Node_Get_ServiceStatus",
@@ -225,14 +238,14 @@ def exporter():
         if ',' in NODE_FILE_PATH:
             path_list = NODE_FILE_PATH.split(',')
             for path in path_list:
-                class_result.dir_analysis(path)
+                dir_analysis(path)
                 dir_total_size.labels(NodeIP=node_ip,
                                       NodePort=node_port,
                                       NodeDir=path,
                                       NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
         else:
             path = NODE_FILE_PATH
-            class_result.dir_analysis(path)
+            dir_analysis(path)
             dir_total_size.labels(NodeIP=node_ip,
                                   NodePort=node_port,
                                   NodeDir=path,
@@ -347,6 +360,7 @@ def exporter():
 # flask object
 @NODE_FLASK.route("/")
 def index():
+    """Page data view entry"""
     index_html = "<h2>访问 /metrics 路径获取数据采集信息</h2>"
     return index_html
 
@@ -354,4 +368,3 @@ def index():
 # main
 if __name__ == "__main__":
     NODE_FLASK.run(host="0.0.0.0", port=int(sys.argv[2]))
-
