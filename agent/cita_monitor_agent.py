@@ -6,6 +6,7 @@ The data on the chain is obtained by cita-cli and then pulled by prometheus."""
 import json
 import os
 import sys
+import time
 import platform
 import psutil
 import prometheus_client
@@ -98,10 +99,12 @@ class ExporterFunctions():
         try:
             req_result = os.popen(req).read()
         except OSError:
-            return -99
+            log_time = time.asctime(time.localtime(time.time()))
+            return (log_time + " - Error - exec error[ " + req + " ]\n")
         else:
+            log_time = time.asctime(time.localtime(time.time()))
             if req_result == '':
-                return -98
+                return (log_time + " - Error - exec timeout[ " + req +" ]\n")
             else:
                 result = json.loads(req_result)
                 return result
@@ -251,15 +254,17 @@ def exporter():
                                   NodeDir=path,
                                   NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
         first_block_info = class_result.block_number_detail('0x0')
-        if first_block_info != -99:
+        if 'result' in first_block_info:
             first_block_hash = first_block_info['result']['hash']
             first_block_time = first_block_info['result']['header']['timestamp']
             first_block_details.labels(
                 NodeIP=node_ip,
                 NodePort=node_port,
                 FirstBlockNumberHash=first_block_hash).set(first_block_time)
+        else:
+            print(first_block_info)
         metadata_info = class_result.metadata()
-        if metadata_info != -99:
+        if 'result' in metadata_info:
             chain_name = metadata_info['result']['chainName']
             operator = metadata_info['result']['operator']
             token_name = metadata_info['result']['tokenName']
@@ -277,8 +282,10 @@ def exporter():
             consensus_node_count = len(consensus_node_list)
             chain_nodes.labels(NodeIP=node_ip,
                                NodePort=node_port).set(consensus_node_count)
+        else:
+            print(metadata_info)
         block_number_info = class_result.block_number()
-        if block_number_info != -99:
+        if 'result' in block_number_info:
             hex_number = block_number_info['result']
             previous_hex_number = hex(int(hex_number, 16) - 1)
             last_block_number.labels(NodeIP=node_ip,
@@ -287,10 +294,12 @@ def exporter():
                                      NodeID=NODE_ID,
                                      NodeAddress=ADDRESS).set(
                                          int(hex_number, 16))
+        else:
+            print(block_number_info)
         block_info = class_result.block_number_detail(hex_number)
         previous_block_info = class_result.block_number_detail(
             previous_hex_number)
-        if block_info != -99 and previous_block_info != -99:
+        if 'result' in block_info and 'result' in previous_block_info:
             block_head_info = block_info['result']['header']
             if block_head_info.get('quotaUsed'):
                 block_quota_used = int(block_head_info['quotaUsed'], 16)
@@ -338,21 +347,30 @@ def exporter():
                 proposer = 0
             check_proposer.labels(NodeIP=node_ip,
                                   NodePort=node_port).set(proposer)
+        else:
+            print(block_info)
+            print(previous_block_info)
         peer_info = class_result.peer_count()
-        if peer_info != -99:
+        if 'result' in peer_info:
             peers = peer_info['result']
             node_peers.labels(NodeIP=node_ip,
                               NodePort=node_port).set(int(peers, 16))
+        else:
+            print(peer_info)
         quota_price = class_result.quota_price()
-        if quota_price != -99:
+        if 'result' in quota_price:
             price = quota_price['result']
             chain_quota_price.labels(NodeIP=node_ip,
                                      NodePort=node_port).set(int(price, 16))
+        else:
+            print(quota_price)
         block_limit = class_result.block_limit()
-        if block_limit != -99:
+        if 'result' in block_limit:
             limit = block_limit['result']
             block_quota_limit.labels(NodeIP=node_ip,
                                      NodePort=node_port).set(int(limit, 16))
+        else:
+            print(block_limit)
     return Response(prometheus_client.generate_latest(registry),
                     mimetype="text/plain")
 
@@ -368,3 +386,4 @@ def index():
 # main
 if __name__ == "__main__":
     NODE_FLASK.run(host="0.0.0.0", port=int(sys.argv[2]))
+
