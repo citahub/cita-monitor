@@ -27,8 +27,18 @@ vim prometheus.yml
 #Prometheus 告警规则配置文件
 vim alert.rules
 
-#Alertmanager 配置文件
+#添加告警邮箱配置
 vim alertmanager.yml
+
+修改localhost:25 为邮箱服务器地址
+
+修改alertmanager@example.org 为发送报警邮件的邮箱地址
+
+修改alertmanager 为发送报警邮件的邮箱地址
+
+修改password 为发送报警邮件的邮箱密码
+
+修改alerts@example.org 为接收告警邮件的邮箱地址
 
 cd grafana
 
