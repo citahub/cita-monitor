@@ -8,9 +8,11 @@ services:
     ports:
       - "${HOST_HOSTPORT}:${HOST_CONTAINERPORT}"
     volumes:
-      - "/proc:/host/proc"
-      - "/sys:/host/sys"
-      - "/:/host/rootfs"
+      - /proc:/host/proc
+      - /sys:/host/sys
+      - /:/host/rootfs
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
     command: "--path.procfs='/host/proc' --path.sysfs='/host/sys' --path.rootfs='/host/rootfs'"
 
   prometheus_process_exporter:
@@ -20,8 +22,10 @@ services:
     ports:
       - "${PROCESS_HOSTPORT}:${PROCESS_CONTAINERPORT}"
     volumes:
-      - "/proc:/host/proc"
-      - "./process_exporter_config:/config"
+      - /proc:/host/proc
+      - ./process_exporter_config:/config
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
     command: "--procfs /host/proc --config.path /config/process_list.yml"
 
   prometheus_rabbitmq_exporter:
@@ -31,6 +35,9 @@ services:
     network_mode: "host"
     ports:
       - "${RABBITMQ_HOSTPORT}:${RABBITMQ_CONTAINERPORT}"
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
     environment:
       - "RABBIT_CAPABILITIES=bert,no_sort"
       - "PUBLISH_PORT=${RABBITMQ_CONTAINERPORT}"
@@ -44,9 +51,11 @@ services:
     ports:
       - "${AGENT_HOSTPORT}:${AGENT_CONTAINERPORT}"
     volumes:
-      - "${NODE_DIR}:${NODE_DIR}:ro"
-      - "${SOFT_PATH}:${SOFT_PATH}:ro"
-      - "./cita_monitor_agent.py:/config/cita_monitor_agent.py:ro"
+      - ${NODE_DIR}:${NODE_DIR}:ro
+      - ${SOFT_PATH}:${SOFT_PATH}:ro
+      - ./cita_monitor_agent.py:/config/cita_monitor_agent.py:ro
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
     environment:
       - NODE_IP_PORT=${NODE_IP}:${NODE_PORT}
       - NODE_DIR
