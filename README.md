@@ -19,6 +19,45 @@ Rabbitmq Dashboard Demo
 ![rabbitmq-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57682140-b0b4f580-7663-11e9-8db0-c4e2a0e29606.png)
 
 
+## Feature List
+
+* CITA 服务进程监控
+    - CITA 微服务及MQ进程的存活、进程的CPU、内存使用率、IO
+* 区块链数据健康监控
+    - 节点出块高度历史、出块时间、出块间隔趋势、Quota、交易量历史、TPS、磁盘占用比例、数据目录大小增长趋势
+* 运行环境监控
+    - 主机运行环境的系统负载、CPU、内存、磁盘空间使用情况、网络流量、TCP连接数等
+* 故障告警通知
+    - [监控告警策略](docs/alert_strategies.md)
+    - 支持邮件通知、Slack通知、短信通知（Pro 版）
+* 节点网络监控（Pro 版）
+    - 连接节点数、网络拓扑、地理位置等
+* 鉴源限流（Pro 版）
+    - 鉴别请求来源、工具；限制访问来源、频率
+* JSONRPC 接口调用分析（Pro 版）
+    - 统计分析RPC方法的请求时间、请求次数
+
+### Metrics of Dashboards
+
+* Summary Dashboard
+    * 各节点最新块高
+    * 各节点监控进程存活
+    * 各节点CPU使用率变化
+    * 节点列表
+* CITA Node Info Dashboard
+    * CITA Meta Data - 链的配置信息，如 Chain Name、创建时间等
+    * Chain Info - 链的最新块高、共识节点数、共识节点出块历史趋势
+    * Node Info - 选定节点的详细信息，包括区块链数据、运行环境、运行软件信息
+* Host Info Dashboard
+    * 各节点运行主机的信息，包括系统负载、CPU、内存、硬盘使用率、网络流量
+* Process Info Dashboard
+    * 节点中 CITA 微服进程的存活历史、CPU、内存、IO变化历史
+* RabbitMQ Dashboard
+    * RabbitMQ 服务的存活状态、channels 、consumers、connections、queues 等的变化记录
+
+更细节可查看：[监控指标信息结构](docs/information_architecture.md)
+
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
