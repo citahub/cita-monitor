@@ -2,7 +2,7 @@
 
 [EN](README.md) | [CN](README-CN.md)
 
-A Prometheus project to monitor running status of [CITA](https://github.com/cryptape/cita).
+A blockchain monitoring system for [CITA](https://github.com/cryptape/cita), using [Prometheus](https://prometheus.io) to store the monitoring and performance metrics and [Grafana](https://grafana.com/grafana) to visualize these metrics.
 
 Metrics are including blockchain data, process status, host info like CPU/memory/disk usage etc.
 
@@ -17,48 +17,46 @@ CITA Node Info Dashboard Demo
 Host Info Dashboard Demo
 ![host-info-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57681906-3ab08e80-7663-11e9-9229-76b85c0eaaa4.png)
 
-Rabbitmq Dashboard Demo
+RabbitMQ Dashboard Demo
 ![rabbitmq-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57682140-b0b4f580-7663-11e9-8db0-c4e2a0e29606.png)
-
 
 ## Feature List
 
-* CITA 服务进程监控
-    - CITA 微服务及MQ进程的存活、进程的CPU、内存使用率、IO
-* 区块链数据健康监控
-    - 节点出块高度历史、出块时间、出块间隔趋势、Quota、交易量历史、TPS、磁盘占用比例、数据目录大小增长趋势
-* 运行环境监控
-    - 主机运行环境的系统负载、CPU、内存、磁盘空间使用情况、网络流量、TCP连接数等
-* 故障告警通知
-    - [监控告警策略](docs/alert_strategies.md)
-    - 支持邮件通知、Slack通知、短信通知（Pro 版）
-* 节点网络监控（Pro 版）
-    - 连接节点数、网络拓扑、地理位置等
-* 鉴源限流（Pro 版）
-    - 鉴别请求来源、工具；限制访问来源、频率
-* JSONRPC 接口调用分析（Pro 版）
-    - 统计分析RPC方法的请求时间、请求次数
+* CITA service process monitoring
+  * CITA microservices and RabbitMQ process running status, CPU, memory usage, IO
+* Blockchain data health monitoring
+  * block height history, block interval, block interval history, quota, transaction history volume, TPS, disk occupancy, data size growth trend
+* Running environment monitoring
+  * System load, CPU, memory, disk space usage, network traffic, TCP connections, etc. 
+* System warning notification
+  * [Warning Policy](docs/alert_strategies.md)
+  * Support email notification, Slack notification, SMS notification (Pro version)
+* Node Network Monitoring (Pro version)
+  * Number of connected nodes, network topology, geographic location, etc.
+* Source Limiting (Pro version)
+  * Identify request sources, tools; limit access sources, frequency
+* JSONRPC interface call analysis (Pro version)
+  * Statistical analysis of the request time and number of the RPC method
 
 ### Metrics of Dashboards
 
 * Summary Dashboard
-    * 各节点最新块高
-    * 各节点监控进程存活
-    * 各节点CPU使用率变化
-    * 节点列表
+  * The latest block height for each node
+  * Monitoring process status for each node
+  * CPU usage for each node
+  * Node list
 * CITA Node Info Dashboard
-    * CITA Meta Data - 链的配置信息，如 Chain Name、创建时间等
-    * Chain Info - 链的最新块高、共识节点数、共识节点出块历史趋势
-    * Node Info - 选定节点的详细信息，包括区块链数据、运行环境、运行软件信息
+  * CITA Meta Data - Chain configuration information，such as Chain Name, creation time, etc.
+  * Chain Info - The latest block height, consensus node number, consensus node block history.
+  * Node Info - More detailed about certain node, including block data, running environment, software information
 * Host Info Dashboard
-    * 各节点运行主机的信息，包括系统负载、CPU、内存、硬盘使用率、网络流量
+  * Host information running on certain node, including system load, CPU, memory, hard disk usage, network traffic
 * Process Info Dashboard
-    * 节点中 CITA 微服进程的存活历史、CPU、内存、IO变化历史
+  * Running status, CPU, memory, and IO of microservice process for certain node
 * RabbitMQ Dashboard
-    * RabbitMQ 服务的存活状态、channels 、consumers、connections、queues 等的变化记录
+  * Running status, channels, consumers, connections, queues of RabbitMQ
 
-更细节可查看：[监控指标信息结构](docs/information_architecture.md)
-
+More details can be found in [Monitoring Indicator Information](docs/information_architecture.md)
 
 ## Getting Started
 
@@ -66,22 +64,20 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Independencies and how to install them
 
 * Docker: [install Docker guide](https://docs.docker.com/install/)
 * Python: [install Python guide](https://docs.python-guide.org/starting/installation/)
 
 ### Installing
 
-for installing server, read [server/README.md](server/README.md)
+For installing server, read [server/README.md](server/README.md)
 
-for installing agent, read [agent/README.md](agent/README.md)
-
+For installing agent, read [agent/README.md](agent/README.md)
 
 ## System Architecture
 
 ![](docs/imgs/CITA_Monitor_system_architecture-fs8.png)
-
 
 ### Ports default config
 
@@ -94,7 +90,6 @@ for installing agent, read [agent/README.md](agent/README.md)
     * process_exporter：1921
     * rabbitmq_exporter：1922
     * cita_exporter：1923 
-
 
 ## Contributing
 
@@ -122,7 +117,6 @@ git clone git@github.com:cryptape/cita-monitor.git
 * code formatter: [`shfmt -i 2 -ci`](https://github.com/mvdan/sh#shfmt), vscode extension: shell-format
 * linter: [ShellCheck](https://github.com/koalaman/shellcheck), vscode extension: shell-format
 
-
 #### Coding style for Python
 
 * coding style guide: http://google.github.io/styleguide/pyguide.html
@@ -145,7 +139,6 @@ git clone git@github.com:cryptape/cita-monitor.git
 ### Running the tests
 
 PENDING: Explain how to run the automated tests for this system
-
 
 ### Commit your changes
 
