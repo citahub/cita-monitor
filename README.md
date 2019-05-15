@@ -75,14 +75,24 @@ for installing server, read [server/README.md](server/README.md)
 
 for installing agent, read [agent/README.md](agent/README.md)
 
-## Acknowledgments
 
-* Prometheus: https://prometheus.io/
-* Prometheus node-exporter: https://github.com/prometheus/node_exporter
-* Prometheus process-exporter: https://github.com/ncabatoff/process-exporter
-* Prometheus rabbitmq-exporter: https://github.com/kbudde/rabbitmq_exporter
-* CITA: http://docs.citahub.com
-* Docker: https://www.docker.com/
+## System Architecture
+
+![](docs/imgs/CITA_Monitor_system_architecture-fs8.png)
+
+
+### Ports default config
+
+* CITA-Monitor server
+    * Prometheus Alertmanager: 1917
+    * Prometheus Console: 1918
+    * Grafana: 1919
+* CITA-Monitor agent
+    * host_exporter：1920
+    * process_exporter：1921
+    * rabbitmq_exporter：1922
+    * cita_exporter：1923 
+
 
 ## Contributing
 
@@ -91,6 +101,10 @@ for installing agent, read [agent/README.md](agent/README.md)
 open a new issue: https://github.com/cryptape/cita-monitor/issues/new 
 
 with your version info
+
+### Tech Stack
+
+Read [docs/tech_stack.md](docs/tech_stack.md) to know the programming languages, frameworks, and tools that developers use to build this software.
 
 ### Get source
 
@@ -141,7 +155,6 @@ PENDING: Explain how to run the automated tests for this system
 
 use [git-style-guide](https://github.com/agis/git-style-guide) for Branches, Commits,Messages, Merging
 
-
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning.
@@ -149,3 +162,12 @@ We use [SemVer](http://semver.org/) for versioning.
 ## License
 
 This project is licensed under the Apache 2.0 License
+
+## Acknowledgments
+
+* Prometheus: https://prometheus.io/
+* Prometheus node-exporter: https://github.com/prometheus/node_exporter
+* Prometheus process-exporter: https://github.com/ncabatoff/process-exporter
+* Prometheus rabbitmq-exporter: https://github.com/kbudde/rabbitmq_exporter
+* CITA: http://docs.citahub.com
+* Docker: https://www.docker.com/
