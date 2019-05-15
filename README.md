@@ -11,7 +11,7 @@ Metrics are including blockchain data, process status, host info like CPU/memory
 Summary Dashboard Demo
 ![summary-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57682153-b9a5c700-7663-11e9-93c6-a29758e7d3a1.png)
 
-Cita Node Info Dashboard Demo
+CITA Node Info Dashboard Demo
 ![cita-node-info-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57681838-15bc1b80-7663-11e9-91b4-202c306a0f3b.png)
 
 Host Info Dashboard Demo
