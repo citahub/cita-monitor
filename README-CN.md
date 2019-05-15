@@ -2,11 +2,11 @@
 
 [EN](README.md) | [CN](README-CN.md)
 
-A Prometheus project to monitor running status of [CITA](https://github.com/cryptape/cita).
+这是一套基于 Prometheus 框架的 [CITA](https://github.com/cryptape/cita) 区块链服务运行状态监控系统 。
 
-Metrics are including blockchain data, process status, host info like CPU/memory/disk usage etc.
+监控指标包括区块链数据、服务进程状态、运行环境的CPU /存储器/磁盘使用率等主机信息等。
 
-## Screenshots for Dashboards
+## 仪表板(Dashboard) 截图
 
 Summary Dashboard Demo
 ![summary-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57682153-b9a5c700-7663-11e9-93c6-a29758e7d3a1.png)
@@ -21,7 +21,7 @@ Rabbitmq Dashboard Demo
 ![rabbitmq-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57682140-b0b4f580-7663-11e9-8db0-c4e2a0e29606.png)
 
 
-## Feature List
+## 功能列表
 
 * CITA 服务进程监控
     - CITA 微服务及MQ进程的存活、进程的CPU、内存使用率、IO
@@ -39,7 +39,7 @@ Rabbitmq Dashboard Demo
 * JSONRPC 接口调用分析（Pro 版）
     - 统计分析RPC方法的请求时间、请求次数
 
-### Metrics of Dashboards
+### 仪表板的监控指标
 
 * Summary Dashboard
     * 各节点最新块高
@@ -60,30 +60,30 @@ Rabbitmq Dashboard Demo
 更细节可查看：[监控指标信息结构](docs/information_architecture.md)
 
 
-## Getting Started
+## 入门
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+这里介绍如何安装 server (数据存储端) 端及 agent 端（数据采集端）。
 
-### Prerequisites
+### 前置条件
 
-What things you need to install the software and how to install them
+本系统需要安装以下软件来运行：
 
 * Docker: [install Docker guide](https://docs.docker.com/install/)
 * Python: [install Python guide](https://docs.python-guide.org/starting/installation/)
 
-### Installing
+### 安装
 
-for installing server, read [server/README.md](server/README.md)
+安装 server 服务, 请查看 [server/README.md](server/README.md)
 
-for installing agent, read [agent/README.md](agent/README.md)
+安装 agent 服务, 请查看 [agent/README.md](agent/README.md)
 
 
-## System Architecture
+## 系统架构
 
 ![](docs/imgs/CITA_Monitor_system_architecture-fs8.png)
 
 
-### Ports default config
+### 端口默认配置
 
 * CITA-Monitor server
     * Prometheus Alertmanager: 1917
@@ -96,25 +96,25 @@ for installing agent, read [agent/README.md](agent/README.md)
     * cita_exporter：1923 
 
 
-## Contributing
+## 参与贡献
 
-### Creating a Bug Report
+### 报告 Bug
 
-open a new issue: https://github.com/cryptape/cita-monitor/issues/new 
+提交 issue: https://github.com/cryptape/cita-monitor/issues/new 
 
-with your version info
+记得声明所使用软件的版本信息（包括监控对象的版本信息）
 
-### Tech Stack
+### 技术栈
 
-Read [docs/tech_stack.md](docs/tech_stack.md) to know the programming languages, frameworks, and tools that developers use to build this software.
+查看 [docs/tech_stack.md](docs/tech_stack.md) 来了解开发本系统的所用到的编程语言、框架、工具。
 
-### Get source
+### 获取源码
 
 ```
 git clone git@github.com:cryptape/cita-monitor.git
 ```
 
-### Coding style
+### 代码风格
 
 #### Coding style for Shell
 
@@ -142,30 +142,30 @@ git clone git@github.com:cryptape/cita-monitor.git
 * conventions: https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
 * best-practices: https://suva.sh/posts/well-documented-makefiles/
 
-### Running the tests
+### 运行测试
 
 PENDING: Explain how to run the automated tests for this system
 
 
-### Commit your changes
+### 提交代码
 
-#### Workflow
+#### 代码提交流程
 
 [GitHub Flow](https://help.github.com/en/articles/github-flow), [Understanding the GitHub flow](https://guides.github.com/introduction/flow/)
 
 #### git style guide
 
-use [git-style-guide](https://github.com/agis/git-style-guide) for Branches, Commits,Messages, Merging
+我们要求遵守 [git-style-guide](https://github.com/agis/git-style-guide) 中的规则来进行分支创建、commit组织、commit消息编写以及合并操作。
 
-## Versioning
+## 版本规则
 
-We use [SemVer](http://semver.org/) for versioning.
+我们遵守 [SemVer](http://semver.org/) 规范来创建软件版本。
 
-## License
+## 源码授权
 
-This project is licensed under the Apache 2.0 License
+本项目使用 Apache 2.0 授权进行源码分发。
 
-## Acknowledgments
+## 致谢
 
 * Prometheus: https://prometheus.io/
 * Prometheus node-exporter: https://github.com/prometheus/node_exporter
