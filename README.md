@@ -33,8 +33,8 @@ RabbitMQ Dashboard Demo
   * Support email notification, Slack notification, SMS notification (Pro version)
 * Node Network Monitoring (Pro version)
   * Number of connected nodes, network topology, geographic location, etc.
-* Source Limiting (Pro version)
-  * Identify request sources, tools; limit access sources, frequency
+* Request Identity Sources & Rate Limiting (Pro version)
+  * Identify request sources, tools, user agent; limit the amount of JSONRPC requests by IP address to defence malicious attack.
 * JSONRPC interface call analysis (Pro version)
   * Statistical analysis of the request time and number of the RPC method
 
