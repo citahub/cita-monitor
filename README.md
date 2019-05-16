@@ -29,7 +29,7 @@ RabbitMQ Dashboard Demo
 * Running environment monitoring
   * System load, CPU, memory, disk space usage, network traffic, TCP connections, etc. 
 * System warning notification
-  * [Warning Policy](docs/alert_strategies.md)
+  * [Alert Policies](docs/alert_policies.md)
   * Support email notification, Slack notification, SMS notification (Pro version)
 * Node Network Monitoring (Pro version)
   * Number of connected nodes, network topology, geographic location, etc.
