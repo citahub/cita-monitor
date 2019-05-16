@@ -26,6 +26,9 @@ deps: ## Download the depenedencies.
 	# intall shellcheck
 	@shellcheck --version || brew install shellcheck || apt-get install shellcheck || (echo "install shellcheck: https://github.com/koalaman/shellcheck" && exit 1)
 
+	# install requirements for agent/cita_exporter
+	@cd agent/cita_exporter/ && pip3 install -r requirements.txt
+
 ##@ Cleanup
 clean: ## Clean up.
 	$(info Cleaning up things)
