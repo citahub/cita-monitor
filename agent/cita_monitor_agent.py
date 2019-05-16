@@ -386,4 +386,3 @@ def index():
 # main
 if __name__ == "__main__":
     NODE_FLASK.run(host="0.0.0.0", port=int(sys.argv[2]))
-
