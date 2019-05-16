@@ -62,23 +62,25 @@ docker-compose down
 1、编译镜像
 ```
 cd ./cita_exporter
-docker build -t cita_exporter .
+docker build -t cita-exporter .
 cd ..
 ```
 2、启动容器
 Tips：
 请填入宿主机物理网卡 IP 地址，切勿使用 127.0.0.1，exporter 进程在容器中运行，127.0.0.1 将会导致访问容器本地端口
 ```
-docker run -d --name="prometheus_cita_exporter__x.x.x.x_1337" \
+docker run -d --name="prometheus_cita_exporter_x.x.x.x_1337" \
 --pid="host" \
 -p 1923:1920 \
--v "/data/cita_secp256k1_sha3/test-chain/0":"/data/cita_secp256k1_sha3/test-chain/0" \
+-v /etc/timezone:/etc/timezone \
+-v /etc/localtime:/etc/localtime \
 -v "/data/cita_secp256k1_sha3/":"/data/cita_secp256k1_sha3/" \
+-v "/data/cita_secp256k1_sha3/test-chain/0":"/data/cita_secp256k1_sha3/test-chain/0" \
 -v "`pwd`/cita_monitor_agent.py":"/config/cita_monitor_agent.py" \
--e Node="x.x.x.x:1337" \
--e Port=1920 \
--e Node_Dir="/data/cita_secp256k1_sha3/test-chain/0" \
-cita_exporter
+-e NODE_IP_PORT="x.x.x.x:1337" \
+-e PORT=1920 \
+-e NODE_DIR="/data/cita_secp256k1_sha3/test-chain/0" \
+cita-exporter
 ```
 3、查看数据采集信息
 ```
