@@ -100,14 +100,14 @@ class ExporterFunctions():
             req_result = os.popen(req).read()
         except OSError:
             log_time = time.asctime(time.localtime(time.time()))
-            return (log_time + " - Error - exec error[ " + req + " ]\n")
+            result = (log_time + " - Error - exec error[ " + req + " ]\n")
         else:
             log_time = time.asctime(time.localtime(time.time()))
             if req_result == '':
-                return (log_time + " - Error - exec timeout[ " + req +" ]\n")
+                result = (log_time + " - Error - exec timeout[ " + req +" ]\n")
             else:
                 result = json.loads(req_result)
-                return result
+        return result
 
     def quota_price(self):
         """Get CITA quota price via cita-cli"""
