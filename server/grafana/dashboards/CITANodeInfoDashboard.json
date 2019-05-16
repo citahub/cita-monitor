@@ -99,7 +99,7 @@
           "nullText": null,
           "postfix": "",
           "postfixFontSize": "50%",
-          "prefix": "Geneses Block Time : ",
+          "prefix": "Genesis Block : ",
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
@@ -309,7 +309,7 @@
           "nullText": null,
           "postfix": "",
           "postfixFontSize": "50%",
-          "prefix": "Economical Model : ",
+          "prefix": "economic model : ",
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
