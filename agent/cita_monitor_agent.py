@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-#
-"""This is the agent script for the CITA-Monitor monitoring system.
-The data on the chain is obtained by cita-cli and then pulled by prometheus."""
+"""
+This is the agent script for the CITA-Monitor monitoring system.
+The data on the chain is obtained by cita-cli and then pulled by prometheus.
+"""
+
+# pylint: disable=global-statement, too-many-locals, too-many-branches, too-many-statements, fixme
+# TODO: refactor codes to pass pylint
+
 import json
 import os
 import sys
