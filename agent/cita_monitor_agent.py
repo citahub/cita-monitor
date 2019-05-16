@@ -88,6 +88,7 @@ print("----------\n")
 # class
 class ExporterFunctions():
     """This class is to get CITA data"""
+
     def __init__(self, node_ip, node_port):
         self.node_ip = node_ip
         self.node_port = node_port
@@ -104,7 +105,7 @@ class ExporterFunctions():
         else:
             log_time = time.asctime(time.localtime(time.time()))
             if req_result == '':
-                result = (log_time + " - Error - exec timeout[ " + req +" ]\n")
+                result = (log_time + " - Error - exec timeout[ " + req + " ]\n")
             else:
                 result = json.loads(req_result)
         return result
@@ -139,6 +140,7 @@ class ExporterFunctions():
         payload = "rpc getMetaData"
         return self.cli_request(payload)
 
+
 def dir_analysis(path):
     """Analyze CITA directory size"""
     global DISK_TOTAL, ADDRESS, FILE_TOTAL_SIZE
@@ -150,8 +152,7 @@ def dir_analysis(path):
     get_address_result = json.loads(get_address_exec.read())
     ADDRESS = str(get_address_result['address'])
     DISK_TOTAL = psutil.disk_usage(SOFT_FILE_PATH).total
-    file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (
-        path)
+    file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (path)
     try:
         file_total_size_exec = os.popen(file_total_size_txt)
         FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
@@ -235,142 +236,139 @@ def exporter():
         service_status.labels(NodeIP=node_ip, NodePort=node_port).set(0)
         return Response(prometheus_client.generate_latest(registry),
                         mimetype="text/plain")
-    else:
-        service_status.labels(NodeIP=node_ip, NodePort=node_port).set(1)
-        class_result = ExporterFunctions(node_ip, node_port)
-        if ',' in NODE_FILE_PATH:
-            path_list = NODE_FILE_PATH.split(',')
-            for path in path_list:
-                dir_analysis(path)
-                dir_total_size.labels(NodeIP=node_ip,
-                                      NodePort=node_port,
-                                      NodeDir=path,
-                                      NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
-        else:
-            path = NODE_FILE_PATH
+
+    service_status.labels(NodeIP=node_ip, NodePort=node_port).set(1)
+    class_result = ExporterFunctions(node_ip, node_port)
+    if ',' in NODE_FILE_PATH:
+        path_list = NODE_FILE_PATH.split(',')
+        for path in path_list:
             dir_analysis(path)
             dir_total_size.labels(NodeIP=node_ip,
                                   NodePort=node_port,
                                   NodeDir=path,
                                   NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
-        first_block_info = class_result.block_number_detail('0x0')
-        if 'result' in first_block_info:
-            first_block_hash = first_block_info['result']['hash']
-            first_block_time = first_block_info['result']['header']['timestamp']
-            first_block_details.labels(
-                NodeIP=node_ip,
-                NodePort=node_port,
-                FirstBlockNumberHash=first_block_hash).set(first_block_time)
-        else:
-            print(first_block_info)
-        metadata_info = class_result.metadata()
-        if 'result' in metadata_info:
-            chain_name = metadata_info['result']['chainName']
-            operator = metadata_info['result']['operator']
-            token_name = metadata_info['result']['tokenName']
-            token_symbol = metadata_info['result']['tokenSymbol']
-            economical_model = metadata_info['result']['economicalModel']
-            chain_version = metadata_info['result']['version']
-            chain_info.labels(NodeIP=node_ip,
+    else:
+        path = NODE_FILE_PATH
+        dir_analysis(path)
+        dir_total_size.labels(NodeIP=node_ip,
                               NodePort=node_port,
-                              ChainName=chain_name,
-                              Operator=operator,
-                              TokenName=token_name,
-                              TokenSymbol=token_symbol,
-                              Version=chain_version).set(economical_model)
-            consensus_node_list = metadata_info['result']['validators']
-            consensus_node_count = len(consensus_node_list)
-            chain_nodes.labels(NodeIP=node_ip,
-                               NodePort=node_port).set(consensus_node_count)
+                              NodeDir=path,
+                              NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
+    first_block_info = class_result.block_number_detail('0x0')
+    if 'result' in first_block_info:
+        first_block_hash = first_block_info['result']['hash']
+        first_block_time = first_block_info['result']['header']['timestamp']
+        first_block_details.labels(
+            NodeIP=node_ip,
+            NodePort=node_port,
+            FirstBlockNumberHash=first_block_hash).set(first_block_time)
+    else:
+        print(first_block_info)
+    metadata_info = class_result.metadata()
+    if 'result' in metadata_info:
+        chain_name = metadata_info['result']['chainName']
+        operator = metadata_info['result']['operator']
+        token_name = metadata_info['result']['tokenName']
+        token_symbol = metadata_info['result']['tokenSymbol']
+        economical_model = metadata_info['result']['economicalModel']
+        chain_version = metadata_info['result']['version']
+        chain_info.labels(NodeIP=node_ip,
+                          NodePort=node_port,
+                          ChainName=chain_name,
+                          Operator=operator,
+                          TokenName=token_name,
+                          TokenSymbol=token_symbol,
+                          Version=chain_version).set(economical_model)
+        consensus_node_list = metadata_info['result']['validators']
+        consensus_node_count = len(consensus_node_list)
+        chain_nodes.labels(NodeIP=node_ip,
+                           NodePort=node_port).set(consensus_node_count)
+    else:
+        print(metadata_info)
+    block_number_info = class_result.block_number()
+    if 'result' in block_number_info:
+        hex_number = block_number_info['result']
+        previous_hex_number = hex(int(hex_number, 16) - 1)
+        last_block_number.labels(NodeIP=node_ip,
+                                 NodePort=node_port,
+                                 FirstBlockNumberHash=first_block_hash,
+                                 NodeID=NODE_ID,
+                                 NodeAddress=ADDRESS).set(int(hex_number, 16))
+    else:
+        print(block_number_info)
+    block_info = class_result.block_number_detail(hex_number)
+    previous_block_info = class_result.block_number_detail(previous_hex_number)
+    if 'result' in block_info and 'result' in previous_block_info:
+        block_head_info = block_info['result']['header']
+        if block_head_info.get('quotaUsed'):
+            block_quota_used = int(block_head_info['quotaUsed'], 16)
         else:
-            print(metadata_info)
-        block_number_info = class_result.block_number()
-        if 'result' in block_number_info:
-            hex_number = block_number_info['result']
-            previous_hex_number = hex(int(hex_number, 16) - 1)
-            last_block_number.labels(NodeIP=node_ip,
-                                     NodePort=node_port,
-                                     FirstBlockNumberHash=first_block_hash,
-                                     NodeID=NODE_ID,
-                                     NodeAddress=ADDRESS).set(
-                                         int(hex_number, 16))
+            #Get the previous version of CITA v0.19.1 gasUsed
+            block_head_info.get('gasUsed')
+            block_quota_used = int(block_head_info['gasUsed'], 16)
+        block_hash = block_info['result']['hash']
+        block_time = int(block_head_info['timestamp'])
+        block_transactions = int(
+            len(block_info['result']['body']['transactions']))
+        block_proposer = block_head_info['proposer']
+        previous_block_time = int(
+            previous_block_info['result']['header']['timestamp'])
+        interval = abs(block_time - previous_block_time)
+        if ADDRESS in consensus_node_list:
+            consensus = 1
         else:
-            print(block_number_info)
-        block_info = class_result.block_number_detail(hex_number)
-        previous_block_info = class_result.block_number_detail(
-            previous_hex_number)
-        if 'result' in block_info and 'result' in previous_block_info:
-            block_head_info = block_info['result']['header']
-            if block_head_info.get('quotaUsed'):
-                block_quota_used = int(block_head_info['quotaUsed'], 16)
-            else:
-                #Get the previous version of CITA v0.19.1 gasUsed
-                block_head_info.get('gasUsed')
-                block_quota_used = int(block_head_info['gasUsed'], 16)
-            block_hash = block_info['result']['hash']
-            block_time = int(block_head_info['timestamp'])
-            block_transactions = int(
-                len(block_info['result']['body']['transactions']))
-            block_proposer = block_head_info['proposer']
-            previous_block_time = int(
-                previous_block_info['result']['header']['timestamp'])
-            interval = abs(block_time - previous_block_time)
-            if ADDRESS in consensus_node_list:
-                consensus = 1
-            else:
-                consensus = 0
-            last_block_details.labels(NodeIP=node_ip,
-                                      NodePort=node_port,
-                                      LastBlocknumber=int(hex_number, 16),
-                                      LastBlockProposer=block_proposer,
-                                      LastBlockHash=block_hash,
-                                      NodeID=NODE_ID,
-                                      HostPlatform=EXPORTER_PLATFORM,
-                                      HostName=AGENT_NAME,
-                                      ConsensusStatus=consensus,
-                                      SoftVersion=SOFT_VERSION).set(block_time)
-            block_height_difference.labels(NodeIP=node_ip,
-                                           NodePort=node_port,
-                                           CurrentHeight=int(hex_number, 16),
-                                           PreviousHeight=int(
-                                               previous_hex_number,
-                                               16)).set(interval)
-            block_interval.labels(NodeIP=node_ip,
-                                  NodePort=node_port).set(interval)
-            last_block_transactions.labels(
-                NodeIP=node_ip, NodePort=node_port).set(block_transactions)
-            last_block_quota_used.labels(
-                NodeIP=node_ip, NodePort=node_port).set(block_quota_used)
-            if ADDRESS == block_proposer:
-                proposer = 1
-            else:
-                proposer = 0
-            check_proposer.labels(NodeIP=node_ip,
-                                  NodePort=node_port).set(proposer)
+            consensus = 0
+        last_block_details.labels(NodeIP=node_ip,
+                                  NodePort=node_port,
+                                  LastBlocknumber=int(hex_number, 16),
+                                  LastBlockProposer=block_proposer,
+                                  LastBlockHash=block_hash,
+                                  NodeID=NODE_ID,
+                                  HostPlatform=EXPORTER_PLATFORM,
+                                  HostName=AGENT_NAME,
+                                  ConsensusStatus=consensus,
+                                  SoftVersion=SOFT_VERSION).set(block_time)
+        block_height_difference.labels(NodeIP=node_ip,
+                                       NodePort=node_port,
+                                       CurrentHeight=int(hex_number, 16),
+                                       PreviousHeight=int(
+                                           previous_hex_number,
+                                           16)).set(interval)
+        block_interval.labels(NodeIP=node_ip, NodePort=node_port).set(interval)
+        last_block_transactions.labels(
+            NodeIP=node_ip, NodePort=node_port).set(block_transactions)
+        last_block_quota_used.labels(NodeIP=node_ip,
+                                     NodePort=node_port).set(block_quota_used)
+        if ADDRESS == block_proposer:
+            proposer = 1
         else:
-            print(block_info)
-            print(previous_block_info)
-        peer_info = class_result.peer_count()
-        if 'result' in peer_info:
-            peers = peer_info['result']
-            node_peers.labels(NodeIP=node_ip,
-                              NodePort=node_port).set(int(peers, 16))
-        else:
-            print(peer_info)
-        quota_price = class_result.quota_price()
-        if 'result' in quota_price:
-            price = quota_price['result']
-            chain_quota_price.labels(NodeIP=node_ip,
-                                     NodePort=node_port).set(int(price, 16))
-        else:
-            print(quota_price)
-        block_limit = class_result.block_limit()
-        if 'result' in block_limit:
-            limit = block_limit['result']
-            block_quota_limit.labels(NodeIP=node_ip,
-                                     NodePort=node_port).set(int(limit, 16))
-        else:
-            print(block_limit)
+            proposer = 0
+        check_proposer.labels(NodeIP=node_ip, NodePort=node_port).set(proposer)
+    else:
+        print(block_info)
+        print(previous_block_info)
+    peer_info = class_result.peer_count()
+    if 'result' in peer_info:
+        peers = peer_info['result']
+        node_peers.labels(NodeIP=node_ip,
+                          NodePort=node_port).set(int(peers, 16))
+    else:
+        print(peer_info)
+    quota_price = class_result.quota_price()
+    if 'result' in quota_price:
+        price = quota_price['result']
+        chain_quota_price.labels(NodeIP=node_ip,
+                                 NodePort=node_port).set(int(price, 16))
+    else:
+        print(quota_price)
+    block_limit = class_result.block_limit()
+    if 'result' in block_limit:
+        limit = block_limit['result']
+        block_quota_limit.labels(NodeIP=node_ip,
+                                 NodePort=node_port).set(int(limit, 16))
+    else:
+        print(block_limit)
+
     return Response(prometheus_client.generate_latest(registry),
                     mimetype="text/plain")
 
