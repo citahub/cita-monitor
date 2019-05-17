@@ -69,7 +69,7 @@ format-python-code: ## Run formatter for python codes.
 
 lint-shell-code: ## Run linter for shell codes.
 	$(info Run linter for shell codes)
-	find . -name "*.sh" | xargs shellcheck
+	find . -name "*.sh" | xargs -I @ shellcheck @
 
 format-shell-code: ## Run formatter for shell codes.
 	$(info Run formatter for shell codes)
