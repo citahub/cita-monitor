@@ -26,6 +26,9 @@ deps: ## Download the depenedencies.
 	# intall shellcheck
 	@shellcheck --version || brew install shellcheck || apt-get install shellcheck || (echo "install shellcheck: https://github.com/koalaman/shellcheck" && exit 1)
 
+	# install requirements for agent/cita_exporter
+	@cd agent/cita_exporter/ && pip3 install -r requirements.txt
+
 ##@ Cleanup
 clean: ## Clean up.
 	$(info Cleaning up things)
@@ -66,7 +69,7 @@ format-python-code: ## Run formatter for python codes.
 
 lint-shell-code: ## Run linter for shell codes.
 	$(info Run linter for shell codes)
-	find . -name "*.sh" | xargs shellcheck
+	find . -name "*.sh" | xargs -I @ shellcheck @
 
 format-shell-code: ## Run formatter for shell codes.
 	$(info Run formatter for shell codes)
