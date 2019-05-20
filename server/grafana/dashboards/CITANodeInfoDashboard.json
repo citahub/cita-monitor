@@ -1805,23 +1805,33 @@
       "strokeWidth": "1",
       "targets": [
         {
-          "expr": "(Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"} * 1024)",
+          "expr": "Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"} * 1024",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "use",
+          "legendFormat": "Node Dir Size Used by [ node : $node_id ]",
           "refId": "A"
         },
         {
-          "expr": "$NodeDisk",
+          "expr": "Node_Get_DiskInfo_UsedSize{job=\"$job\",instance=\"$node:$port\"} - (Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"} * 1024)",
           "format": "time_series",
           "hide": false,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "total",
+          "legendFormat": "Other Used",
           "refId": "B"
+        },
+        {
+          "expr": "Node_Get_DiskInfo_FreeSize{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Available",
+          "refId": "C"
         }
       ],
       "title": "Disk Usage",
@@ -1880,7 +1890,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Node Dir Size",
+      "title": "Node Dir Size Used",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2639,32 +2649,6 @@
         "name": "NodePort",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodePort) ",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "isNone": true,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_DirInfo_TotalFileSize{instance=~'$node:$port'},NodeDisk) ",
-        "hide": 2,
-        "includeAll": false,
-        "label": "NodeDisk",
-        "multi": false,
-        "name": "NodeDisk",
-        "options": [],
-        "query": "label_values(Node_Get_DirInfo_TotalFileSize{instance=~'$node:$port'},NodeDisk) ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

@@ -27,6 +27,8 @@ NODE_FLASK = Flask(__name__)
 EXPORTER_PLATFORM = platform.platform()
 AGENT_NAME = platform.node()
 DISK_TOTAL = None
+DISK_USED = None
+DISK_FREE = None
 ADDRESS = None
 FILE_TOTAL_SIZE = None
 SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % (SOFT_FILE_PATH)
@@ -64,8 +66,14 @@ Get the latest block details."
 BLOCK_HEIGHT_DIFFERENCE_TITLE = "[ value is interval ] \
 Get current block time and previous block time, label include CurrentHeight, PreviousHeight."
 
-DIR_TOTAL_SIZE_TITLE = "[ value is size ] \
+NODE_DIR_TOTAL_SIZE_TITLE = "[ value is size ] \
 Get the node directory total size."
+
+NODE_DISK_USED_SIZE_TITLE = "[ value is size ] \
+Get the disk used size."
+
+NODE_DISK_FREE_SIZE_TITLE = "[ value is size ] \
+Get the disk free size."
 
 BLOCK_INTERVAL_TITLE = "[ value is interval ] \
 Get current block time and previous block time."
@@ -148,7 +156,7 @@ class ExporterFunctions():
 
 def dir_analysis(path):
     """Analyze CITA directory size"""
-    global DISK_TOTAL, ADDRESS, FILE_TOTAL_SIZE
+    global DISK_TOTAL, DISK_USED, DISK_FREE, ADDRESS, FILE_TOTAL_SIZE
     get_privkey_txt = "cat %s/privkey" % (path)
     get_privkey_exec = os.popen(get_privkey_txt)
     privkey = str(get_privkey_exec.read())
@@ -156,7 +164,10 @@ def dir_analysis(path):
     get_address_exec = os.popen(get_address_txt)
     get_address_result = json.loads(get_address_exec.read())
     ADDRESS = str(get_address_result['address'])
-    DISK_TOTAL = psutil.disk_usage(SOFT_FILE_PATH).total
+    disk_usage = psutil.disk_usage(SOFT_FILE_PATH)
+    DISK_TOTAL = disk_usage.total
+    DISK_USED = disk_usage.used
+    DISK_FREE = disk_usage.free
     file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (path)
     try:
         file_total_size_exec = os.popen(file_total_size_txt)
@@ -212,8 +223,16 @@ def exporter():
         ["NodeIP", "NodePort", "CurrentHeight", "PreviousHeight"],
         registry=registry)
     dir_total_size = Gauge("Node_Get_DirInfo_TotalFileSize",
-                           DIR_TOTAL_SIZE_TITLE,
-                           ["NodeIP", "NodePort", "NodeDir", "NodeDisk"],
+                           NODE_DIR_TOTAL_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir"],
+                           registry=registry)
+    disk_used_size = Gauge("Node_Get_DiskInfo_UsedSize",
+                           NODE_DISK_USED_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir"],
+                           registry=registry)
+    disk_free_size = Gauge("Node_Get_DiskInfo_FreeSize",
+                           NODE_DISK_FREE_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir"],
                            registry=registry)
     block_interval = Gauge("Node_Get_BlockTimeDifference",
                            BLOCK_INTERVAL_TITLE, ["NodeIP", "NodePort"],
@@ -244,21 +263,23 @@ def exporter():
 
     service_status.labels(NodeIP=node_ip, NodePort=node_port).set(1)
     class_result = ExporterFunctions(node_ip, node_port)
-    if ',' in NODE_FILE_PATH:
-        path_list = NODE_FILE_PATH.split(',')
-        for path in path_list:
-            dir_analysis(path)
-            dir_total_size.labels(NodeIP=node_ip,
-                                  NodePort=node_port,
-                                  NodeDir=path,
-                                  NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
-    else:
-        path = NODE_FILE_PATH
-        dir_analysis(path)
-        dir_total_size.labels(NodeIP=node_ip,
-                              NodePort=node_port,
-                              NodeDir=path,
-                              NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
+    dir_analysis(NODE_FILE_PATH)
+    dir_total_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(FILE_TOTAL_SIZE)
+    disk_used_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(DISK_USED)
+    disk_free_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(DISK_FREE)
+
     first_block_info = class_result.block_number_detail('0x0')
     if 'result' in first_block_info:
         first_block_hash = first_block_info['result']['hash']
