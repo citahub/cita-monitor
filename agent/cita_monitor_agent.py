@@ -69,8 +69,11 @@ Get current block time and previous block time, label include CurrentHeight, Pre
 NODE_DIR_TOTAL_SIZE_TITLE = "[ value is size ] \
 Get the node directory total size."
 
-SYSTEM_DISK_USAGE_TITLE = "[ value is size ] \
-Get the system Hard disk Usage."
+NODE_DISK_USED_SIZE_TITLE = "[ value is size ] \
+Get the disk used size."
+
+NODE_DISK_FREE_SIZE_TITLE = "[ value is size ] \
+Get the disk free size."
 
 BLOCK_INTERVAL_TITLE = "[ value is interval ] \
 Get current block time and previous block time."
@@ -223,10 +226,14 @@ def exporter():
                            NODE_DIR_TOTAL_SIZE_TITLE,
                            ["NodeIP", "NodePort", "NodeDir"],
                            registry=registry)
-    system_disk_usage = Gauge("Get_System_Disk_Usage",
-                              SYSTEM_DISK_USAGE_TITLE,
-                              ["NodeIP", "NodePort", "DiskTotal", "DiskUsed", "DiskFree"],
-                              registry=registry)
+    disk_used_size = Gauge("Node_Get_DiskInfo_UsedSize",
+                           NODE_DISK_USED_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir"],
+                           registry=registry)
+    disk_free_size = Gauge("Node_Get_DiskInfo_FreeSize",
+                           NODE_DISK_FREE_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir"],
+                           registry=registry)
     block_interval = Gauge("Node_Get_BlockTimeDifference",
                            BLOCK_INTERVAL_TITLE, ["NodeIP", "NodePort"],
                            registry=registry)
@@ -269,11 +276,12 @@ def exporter():
         dir_total_size.labels(NodeIP=node_ip,
                               NodePort=node_port,
                               NodeDir=path,).set(FILE_TOTAL_SIZE)
-    system_disk_usage.labels(NodeIP=node_ip,
-                             NodePort=node_port,
-                             DiskTotal=DISK_TOTAL,
-                             DiskUsed=DISK_USED,
-                             DiskFree=DISK_FREE)
+    disk_used_size.labels(NodeIP=node_ip,
+                          NodePort=node_port,
+                          NodeDir=path,).set(DISK_USED)
+    disk_free_size.labels(NodeIP=node_ip,
+                          NodePort=node_port,
+                          NodeDir=path,).set(DISK_FREE)
 
     first_block_info = class_result.block_number_detail('0x0')
     if 'result' in first_block_info:
