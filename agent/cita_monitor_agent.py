@@ -263,25 +263,22 @@ def exporter():
 
     service_status.labels(NodeIP=node_ip, NodePort=node_port).set(1)
     class_result = ExporterFunctions(node_ip, node_port)
-    if ',' in NODE_FILE_PATH:
-        path_list = NODE_FILE_PATH.split(',')
-        for path in path_list:
-            dir_analysis(path)
-            dir_total_size.labels(NodeIP=node_ip,
-                                  NodePort=node_port,
-                                  NodeDir=path).set(FILE_TOTAL_SIZE)
-    else:
-        path = NODE_FILE_PATH
-        dir_analysis(path)
-        dir_total_size.labels(NodeIP=node_ip,
-                              NodePort=node_port,
-                              NodeDir=path,).set(FILE_TOTAL_SIZE)
-    disk_used_size.labels(NodeIP=node_ip,
-                          NodePort=node_port,
-                          NodeDir=path,).set(DISK_USED)
-    disk_free_size.labels(NodeIP=node_ip,
-                          NodePort=node_port,
-                          NodeDir=path,).set(DISK_FREE)
+    dir_analysis(NODE_FILE_PATH)
+    dir_total_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(FILE_TOTAL_SIZE)
+    disk_used_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(DISK_USED)
+    disk_free_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(DISK_FREE)
 
     first_block_info = class_result.block_number_detail('0x0')
     if 'result' in first_block_info:
