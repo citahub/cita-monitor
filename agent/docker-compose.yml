@@ -4,7 +4,7 @@ services:
   prometheus_host_exporter:
     image: prom/node-exporter:v0.17.0
     hostname: host_exporter
-    container_name: prometheus_host_exporter
+    container_name: citamon_agent_host_exporter
     ports:
       - "${HOST_HOSTPORT}:${HOST_CONTAINERPORT}"
     volumes:
@@ -18,7 +18,7 @@ services:
   prometheus_process_exporter:
     image: ncabatoff/process-exporter:0.4.0
     hostname: process_exporter
-    container_name: prometheus_process_exporter
+    container_name: citamon_agent_process_exporter
     ports:
       - "${PROCESS_HOSTPORT}:${PROCESS_CONTAINERPORT}"
     volumes:
@@ -31,7 +31,7 @@ services:
   prometheus_rabbitmq_exporter:
     image: kbudde/rabbitmq-exporter:1.0.0-RC
     hostname: rabbitmq_exporter
-    container_name: prometheus_rabbitmq_exporter
+    container_name: citamon_agent_rabbitmq_exporter
     network_mode: "host"
     ports:
       - "${RABBITMQ_HOSTPORT}:${RABBITMQ_CONTAINERPORT}"
@@ -44,9 +44,9 @@ services:
 
   prometheus_cita_exporter:
     build: ./cita_exporter
-    image: cita-exporter
+    image: citamon/agent-cita-exporter
     hostname: ${HOSTNAME}
-    container_name: prometheus_cita_exporter_${NODE_IP}_${NODE_PORT}
+    container_name: citamon_agent_cita_exporter_${NODE_IP}_${NODE_PORT}
     pid: "host"
     ports:
       - "${AGENT_HOSTPORT}:${AGENT_CONTAINERPORT}"
