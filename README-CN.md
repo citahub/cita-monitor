@@ -6,6 +6,10 @@
 
 监控指标包括区块链数据、服务进程状态、运行环境的 CPU /存储器/磁盘使用率等主机信息等。
 
+[![Travis Build Status](https://img.shields.io/travis/com/cryptape/cita-monitor/master.svg)](https://travis-ci.com/cryptape/cita-monitor)
+[![License: Apache-2.0](https://img.shields.io/github/license/cryptape/cita-monitor.svg)](https://github.com/cryptape/cita-monitor/blob/master/LICENSE)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/cryptape/cita-monitor.svg)
+
 ## 仪表板(Dashboard) 截图
 
 Summary Dashboard Demo
