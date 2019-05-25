@@ -7,6 +7,8 @@ SHELL = /bin/sh
 .PHONY: code-quality lint-python-code format-python-code lint-shell-code format-shell-code
 # receipts for Testing
 .PHONY: test test-unit test-intergration
+# receipts for Release
+.PHONY: changelog changelog-check
 
 .SILENT: help
 
@@ -79,6 +81,29 @@ format-shell-code: ## Run formatter for shell codes.
 
 ci: ## Run recipes for CI.
 ci: build test code-quality
+
+##@ Release
+changelog-check:
+	# check local branch
+	@git_tags_count=$(shell git log --oneline --decorate | grep "tag:" | wc -l | bc) ; \
+		if [ $${git_tags_count} == 0 ]; then \
+			echo "No git tags found on current branch, please follow these steps:" ;\
+			echo "1. $$ git checkout master" ;\
+			echo "2. $$ git checkout -b update-changelog" ;\
+			echo "3. $$ git merge develop" ;\
+			echo "4. $$ make changelog" ;\
+			exit 1 ;\
+		fi
+
+changelog: changelog-check ## Generate CHANGELOG.md from git logs.
+	$(info How do I make a good changelog? https://keepachangelog.com)
+	# auto install git-changelog
+	@git-changelog -v || pip3 install git-changelog
+	@OUTPUT=CHANGELOG.md ;\
+		git-changelog --style basic --template keepachangelog -o $${OUTPUT} . ;\
+		git diff $${OUTPUT} ;\
+		open $${OUTPUT} ;\
+		echo "Edit $${OUTPUT} to keep notable changes"
 
 ##@ Helpers
 
