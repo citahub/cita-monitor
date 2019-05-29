@@ -99,7 +99,7 @@
           "nullText": null,
           "postfix": "",
           "postfixFontSize": "50%",
-          "prefix": "Genesis Block : ",
+          "prefix": "",
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
@@ -125,7 +125,7 @@
             }
           ],
           "thresholds": "",
-          "title": "",
+          "title": "Genesis Block Time",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -181,7 +181,7 @@
           "nullText": null,
           "postfix": "",
           "postfixFontSize": "50%",
-          "prefix": "Network Age Time : ",
+          "prefix": "",
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
@@ -208,7 +208,8 @@
             }
           ],
           "thresholds": "",
-          "title": "",
+          "title": "Network Run Time",
+          "transparent": false,
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -231,7 +232,7 @@
           "id": 23,
           "links": [],
           "mode": "html",
-          "title": "Version",
+          "title": "Protocol Version",
           "transparent": false,
           "type": "text"
         },
@@ -309,7 +310,7 @@
           "nullText": null,
           "postfix": "",
           "postfixFontSize": "50%",
-          "prefix": "economic model : ",
+          "prefix": "",
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
@@ -336,7 +337,7 @@
             }
           ],
           "thresholds": "0,1",
-          "title": "",
+          "title": "Economic Model",
           "type": "singlestat",
           "valueFontSize": "100%",
           "valueMaps": [
@@ -1848,17 +1849,17 @@
       "fill": 0,
       "gridPos": {
         "h": 10,
-        "w": 6,
+        "w": 9,
         "x": 4,
-        "y": 39
+        "y": 45
       },
       "id": 58,
       "legend": {
         "alignAsTable": true,
         "avg": false,
         "current": true,
-        "max": false,
-        "min": false,
+        "max": true,
+        "min": true,
         "rightSide": false,
         "show": true,
         "total": false,
@@ -1930,6 +1931,48 @@
       }
     },
     {
+      "content": "<center>\n<br>\n<h1>$NodeAddress</h1>\n</center>",
+      "gridPos": {
+        "h": 3,
+        "w": 11,
+        "x": 13,
+        "y": 45
+      },
+      "id": 57,
+      "links": [],
+      "mode": "html",
+      "title": "NodeAddress",
+      "type": "text"
+    },
+    {
+      "content": "<center>\n<br>\n<h5>$SoftVersion</h5>\n</center>",
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 13,
+        "y": 48
+      },
+      "id": 52,
+      "links": [],
+      "mode": "html",
+      "title": "SoftVersion",
+      "type": "text"
+    },
+    {
+      "content": "<center>\n<br>\n<h3>$HostName</h3>\n</center>",
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 17,
+        "y": 48
+      },
+      "id": 54,
+      "links": [],
+      "mode": "html",
+      "title": "HostName",
+      "type": "text"
+    },
+    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
@@ -1948,10 +1991,10 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 3,
+        "h": 2,
         "w": 3,
-        "x": 10,
-        "y": 39
+        "x": 13,
+        "y": 51
       },
       "id": 45,
       "interval": null,
@@ -1997,7 +2040,7 @@
         }
       ],
       "thresholds": "0,1",
-      "title": "",
+      "title": "Node Type",
       "type": "singlestat",
       "valueFontSize": "50%",
       "valueMaps": [
@@ -2020,17 +2063,17 @@
       "valueName": "current"
     },
     {
-      "content": "<center>\n<br>\n<h1>$NodeAddress</h1>\n</center>",
+      "content": "<center>\n<br><br>\n<h3>$HostPlatform</h3>\n</center>",
       "gridPos": {
-        "h": 3,
-        "w": 11,
-        "x": 13,
-        "y": 39
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 51
       },
-      "id": 57,
+      "id": 53,
       "links": [],
       "mode": "html",
-      "title": "NodeAddress",
+      "title": "HostPlatform",
       "type": "text"
     },
     {
@@ -2052,10 +2095,10 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 3,
+        "h": 2,
         "w": 3,
-        "x": 10,
-        "y": 42
+        "x": 13,
+        "y": 53
       },
       "id": 36,
       "interval": null,
@@ -2112,48 +2155,6 @@
         }
       ],
       "valueName": "current"
-    },
-    {
-      "content": "<center>\n<br>\n<h5>$SoftVersion</h5>\n</center>",
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 13,
-        "y": 42
-      },
-      "id": 52,
-      "links": [],
-      "mode": "html",
-      "title": "SoftVersion",
-      "type": "text"
-    },
-    {
-      "content": "<center>\n<br>\n<h3>$HostName</h3>\n</center>",
-      "gridPos": {
-        "h": 3,
-        "w": 7,
-        "x": 17,
-        "y": 42
-      },
-      "id": 54,
-      "links": [],
-      "mode": "html",
-      "title": "HostName",
-      "type": "text"
-    },
-    {
-      "content": "<center>\n<br><br>\n<h3>$HostPlatform</h3>\n</center>",
-      "gridPos": {
-        "h": 4,
-        "w": 14,
-        "x": 10,
-        "y": 45
-      },
-      "id": 53,
-      "links": [],
-      "mode": "html",
-      "title": "HostPlatform",
-      "type": "text"
     }
   ],
   "refresh": "5s",
