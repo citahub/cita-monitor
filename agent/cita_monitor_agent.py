@@ -349,19 +349,20 @@ def exporter():
             block_info['result']['header']['proof']['Bft']['commits'].keys())
         consensus_nodes_count = len(consensus_node_list)
         for i in range(consensus_nodes_count):
-            voter = consensus_node_list[i]
-            if voter in block_commits:
+            voter_address = consensus_node_list[i]
+            if voter_address in block_commits:
                 vote_status = 1
             else:
                 vote_status = 0
             vote_node.labels(NodeIP=node_ip,
                              NodePort=node_port,
                              NodeID=NODE_ID,
-                             Voter=voter).set(vote_status)
+                             Voter=voter_address).set(vote_status)
         if ADDRESS in block_commits:
-            local_voter.labels(NodeIP=node_ip, NodePort=node_port).set(1)
+            is_committer = 1
         else:
-            local_voter.labels(NodeIP=node_ip, NodePort=node_port).set(0)
+            is_committer = 0
+        local_voter.labels(NodeIP=node_ip, NodePort=node_port).set(is_committer)
         block_hash = block_info['result']['hash']
         block_time = int(block_head_info['timestamp'])
         block_transactions = int(
