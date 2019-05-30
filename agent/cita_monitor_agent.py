@@ -90,6 +90,12 @@ Get Quota price of chain."
 BLOCK_QUOTA_LIMIT_TITLE = "[ value is block quota limit ] \
 Get block quota limit of chain."
 
+VOTE_NODE_TITLE = "[ value is confirm vote ] \
+Get vote list of current block."
+
+LOCAL_VOTE_TITLE = "[ value is local is voter ] \
+Determine if the local node address is in the voter list."
+
 # print exporter info
 print("\n----------")
 print("monitor node rpc is : ", NODE)
@@ -148,9 +154,9 @@ class ExporterFunctions():
         payload = "rpc getBlockByNumber --height %s" % (block_height)
         return self.cli_request(payload)
 
-    def metadata(self):
+    def metadata(self, block_height):
         """Get metadate with cita-cli"""
-        payload = "rpc getMetaData"
+        payload = "rpc getMetaData --height %s" % (block_height)
         return self.cli_request(payload)
 
 
@@ -217,6 +223,10 @@ def exporter():
             "ConsensusStatus", "SoftVersion"
         ],
         registry=registry)
+    vote_node = Gauge("Node_Get_VoteNode",
+                      VOTE_NODE_TITLE,
+                      ["NodeIP", "NodePort", "NodeID", "Voter"],
+                      registry=registry)
     block_height_difference = Gauge(
         "Node_Get_BlockDifference",
         BLOCK_HEIGHT_DIFFERENCE_TITLE,
@@ -251,6 +261,9 @@ def exporter():
     block_quota_limit = Gauge("Node_Get_BlockQuotaLimit",
                               BLOCK_QUOTA_LIMIT_TITLE, ["NodeIP", "NodePort"],
                               registry=registry)
+    local_voter = Gauge("Node_Get_LocalVoter",
+                        LOCAL_VOTE_TITLE, ["NodeIP", "NodePort"],
+                        registry=registry)
 
     # run exporter
     node_ip = str(NODE.split(':')[0])
@@ -290,7 +303,18 @@ def exporter():
             FirstBlockNumberHash=first_block_hash).set(first_block_time)
     else:
         print(first_block_info)
-    metadata_info = class_result.metadata()
+    block_number_info = class_result.block_number()
+    if 'result' in block_number_info:
+        hex_number = block_number_info['result']
+        previous_hex_number = hex(int(hex_number, 16) - 1)
+        last_block_number.labels(NodeIP=node_ip,
+                                 NodePort=node_port,
+                                 FirstBlockNumberHash=first_block_hash,
+                                 NodeID=NODE_ID,
+                                 NodeAddress=ADDRESS).set(int(hex_number, 16))
+    else:
+        print(block_number_info)
+    metadata_info = class_result.metadata(hex_number)
     if 'result' in metadata_info:
         chain_name = metadata_info['result']['chainName']
         operator = metadata_info['result']['operator']
@@ -311,17 +335,6 @@ def exporter():
                            NodePort=node_port).set(consensus_node_count)
     else:
         print(metadata_info)
-    block_number_info = class_result.block_number()
-    if 'result' in block_number_info:
-        hex_number = block_number_info['result']
-        previous_hex_number = hex(int(hex_number, 16) - 1)
-        last_block_number.labels(NodeIP=node_ip,
-                                 NodePort=node_port,
-                                 FirstBlockNumberHash=first_block_hash,
-                                 NodeID=NODE_ID,
-                                 NodeAddress=ADDRESS).set(int(hex_number, 16))
-    else:
-        print(block_number_info)
     block_info = class_result.block_number_detail(hex_number)
     previous_block_info = class_result.block_number_detail(previous_hex_number)
     if 'result' in block_info and 'result' in previous_block_info:
@@ -332,6 +345,24 @@ def exporter():
             #Get the previous version of CITA v0.19.1 gasUsed
             block_head_info.get('gasUsed')
             block_quota_used = int(block_head_info['gasUsed'], 16)
+        block_commits = list(
+            block_info['result']['header']['proof']['Bft']['commits'].keys())
+        consensus_nodes_count = len(consensus_node_list)
+        for i in range(consensus_nodes_count):
+            voter_address = consensus_node_list[i]
+            if voter_address in block_commits:
+                vote_status = 1
+            else:
+                vote_status = 0
+            vote_node.labels(NodeIP=node_ip,
+                             NodePort=node_port,
+                             NodeID=NODE_ID,
+                             Voter=voter_address).set(vote_status)
+        if ADDRESS in block_commits:
+            is_committer = 1
+        else:
+            is_committer = 0
+        local_voter.labels(NodeIP=node_ip, NodePort=node_port).set(is_committer)
         block_hash = block_info['result']['hash']
         block_time = int(block_head_info['timestamp'])
         block_transactions = int(
