@@ -821,7 +821,7 @@
       "strokeWidth": "1",
       "targets": [
         {
-          "expr": "avg_over_time(Node_Get_VoteNode[$__range]) * 100",
+          "expr": "avg_over_time(Node_Get_VoteNode{job=\"$job\",NodeID=\"$node_id\"}[$__range]) * 100",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
