@@ -42,8 +42,8 @@ except IndexError:
 SERVICE_STATUS_TITLE = "[ value is 1 or 0 ] \
 Check the running status of the CITA service, service up is 1 or down is 0."
 
-FIRST_BLOCK_DETAILS_TITLE = "[ value is first block timestamp ] \
-Get information about the first block."
+GENESIS_BLOCK_DETAILS_TITLE = "[ value is genesis block timestamp ] \
+Get information about the genesis block."
 
 CHAIN_INFO_TITLE = "[ value is 1 or 0 ] \
 Get the basic information of the chain, the economic model Quota is 0 or Charge is 1."
@@ -191,10 +191,11 @@ def exporter():
     service_status = Gauge("Node_Get_ServiceStatus",
                            SERVICE_STATUS_TITLE, ["NodeIP", "NodePort"],
                            registry=registry)
-    first_block_details = Gauge("Node_Get_FirstBlockNumberDetails",
-                                FIRST_BLOCK_DETAILS_TITLE,
-                                ["NodeIP", "NodePort", "FirstBlockNumberHash"],
-                                registry=registry)
+    genesis_block_details = Gauge(
+        "Node_Get_GenesisBlockNumberDetails",
+        GENESIS_BLOCK_DETAILS_TITLE,
+        ["NodeIP", "NodePort", "GenesisBlockNumberHash"],
+        registry=registry)
     chain_info = Gauge("Node_Get_ChainInfo",
                        CHAIN_INFO_TITLE, [
                            "NodeIP", "NodePort", "ChainName", "Operator",
@@ -209,8 +210,10 @@ def exporter():
                         registry=registry)
     last_block_number = Gauge(
         "Node_Get_LastBlockNumber",
-        LAST_BLOCK_NUMBER_TITLE,
-        ["NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID", "NodeAddress"],
+        LAST_BLOCK_NUMBER_TITLE, [
+            "NodeIP", "NodePort", "GenesisBlockNumberHash", "NodeID",
+            "NodeAddress"
+        ],
         registry=registry)
     check_proposer = Gauge("Node_CheckProposer",
                            CHECK_PROPOSER_TITLE, ["NodeIP", "NodePort"],
@@ -293,23 +296,23 @@ def exporter():
         NodeDir=NODE_FILE_PATH,
     ).set(DISK_FREE)
 
-    first_block_info = class_result.block_number_detail('0x0')
-    if 'result' in first_block_info:
-        first_block_hash = first_block_info['result']['hash']
-        first_block_time = first_block_info['result']['header']['timestamp']
-        first_block_details.labels(
+    genesis_block_info = class_result.block_number_detail('0x0')
+    if 'result' in genesis_block_info:
+        genesis_block_hash = genesis_block_info['result']['hash']
+        genesis_block_time = genesis_block_info['result']['header']['timestamp']
+        genesis_block_details.labels(
             NodeIP=node_ip,
             NodePort=node_port,
-            FirstBlockNumberHash=first_block_hash).set(first_block_time)
+            GenesisBlockNumberHash=genesis_block_hash).set(genesis_block_time)
     else:
-        print(first_block_info)
+        print(genesis_block_info)
     block_number_info = class_result.block_number()
     if 'result' in block_number_info:
         hex_number = block_number_info['result']
         previous_hex_number = hex(int(hex_number, 16) - 1)
         last_block_number.labels(NodeIP=node_ip,
                                  NodePort=node_port,
-                                 FirstBlockNumberHash=first_block_hash,
+                                 GenesisBlockNumberHash=genesis_block_hash,
                                  NodeID=NODE_ID,
                                  NodeAddress=ADDRESS).set(int(hex_number, 16))
     else:

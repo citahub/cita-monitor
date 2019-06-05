@@ -16,7 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1559202158611,
+  "id": 8,
+  "iteration": 1559711907174,
   "links": [
     {
       "icon": "external link",
@@ -75,7 +76,7 @@
           },
           "gridPos": {
             "h": 3,
-            "w": 10,
+            "w": 4,
             "x": 4,
             "y": 1
           },
@@ -116,7 +117,7 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "Node_Get_FirstBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"}",
+              "expr": "Node_Get_GenesisBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"}",
               "format": "time_series",
               "instant": true,
               "intervalFactor": 1,
@@ -157,8 +158,8 @@
           },
           "gridPos": {
             "h": 3,
-            "w": 10,
-            "x": 14,
+            "w": 4,
+            "x": 8,
             "y": 1
           },
           "id": 22,
@@ -198,7 +199,7 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "time() - (Node_Get_FirstBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"} / 1000)",
+              "expr": "time() - (Node_Get_GenesisBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"} / 1000)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -219,6 +220,20 @@
             }
           ],
           "valueName": "current"
+        },
+        {
+          "content": "<center>\n<br>\n<h2>$GenesisBlockNumberHash</h2>\n</center>",
+          "gridPos": {
+            "h": 3,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 78,
+          "links": [],
+          "mode": "html",
+          "title": "Genesis Block Hash",
+          "type": "text"
         },
         {
           "content": "<center>\n<br>\n<h2>$Version</h2>\n</center>",
@@ -261,7 +276,7 @@
           "id": 25,
           "links": [],
           "mode": "html",
-          "title": "TokenSymbol",
+          "title": "Token Symbol",
           "transparent": false,
           "type": "text"
         },
@@ -2542,14 +2557,14 @@
           "value": ""
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_FirstBlockNumberDetails{instance=~'$node:$port'},FirstBlockNumberHash)",
+        "definition": "label_values(Node_Get_GenesisBlockNumberDetails{instance=~'$node:$port'},GenesisBlockNumberHash)",
         "hide": 2,
         "includeAll": false,
-        "label": "FirstBlockNumberHash",
+        "label": "GenesisBlockNumberHash",
         "multi": false,
-        "name": "FirstBlockNumberHash",
+        "name": "GenesisBlockNumberHash",
         "options": [],
-        "query": "label_values(Node_Get_FirstBlockNumberDetails{instance=~'$node:$port'},FirstBlockNumberHash)",
+        "query": "label_values(Node_Get_GenesisBlockNumberDetails{instance=~'$node:$port'},GenesisBlockNumberHash)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
