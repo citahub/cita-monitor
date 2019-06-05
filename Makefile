@@ -7,6 +7,8 @@ SHELL = /bin/sh
 .PHONY: code-quality lint-python-code format-python-code lint-shell-code format-shell-code
 # receipts for Testing
 .PHONY: test test-unit test-intergration
+# receipts for Release
+.PHONY: changelog changelog-check
 
 .SILENT: help
 
@@ -79,6 +81,79 @@ format-shell-code: ## Run formatter for shell codes.
 
 ci: ## Run recipes for CI.
 ci: build test code-quality
+
+##@ Release
+changelog-check:
+	# check local branch
+	@git_tags_count=$(shell git log --oneline --decorate | grep "tag:" | wc -l | bc) ; \
+		if [ $${git_tags_count} == 0 ]; then \
+			echo "No git tags found on current branch, please follow these steps:" ;\
+			echo "1. $$ git checkout master" ;\
+			echo "2. $$ git checkout -b update-changelog" ;\
+			echo "3. $$ git merge develop --no-edit" ;\
+			echo "4. $$ make changelog" ;\
+			echo "or just run $$ make changelog-auto" ;\
+			exit 1 ;\
+		fi
+
+changelog: changelog-check ## Generate CHANGELOG.md from git logs.
+	$(info How do I make a good changelog? https://keepachangelog.com)
+	# auto install git-changelog
+	@git-changelog -v || pip3 install git-changelog
+	@OUTPUT=CHANGELOG.md ;\
+		git-changelog --style basic --template "path:devtools/release/keepachangelog-template" -o $${OUTPUT} . ;\
+		git diff $${OUTPUT} ;\
+		open $${OUTPUT} ;\
+		echo "Edit $${OUTPUT} to keep notable changes"
+
+changelog-auto: ## Auto generate CHANGELOG.md
+	$(info Generate CHANGELOG.md in one step)
+	# git checkout master
+	# git branch -D update-changelog
+	# git checkout -b update-changelog
+	# git merge develop --no-edit
+	git merge master --no-edit
+	@$(MAKE) changelog
+
+make commit-release-notes: ## Commit VERSION and CHANGELOG.md
+	@current_version=`cat VERSION` ;\
+	git add VERSION CHANGELOG.md ;\
+	git commit -m "bump version to v$${current_version}" ;\
+	git log -n 1
+
+bump-version-file: ## Update version number in VERSION file.
+	$(info Update version number in VERSION file)
+	@[ -x "$$(command -v bumpversion)" ] || pip3 install bumpversion
+	@if [ "$${part}" == "" ]; then \
+		echo "usage:$$ make bump-version-file part=[major|minor|patch]" ;\
+	else \
+		echo "Update part: $${part}" ;\
+		current_version=`cat VERSION` ;\
+		echo "Current version: $${current_version}" ;\
+		bumpversion --current-version $${current_version} --allow-dirty $${part} VERSION ;\
+		new_version=`cat VERSION` ;\
+		echo "New version: $${new_version}" ;\
+	fi
+
+send-pull-request: ## Send a Pull Request with current git branch
+	@repo_url=`git ls-remote --get-url` ;\
+		user=`echo $${repo_url}|cut -d : -f 2|cut -d / -f 1` ;\
+		repo=`echo $${repo_url}|cut -d : -f 2|cut -d / -f 2|cut -d . -f 1` ;\
+		current_branch=`git rev-parse --abbrev-ref HEAD` ;\
+		pr_url="https://github.com/$${user}/$${repo}/pull/new/$${current_branch}" ;\
+		echo "Create a pull request for '$${current_branch}' on GitHub by visiting" ;\
+		echo $${pr_url} ;\
+		open $${pr_url}
+
+add-release-tag: ## Add git tag using version number from VERSION file
+	$(info Add git tag using version number from VERSION file)
+	@current_version=`cat VERSION` ;\
+		echo "Current version: $${current_version}" ;\
+		git tag -a v$${current_version} -m "Release version v$${current_version}" ;\
+		latest_tag_commit_id=`git rev-list --tags --max-count=1` ;\
+		echo $${latest_tag_commit_id} | xargs git log --oneline --decorate --no-walk ;\
+		git tag -n1 | grep v$${current_version}
+	@echo "Remember to push tags: $$ git push origin --tags"
 
 ##@ Helpers
 

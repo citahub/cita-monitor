@@ -27,6 +27,8 @@ NODE_FLASK = Flask(__name__)
 EXPORTER_PLATFORM = platform.platform()
 AGENT_NAME = platform.node()
 DISK_TOTAL = None
+DISK_USED = None
+DISK_FREE = None
 ADDRESS = None
 FILE_TOTAL_SIZE = None
 SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % (SOFT_FILE_PATH)
@@ -64,8 +66,14 @@ Get the latest block details."
 BLOCK_HEIGHT_DIFFERENCE_TITLE = "[ value is interval ] \
 Get current block time and previous block time, label include CurrentHeight, PreviousHeight."
 
-DIR_TOTAL_SIZE_TITLE = "[ value is size ] \
+NODE_DIR_TOTAL_SIZE_TITLE = "[ value is size ] \
 Get the node directory total size."
+
+NODE_DISK_USED_SIZE_TITLE = "[ value is size ] \
+Get the disk used size."
+
+NODE_DISK_FREE_SIZE_TITLE = "[ value is size ] \
+Get the disk free size."
 
 BLOCK_INTERVAL_TITLE = "[ value is interval ] \
 Get current block time and previous block time."
@@ -81,6 +89,12 @@ Get Quota price of chain."
 
 BLOCK_QUOTA_LIMIT_TITLE = "[ value is block quota limit ] \
 Get block quota limit of chain."
+
+VOTE_NODE_TITLE = "[ value is confirm vote ] \
+Get vote list of current block."
+
+LOCAL_VOTE_TITLE = "[ value is local is voter ] \
+Determine if the local node address is in the voter list."
 
 # print exporter info
 print("\n----------")
@@ -140,15 +154,15 @@ class ExporterFunctions():
         payload = "rpc getBlockByNumber --height %s" % (block_height)
         return self.cli_request(payload)
 
-    def metadata(self):
+    def metadata(self, block_height):
         """Get metadate with cita-cli"""
-        payload = "rpc getMetaData"
+        payload = "rpc getMetaData --height %s" % (block_height)
         return self.cli_request(payload)
 
 
 def dir_analysis(path):
     """Analyze CITA directory size"""
-    global DISK_TOTAL, ADDRESS, FILE_TOTAL_SIZE
+    global DISK_TOTAL, DISK_USED, DISK_FREE, ADDRESS, FILE_TOTAL_SIZE
     get_privkey_txt = "cat %s/privkey" % (path)
     get_privkey_exec = os.popen(get_privkey_txt)
     privkey = str(get_privkey_exec.read())
@@ -156,7 +170,10 @@ def dir_analysis(path):
     get_address_exec = os.popen(get_address_txt)
     get_address_result = json.loads(get_address_exec.read())
     ADDRESS = str(get_address_result['address'])
-    DISK_TOTAL = psutil.disk_usage(SOFT_FILE_PATH).total
+    disk_usage = psutil.disk_usage(SOFT_FILE_PATH)
+    DISK_TOTAL = disk_usage.total
+    DISK_USED = disk_usage.used
+    DISK_FREE = disk_usage.free
     file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (path)
     try:
         file_total_size_exec = os.popen(file_total_size_txt)
@@ -206,14 +223,26 @@ def exporter():
             "ConsensusStatus", "SoftVersion"
         ],
         registry=registry)
+    vote_node = Gauge("Node_Get_VoteNode",
+                      VOTE_NODE_TITLE,
+                      ["NodeIP", "NodePort", "NodeID", "Voter"],
+                      registry=registry)
     block_height_difference = Gauge(
         "Node_Get_BlockDifference",
         BLOCK_HEIGHT_DIFFERENCE_TITLE,
         ["NodeIP", "NodePort", "CurrentHeight", "PreviousHeight"],
         registry=registry)
     dir_total_size = Gauge("Node_Get_DirInfo_TotalFileSize",
-                           DIR_TOTAL_SIZE_TITLE,
-                           ["NodeIP", "NodePort", "NodeDir", "NodeDisk"],
+                           NODE_DIR_TOTAL_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir"],
+                           registry=registry)
+    disk_used_size = Gauge("Node_Get_DiskInfo_UsedSize",
+                           NODE_DISK_USED_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir"],
+                           registry=registry)
+    disk_free_size = Gauge("Node_Get_DiskInfo_FreeSize",
+                           NODE_DISK_FREE_SIZE_TITLE,
+                           ["NodeIP", "NodePort", "NodeDir"],
                            registry=registry)
     block_interval = Gauge("Node_Get_BlockTimeDifference",
                            BLOCK_INTERVAL_TITLE, ["NodeIP", "NodePort"],
@@ -232,6 +261,9 @@ def exporter():
     block_quota_limit = Gauge("Node_Get_BlockQuotaLimit",
                               BLOCK_QUOTA_LIMIT_TITLE, ["NodeIP", "NodePort"],
                               registry=registry)
+    local_voter = Gauge("Node_Get_LocalVoter",
+                        LOCAL_VOTE_TITLE, ["NodeIP", "NodePort"],
+                        registry=registry)
 
     # run exporter
     node_ip = str(NODE.split(':')[0])
@@ -244,21 +276,23 @@ def exporter():
 
     service_status.labels(NodeIP=node_ip, NodePort=node_port).set(1)
     class_result = ExporterFunctions(node_ip, node_port)
-    if ',' in NODE_FILE_PATH:
-        path_list = NODE_FILE_PATH.split(',')
-        for path in path_list:
-            dir_analysis(path)
-            dir_total_size.labels(NodeIP=node_ip,
-                                  NodePort=node_port,
-                                  NodeDir=path,
-                                  NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
-    else:
-        path = NODE_FILE_PATH
-        dir_analysis(path)
-        dir_total_size.labels(NodeIP=node_ip,
-                              NodePort=node_port,
-                              NodeDir=path,
-                              NodeDisk=DISK_TOTAL).set(FILE_TOTAL_SIZE)
+    dir_analysis(NODE_FILE_PATH)
+    dir_total_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(FILE_TOTAL_SIZE)
+    disk_used_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(DISK_USED)
+    disk_free_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(DISK_FREE)
+
     first_block_info = class_result.block_number_detail('0x0')
     if 'result' in first_block_info:
         first_block_hash = first_block_info['result']['hash']
@@ -269,7 +303,18 @@ def exporter():
             FirstBlockNumberHash=first_block_hash).set(first_block_time)
     else:
         print(first_block_info)
-    metadata_info = class_result.metadata()
+    block_number_info = class_result.block_number()
+    if 'result' in block_number_info:
+        hex_number = block_number_info['result']
+        previous_hex_number = hex(int(hex_number, 16) - 1)
+        last_block_number.labels(NodeIP=node_ip,
+                                 NodePort=node_port,
+                                 FirstBlockNumberHash=first_block_hash,
+                                 NodeID=NODE_ID,
+                                 NodeAddress=ADDRESS).set(int(hex_number, 16))
+    else:
+        print(block_number_info)
+    metadata_info = class_result.metadata(hex_number)
     if 'result' in metadata_info:
         chain_name = metadata_info['result']['chainName']
         operator = metadata_info['result']['operator']
@@ -290,17 +335,6 @@ def exporter():
                            NodePort=node_port).set(consensus_node_count)
     else:
         print(metadata_info)
-    block_number_info = class_result.block_number()
-    if 'result' in block_number_info:
-        hex_number = block_number_info['result']
-        previous_hex_number = hex(int(hex_number, 16) - 1)
-        last_block_number.labels(NodeIP=node_ip,
-                                 NodePort=node_port,
-                                 FirstBlockNumberHash=first_block_hash,
-                                 NodeID=NODE_ID,
-                                 NodeAddress=ADDRESS).set(int(hex_number, 16))
-    else:
-        print(block_number_info)
     block_info = class_result.block_number_detail(hex_number)
     previous_block_info = class_result.block_number_detail(previous_hex_number)
     if 'result' in block_info and 'result' in previous_block_info:
@@ -311,6 +345,24 @@ def exporter():
             #Get the previous version of CITA v0.19.1 gasUsed
             block_head_info.get('gasUsed')
             block_quota_used = int(block_head_info['gasUsed'], 16)
+        block_commits = list(
+            block_info['result']['header']['proof']['Bft']['commits'].keys())
+        consensus_nodes_count = len(consensus_node_list)
+        for i in range(consensus_nodes_count):
+            voter_address = consensus_node_list[i]
+            if voter_address in block_commits:
+                vote_status = 1
+            else:
+                vote_status = 0
+            vote_node.labels(NodeIP=node_ip,
+                             NodePort=node_port,
+                             NodeID=NODE_ID,
+                             Voter=voter_address).set(vote_status)
+        if ADDRESS in block_commits:
+            is_committer = 1
+        else:
+            is_committer = 0
+        local_voter.labels(NodeIP=node_ip, NodePort=node_port).set(is_committer)
         block_hash = block_info['result']['hash']
         block_time = int(block_head_info['timestamp'])
         block_transactions = int(

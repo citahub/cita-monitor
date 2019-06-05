@@ -16,8 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 7,
-  "iteration": 1557146043654,
+  "iteration": 1559202158611,
   "links": [
     {
       "icon": "external link",
@@ -99,7 +98,7 @@
           "nullText": null,
           "postfix": "",
           "postfixFontSize": "50%",
-          "prefix": "Genesis Block : ",
+          "prefix": "",
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
@@ -125,7 +124,7 @@
             }
           ],
           "thresholds": "",
-          "title": "",
+          "title": "Genesis Block Time",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -181,7 +180,7 @@
           "nullText": null,
           "postfix": "",
           "postfixFontSize": "50%",
-          "prefix": "Network Age Time : ",
+          "prefix": "",
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
@@ -208,7 +207,8 @@
             }
           ],
           "thresholds": "",
-          "title": "",
+          "title": "Network Run Time",
+          "transparent": false,
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -231,7 +231,7 @@
           "id": 23,
           "links": [],
           "mode": "html",
-          "title": "Version",
+          "title": "Protocol Version",
           "transparent": false,
           "type": "text"
         },
@@ -309,7 +309,7 @@
           "nullText": null,
           "postfix": "",
           "postfixFontSize": "50%",
-          "prefix": "economic model : ",
+          "prefix": "",
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
@@ -336,7 +336,7 @@
             }
           ],
           "thresholds": "0,1",
-          "title": "",
+          "title": "Economic Model",
           "type": "singlestat",
           "valueFontSize": "100%",
           "valueMaps": [
@@ -394,7 +394,7 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 5,
         "x": 0,
         "y": 2
@@ -465,7 +465,6 @@
         "#d44a3a"
       ],
       "datasource": "Prometheus",
-      "decimals": null,
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -475,12 +474,12 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 4,
-        "w": 5,
+        "h": 2,
+        "w": 4,
         "x": 5,
         "y": 2
       },
-      "id": 34,
+      "id": 71,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -500,7 +499,7 @@
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
-      "prefixFontSize": "70%",
+      "prefixFontSize": "50%",
       "rangeMaps": [
         {
           "from": "null",
@@ -517,18 +516,16 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "max(Node_Get_ChainNodes{job=\"$job\"})",
+          "expr": "Node_Get_BlockQuotaLimit{job=\"$job\",instance=\"$node:$port\"}",
           "format": "time_series",
-          "instant": true,
           "intervalFactor": 1,
-          "legendFormat": "",
           "refId": "A"
         }
       ],
       "thresholds": "",
-      "title": "Consensus Nodes of [ $ChainName ]",
+      "title": "Block Limit of [ $ChainName ]",
       "type": "singlestat",
-      "valueFontSize": "70%",
+      "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
@@ -536,7 +533,7 @@
           "value": "null"
         }
       ],
-      "valueName": "current"
+      "valueName": "avg"
     },
     {
       "aliasColors": {},
@@ -546,9 +543,9 @@
       "datasource": "Prometheus",
       "fill": 0,
       "gridPos": {
-        "h": 8,
-        "w": 14,
-        "x": 10,
+        "h": 10,
+        "w": 15,
+        "x": 9,
         "y": 2
       },
       "id": 47,
@@ -638,6 +635,7 @@
         "#d44a3a"
       ],
       "datasource": "Prometheus",
+      "decimals": null,
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -647,12 +645,12 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 5,
         "x": 0,
-        "y": 6
+        "y": 4
       },
-      "id": 71,
+      "id": 34,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -672,7 +670,7 @@
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
-      "prefixFontSize": "50%",
+      "prefixFontSize": "70%",
       "rangeMaps": [
         {
           "from": "null",
@@ -689,16 +687,18 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "Node_Get_BlockQuotaLimit{job=\"$job\",instance=\"$node:$port\"}",
+          "expr": "max(Node_Get_ChainNodes{job=\"$job\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
+          "legendFormat": "",
           "refId": "A"
         }
       ],
       "thresholds": "",
-      "title": "Block Limit of [ $ChainName ]",
+      "title": "Consensus Nodes of [ $ChainName ]",
       "type": "singlestat",
-      "valueFontSize": "80%",
+      "valueFontSize": "70%",
       "valueMaps": [
         {
           "op": "=",
@@ -706,7 +706,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -727,10 +727,10 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 4,
-        "w": 5,
+        "h": 2,
+        "w": 4,
         "x": 5,
-        "y": 6
+        "y": 4
       },
       "id": 70,
       "interval": null,
@@ -789,12 +789,57 @@
       "valueName": "avg"
     },
     {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "Prometheus",
+      "description": "",
+      "fontSize": "80%",
+      "format": "percent",
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 0,
+        "y": 6
+      },
+      "id": 75,
+      "interval": null,
+      "legend": {
+        "percentage": false,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Right side",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "donut",
+      "strokeWidth": "1",
+      "targets": [
+        {
+          "expr": "avg_over_time(Node_Get_VoteNode{job=\"$job\",NodeID=\"$node_id\"}[$__range]) * 100",
+          "format": "time_series",
+          "instant": true,
+          "intervalFactor": 1,
+          "legendFormat": "{{Voter}}",
+          "refId": "B"
+        }
+      ],
+      "title": "Voting rate of consensus nodes",
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 12
       },
       "id": 28,
       "panels": [],
@@ -807,7 +852,7 @@
         "h": 3,
         "w": 10,
         "x": 0,
-        "y": 11
+        "y": 13
       },
       "id": 73,
       "links": [],
@@ -827,7 +872,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 11
+        "y": 13
       },
       "id": 44,
       "legend": {
@@ -927,7 +972,7 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 14
+        "y": 16
       },
       "id": 42,
       "interval": null,
@@ -1007,7 +1052,7 @@
         "h": 5,
         "w": 3,
         "x": 3,
-        "y": 14
+        "y": 16
       },
       "id": 31,
       "interval": null,
@@ -1088,7 +1133,7 @@
         "h": 2,
         "w": 4,
         "x": 6,
-        "y": 14
+        "y": 16
       },
       "id": 56,
       "interval": null,
@@ -1180,7 +1225,7 @@
         "h": 3,
         "w": 4,
         "x": 6,
-        "y": 16
+        "y": 18
       },
       "id": 32,
       "interval": null,
@@ -1262,7 +1307,7 @@
         "h": 3,
         "w": 7,
         "x": 10,
-        "y": 16
+        "y": 18
       },
       "id": 33,
       "interval": null,
@@ -1345,7 +1390,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 16
+        "y": 18
       },
       "id": 49,
       "interval": null,
@@ -1384,7 +1429,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg_over_time(Node_Get_BlockTimeDifference{job=\"$job\",instance=\"$node:$port\"}[1h])",
+          "expr": "avg_over_time(Node_Get_BlockTimeDifference{job=\"$job\",instance=\"$node:$port\"}[$__range])",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -1393,8 +1438,8 @@
         }
       ],
       "thresholds": "0,1",
-      "timeFrom": "1h",
-      "title": "Last [ 1h ] Avg Block Interval Time",
+      "timeFrom": null,
+      "title": "Avg Block Interval Time",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1417,7 +1462,7 @@
         "h": 6,
         "w": 10,
         "x": 0,
-        "y": 19
+        "y": 21
       },
       "id": 48,
       "legend": {
@@ -1504,7 +1549,7 @@
         "h": 11,
         "w": 14,
         "x": 10,
-        "y": 19
+        "y": 21
       },
       "id": 55,
       "legend": {
@@ -1606,7 +1651,7 @@
         "h": 5,
         "w": 10,
         "x": 0,
-        "y": 25
+        "y": 27
       },
       "id": 50,
       "interval": null,
@@ -1676,10 +1721,10 @@
       "datasource": "Prometheus",
       "fill": 1,
       "gridPos": {
-        "h": 9,
-        "w": 24,
+        "h": 10,
+        "w": 13,
         "x": 0,
-        "y": 30
+        "y": 32
       },
       "id": 68,
       "legend": {
@@ -1774,152 +1819,6 @@
       }
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
-      },
-      "datasource": "Prometheus",
-      "fontSize": "80%",
-      "format": "bytes",
-      "gridPos": {
-        "h": 10,
-        "w": 4,
-        "x": 0,
-        "y": 39
-      },
-      "id": 66,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "show": true,
-        "values": true
-      },
-      "legendType": "On graph",
-      "links": [],
-      "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": "1",
-      "targets": [
-        {
-          "expr": "(Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"} * 1024)",
-          "format": "time_series",
-          "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "use",
-          "refId": "A"
-        },
-        {
-          "expr": "$NodeDisk",
-          "format": "time_series",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "total",
-          "refId": "B"
-        }
-      ],
-      "title": "Disk Usage",
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
-      "decimals": 2,
-      "fill": 0,
-      "gridPos": {
-        "h": 10,
-        "w": 6,
-        "x": 4,
-        "y": 39
-      },
-      "id": 58,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 5,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"}",
-          "format": "time_series",
-          "instant": false,
-          "intervalFactor": 1,
-          "legendFormat": "{{NodeIP}}:{{NodePort}} - {{NodeDir}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Node Dir Size",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": false,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": null,
-          "format": "kbytes",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
@@ -1940,8 +1839,8 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 10,
-        "y": 39
+        "x": 13,
+        "y": 32
       },
       "id": 45,
       "interval": null,
@@ -1987,7 +1886,7 @@
         }
       ],
       "thresholds": "0,1",
-      "title": "",
+      "title": "Node Type",
       "type": "singlestat",
       "valueFontSize": "50%",
       "valueMaps": [
@@ -2010,17 +1909,291 @@
       "valueName": "current"
     },
     {
-      "content": "<center>\n<br>\n<h1>$NodeAddress</h1>\n</center>",
+      "content": "<center>\n<br>\n<h2>$NodeAddress</h2>\n</center>",
       "gridPos": {
         "h": 3,
-        "w": 11,
-        "x": 13,
-        "y": 39
+        "w": 8,
+        "x": 16,
+        "y": 32
       },
       "id": 57,
       "links": [],
       "mode": "html",
       "title": "NodeAddress",
+      "type": "text"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 1,
+      "fill": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 13,
+        "y": 35
+      },
+      "id": 76,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "Node_Get_LocalVoter{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{NodeIP}}:{{NodePort}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Local Voter History",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": "1",
+          "logBase": 1,
+          "max": "1",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "Prometheus",
+      "fontSize": "80%",
+      "format": "bytes",
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 42
+      },
+      "id": 66,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "values": true
+      },
+      "legendType": "On graph",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": "1",
+      "targets": [
+        {
+          "expr": "Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"} * 1024",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Node Dir Size Used by [ node : $node_id ]",
+          "refId": "A"
+        },
+        {
+          "expr": "Node_Get_DiskInfo_UsedSize{job=\"$job\",instance=\"$node:$port\"} - (Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"} * 1024)",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Other Used",
+          "refId": "B"
+        },
+        {
+          "expr": "Node_Get_DiskInfo_FreeSize{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Available",
+          "refId": "C"
+        }
+      ],
+      "title": "Disk Usage",
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 2,
+      "fill": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 4,
+        "y": 42
+      },
+      "id": 58,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{NodeIP}}:{{NodePort}} - {{NodeDir}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node Dir Size Used",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": false,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "kbytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "content": "<center>\n<br>\n<h5>$SoftVersion</h5>\n</center>",
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 13,
+        "y": 42
+      },
+      "id": 52,
+      "links": [],
+      "mode": "html",
+      "title": "SoftVersion",
+      "type": "text"
+    },
+    {
+      "content": "<center>\n<br>\n<h3>$HostName</h3>\n</center>",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 42
+      },
+      "id": 54,
+      "links": [],
+      "mode": "html",
+      "title": "HostName",
       "type": "text"
     },
     {
@@ -2042,10 +2215,10 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 3,
-        "x": 10,
-        "y": 42
+        "x": 13,
+        "y": 46
       },
       "id": 36,
       "interval": null,
@@ -2104,40 +2277,12 @@
       "valueName": "current"
     },
     {
-      "content": "<center>\n<br>\n<h5>$SoftVersion</h5>\n</center>",
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 13,
-        "y": 42
-      },
-      "id": 52,
-      "links": [],
-      "mode": "html",
-      "title": "SoftVersion",
-      "type": "text"
-    },
-    {
-      "content": "<center>\n<br>\n<h3>$HostName</h3>\n</center>",
-      "gridPos": {
-        "h": 3,
-        "w": 7,
-        "x": 17,
-        "y": 42
-      },
-      "id": 54,
-      "links": [],
-      "mode": "html",
-      "title": "HostName",
-      "type": "text"
-    },
-    {
       "content": "<center>\n<br><br>\n<h3>$HostPlatform</h3>\n</center>",
       "gridPos": {
         "h": 4,
-        "w": 14,
-        "x": 10,
-        "y": 45
+        "w": 8,
+        "x": 16,
+        "y": 46
       },
       "id": 53,
       "links": [],
@@ -2171,7 +2316,7 @@
         "name": "job",
         "options": [],
         "query": "label_values(Node_Get_ServiceStatus,job)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -2197,7 +2342,7 @@
         "name": "node_id",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumber{job=~\"$job\"},NodeID) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2223,7 +2368,7 @@
         "name": "node",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumber{job=~\"$job\",NodeID=~\"$node_id\"},instance)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "/([^:]+):.*/",
         "skipUrlSync": false,
         "sort": 0,
@@ -2249,7 +2394,7 @@
         "name": "port",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumber{job=~\"$job\",NodeID=~\"$node_id\"},instance)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "/[^:]+:(.*)/",
         "skipUrlSync": false,
         "sort": 0,
@@ -2275,7 +2420,7 @@
         "name": "ChainName",
         "options": [],
         "query": "label_values(Node_Get_ChainInfo{instance=~'$node:$port'},ChainName)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -2301,7 +2446,7 @@
         "name": "Operator",
         "options": [],
         "query": "label_values(Node_Get_ChainInfo{instance=~'$node:$port'},Operator)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -2327,7 +2472,7 @@
         "name": "TokenName",
         "options": [],
         "query": "label_values(Node_Get_ChainInfo{instance=~'$node:$port'},TokenName)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -2353,7 +2498,7 @@
         "name": "TokenSymbol",
         "options": [],
         "query": "label_values(Node_Get_ChainInfo{instance=~'$node:$port'},TokenSymbol)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -2379,7 +2524,7 @@
         "name": "Version",
         "options": [],
         "query": "label_values(Node_Get_ChainInfo{instance=~'$node:$port'},Version)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -2405,7 +2550,7 @@
         "name": "FirstBlockNumberHash",
         "options": [],
         "query": "label_values(Node_Get_FirstBlockNumberDetails{instance=~'$node:$port'},FirstBlockNumberHash)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -2431,7 +2576,7 @@
         "name": "LastBlockNumberHash",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumberDetails,LastBlockNumberHash) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2457,7 +2602,7 @@
         "name": "node_dir",
         "options": [],
         "query": "label_values(Node_Get_DirInfo_TotalFileSize{instance=~'$node:$port'},NodeDir) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2483,7 +2628,7 @@
         "name": "ConsensusStatus",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},ConsensusStatus) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2509,7 +2654,7 @@
         "name": "SoftVersion",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},SoftVersion) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2535,7 +2680,7 @@
         "name": "HostPlatform",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},HostPlatform) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2561,7 +2706,7 @@
         "name": "HostName",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumberDetails{instance=~'$node:$port'},HostName) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2587,7 +2732,7 @@
         "name": "NodeAddress",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodeAddress) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2613,7 +2758,7 @@
         "name": "NodeIP",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodeIP) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2639,7 +2784,7 @@
         "name": "NodePort",
         "options": [],
         "query": "label_values(Node_Get_LastBlockNumber{instance=~'$node:$port'},NodePort) ",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2657,16 +2802,16 @@
           "value": ""
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_DirInfo_TotalFileSize{instance=~'$node:$port'},NodeDisk) ",
+        "definition": "query_result(max(Node_Get_LastBlockNumber{job=\"$job\"}))",
         "hide": 2,
         "includeAll": false,
-        "label": "NodeDisk",
+        "label": "MaxBlockNumber",
         "multi": false,
-        "name": "NodeDisk",
+        "name": "MaxBlockNumber",
         "options": [],
-        "query": "label_values(Node_Get_DirInfo_TotalFileSize{instance=~'$node:$port'},NodeDisk) ",
-        "refresh": 1,
-        "regex": "",
+        "query": "query_result(max(Node_Get_LastBlockNumber{job=\"$job\"}))",
+        "refresh": 2,
+        "regex": "/.*\\W(\\d*)\\W.*/",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
@@ -2674,6 +2819,79 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "auto": true,
+        "auto_count": 300,
+        "auto_min": "5m",
+        "current": {
+          "text": "auto",
+          "value": "$__auto_interval_timeRange"
+        },
+        "hide": 2,
+        "label": "timeRange",
+        "name": "timeRange",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval_timeRange"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
       }
     ]
   },
@@ -2709,5 +2927,5 @@
   "timezone": "",
   "title": "CITA Node Info Dashboard",
   "uid": "VXdVrO3iz1",
-  "version": 1
+  "version": 3
 }

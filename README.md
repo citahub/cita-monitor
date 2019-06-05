@@ -6,6 +6,10 @@ A blockchain monitoring system for [CITA](https://github.com/cryptape/cita), usi
 
 Metrics are including blockchain data, process status, host info like CPU/memory/disk usage etc.
 
+[![Travis Build Status](https://img.shields.io/travis/com/cryptape/cita-monitor/master.svg)](https://travis-ci.com/cryptape/cita-monitor)
+[![License: Apache-2.0](https://img.shields.io/github/license/cryptape/cita-monitor.svg)](https://github.com/cryptape/cita-monitor/blob/master/LICENSE)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/cryptape/cita-monitor.svg)
+
 ## Screenshots for Dashboards
 
 Summary Dashboard Demo

@@ -3,7 +3,7 @@ services:
   prometheus:
     user: root
     image: prom/prometheus:v2.6.0
-    container_name: cita_monitor_server_prometheus
+    container_name: citamon_server_prometheus
     hostname: prometheus_server
     privileged: true
     volumes:
@@ -21,7 +21,7 @@ services:
 
   alertmanager:
     image: prom/alertmanager:v0.15.3
-    container_name: cita_monitor_server_alertmanager
+    container_name: citamon_server_alertmanager
     hostname: prometheus_alertmanager_server
     volumes:
       - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
@@ -37,7 +37,7 @@ services:
     user: root
     build: ./grafana
     image: cryptape/grafana:5.4.2
-    container_name: cita_monitor_server_grafana
+    container_name: citamon_server_grafana
     hostname: grafana_server
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
