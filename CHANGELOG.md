@@ -1,0 +1,146 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [v0.3.0](https://github.com/cryptape/cita-monitor/releases/tag/v0.3.0) ([compare](https://github.com/cryptape/cita-monitor/compare/v0.2.0...v0.3.0))
+
+### Added
+- Add devtools/release/keepachangelog-template ([92dffa1](https://github.com/cryptape/cita-monitor/commit/92dffa1baf0b2a5bfb6f2086f8f2bc310e0cfbf6) by RainChen).
+- Add make receipts for release flow ([1ac3c44](https://github.com/cryptape/cita-monitor/commit/1ac3c440033d16a956b5e469f61ec2c87db9b5c3) by RainChen).
+- Add voter graph ([58b4ce2](https://github.com/cryptape/cita-monitor/commit/58b4ce213f6a725a9b4c20a598ac9b385a0897ac) by blankwu).
+- Add vote status ([9463eed](https://github.com/cryptape/cita-monitor/commit/9463eed2db5c8ac368971cce02143e9120922162) by blankwu).
+- Add `make changelog` to generate changelog.md from git logs ([64d823b](https://github.com/cryptape/cita-monitor/commit/64d823b21669f68a739440926b9e8ed2e514fd58) by RainChen).
+- Add used and free disk values ([078acf5](https://github.com/cryptape/cita-monitor/commit/078acf56369061413f79ca64ed1b2063548db020) by blankwu).
+- Add hard disk remaining space information ([ea660e4](https://github.com/cryptape/cita-monitor/commit/ea660e40aaa32ecdeb91b2853c9a40ab1bc21ddf) by JiangXL).
+
+### Documented
+- Docs: add badges in readme ([4a77b43](https://github.com/cryptape/cita-monitor/commit/4a77b43ff2e57d20f64d2c0b1ea27ce4a39384f5) by RainChen).
+- Docs: update readme ([56a88c8](https://github.com/cryptape/cita-monitor/commit/56a88c8cbbe976a91b1f38b6e2302b20c8000893) by RainChen).
+- Docs: rename docs/alert_strategies.md to docs/alert_policies.md ([e07de43](https://github.com/cryptape/cita-monitor/commit/e07de43d9129bd591428c3671302008139cc36fb) by RainChen).
+
+### Fixed
+- Fix vote list dup, add node id label query ([d1da247](https://github.com/cryptape/cita-monitor/commit/d1da2479111e6c0f80cf6735660cdfebcf41eb40) by blankwu).
+- Fix docker image name and docker container name ([8f11e3a](https://github.com/cryptape/cita-monitor/commit/8f11e3ab88bb32162870cbd7b9c8f3d9c6ab856d) by blankwu).
+- Fix python format, del node dir multipath ([9aeea21](https://github.com/cryptape/cita-monitor/commit/9aeea21d69f424e85edbd306958faa5a9c42cf7b) by blankwu).
+- Fix: make `make lint-shell-code` works in linux ([8532651](https://github.com/cryptape/cita-monitor/commit/8532651a888fe69a131bf7a4214dafdbab546185) by RainChen).
+- Fix: install requirements for agent/cita_exporter in `make deps` ([2427dd9](https://github.com/cryptape/cita-monitor/commit/2427dd96735cd1689dfcd19ce18c773da6d74b03) by RainChen).
+
+### Misc
+- Update script format ([05652bc](https://github.com/cryptape/cita-monitor/commit/05652bc35a82390c8e337b6b986c97ab4250927a) by blankwu).
+- Update the cita node info dashboard layout ([a1b9fbb](https://github.com/cryptape/cita-monitor/commit/a1b9fbbdc766bead93b3097530d15df4660355c4) by JiangXL).
+- Update dashboard, fix pie graph ([6c4cfd7](https://github.com/cryptape/cita-monitor/commit/6c4cfd7123e9a984d3ff035987fe51e78b771445) by blankwu).
+- Chore: disable some pylint modules for now ([d2c24a4](https://github.com/cryptape/cita-monitor/commit/d2c24a496bdad8c707a79eb659ab332e4667ca68) by RainChen).
+- Refactor: unnecessary "else" after "return" (no-else-return) ([c32484e](https://github.com/cryptape/cita-monitor/commit/c32484e91a490d245a23280ee6912e90ac2a7b06) by RainChen).
+- Refactor: trailing newlines (trailing-newlines) ([21046c6](https://github.com/cryptape/cita-monitor/commit/21046c693ac28f904b0bffa94781f83807089262) by RainChen).
+- Refactor: unnecessary parens after 'return' keyword (superfluous-parens) ([ce58526](https://github.com/cryptape/cita-monitor/commit/ce58526445ea0549a9fcc95ff410a78cea710900) by RainChen).
+
+
+## [v0.2.0](https://github.com/cryptape/cita-monitor/releases/tag/v0.2.0) ([compare](https://github.com/cryptape/cita-monitor/compare/v0.1.0...v0.2.0)) - 2019-05-16
+
+### Added
+- Add image tag, lock version, update dashboard ([76ac8ea](https://github.com/cryptape/cita-monitor/commit/76ac8ea0f8cb9bdacd789bb27b2384dfeef8cb94) by blankwu).
+- Add travisci config: .travis.yml ([98e342e](https://github.com/cryptape/cita-monitor/commit/98e342e050e53a3a0f09f68f03e55c3d1230651a) by RainChen).
+- Add dir map and change alertmanager subject name ([fb1c879](https://github.com/cryptape/cita-monitor/commit/fb1c879fbdf2195686ae702ba633cdc73793c4e5) by blankwu).
+- Add email template ([38273ef](https://github.com/cryptape/cita-monitor/commit/38273ef92926e4cdb26b8ae12a722ae8c1c8b890) by blankwu).
+- Add rule reame ([40548f5](https://github.com/cryptape/cita-monitor/commit/40548f55265bf6ca020c02aafcf6490ab3e2f22f) by blankwu).
+- Add new rules and format annotations ([24ea54b](https://github.com/cryptape/cita-monitor/commit/24ea54bca8892c563f16f176834f3f24ca0d04d5) by blankwu).
+- Add makefile ([3abdd13](https://github.com/cryptape/cita-monitor/commit/3abdd132ac81ed51e558f3b736ef503f56dbba38) by RainChen).
+
+### Changed
+- Change index key is node id, add node rpc info and node id. ([695e7df](https://github.com/cryptape/cita-monitor/commit/695e7df7a712c40bc90f2b0d7e677963bc4174ed) by blankwu).
+
+### Documented
+- Docs: fix typo for cita ([ab931f9](https://github.com/cryptape/cita-monitor/commit/ab931f9f64bf8235941af545e16f8b40888634de) by RainChen).
+- Docs: add readme-cn.md ([826561c](https://github.com/cryptape/cita-monitor/commit/826561c02e01ec3cb3cb2cb24ad9f23150a94407) by RainChen).
+- Docs: add system architecture，tech stack in readme ([e1caa84](https://github.com/cryptape/cita-monitor/commit/e1caa84c3209e0b509769fbb4dcaeb6f08fec062) by RainChen).
+- Docs: update readme and add alert_strategies.md, information_architecture.md to docs/ ([0280673](https://github.com/cryptape/cita-monitor/commit/0280673290e0d7ccbf3d7cfb5ee1d4a64b372015) by RainChen).
+- Docs: add screenshots in readme ([2cb2b23](https://github.com/cryptape/cita-monitor/commit/2cb2b23dae3fef1ad22b401c3f55e1cf58e8b103) by RainChen).
+
+### Fixed
+- Fix prefix info ([11253a5](https://github.com/cryptape/cita-monitor/commit/11253a5660ffe9ec5cc0eea4aaee2dec721e2b99) by wuxc).
+- Fix cpu title ([e6d672a](https://github.com/cryptape/cita-monitor/commit/e6d672a1567a23165de7369094aa457bfa3883c7) by wuxc).
+- Fix docker start single container command description ([71bdefb](https://github.com/cryptape/cita-monitor/commit/71bdefb70b94eb86197ee5cb44ca60af25143238) by blankwu).
+- Fix container time sync, use file map ([a0bcbc9](https://github.com/cryptape/cita-monitor/commit/a0bcbc9eb029f1f96a28b8335df212c158bf7135) by blankwu).
+- Fix: request command causes the script to fail to run ([b14d5a6](https://github.com/cryptape/cita-monitor/commit/b14d5a644b940a0bad805b4fdf8ec7c1008ca579) by blankwu).
+- Fix 4 consensus nodes to get 5 bug ([17b76d4](https://github.com/cryptape/cita-monitor/commit/17b76d40a592e88db3e1a2fadb0295a790538cc0) by JiangXL).
+
+### Misc
+- Polish readme ([98bdde4](https://github.com/cryptape/cita-monitor/commit/98bdde4ada6622c71f33be515b2371d527c06107) by zhouyun-zoe).
+- Del interval select ([883f773](https://github.com/cryptape/cita-monitor/commit/883f773f6f73ddc9d5f461a77d73d946dc747ef5) by blankwu).
+- Modify the variables of the docker-compose configuration file to uppercase ([a0bd212](https://github.com/cryptape/cita-monitor/commit/a0bd212627686f0b2d1c851468c5d8d935f53d2a) by JiangXL).
+- Optimized the code format and improved the qa score to 9.63 (your code has been rated at 9.63/10) ([1ec0474](https://github.com/cryptape/cita-monitor/commit/1ec0474ecf934122a417eb364c82f68168349b61) by JiangXL).
+- Format code, update variable name ([3f69cd4](https://github.com/cryptape/cita-monitor/commit/3f69cd4f0f108a29ed55e077091faf86d2a9be3c) by blankwu).
+-   update server readme ([02f2917](https://github.com/cryptape/cita-monitor/commit/02f291744d51c19ec1a22be4aebfd6e012171692) by JiangXL).
+- Set the default alarm mailbox configuration ([5d92cee](https://github.com/cryptape/cita-monitor/commit/5d92ceedb5b22c8735f2e2da3beac3b6d942108d) by JiangXL).
+- Recover cita node info dashboard id ([04eb5e8](https://github.com/cryptape/cita-monitor/commit/04eb5e85c372be0435402fe795931dc1515f45b6) by blankwu).
+-   fix the 0.19.1 version of cita does not exist. the quotaused program cannot run. ([9127536](https://github.com/cryptape/cita-monitor/commit/9127536b33b536c389e0cb86fd9426b654758b70) by JiangXL).
+- Recover config, del rabbitmq info ([95ee4d3](https://github.com/cryptape/cita-monitor/commit/95ee4d36e6f99892bf0d0454612af9b70eab7df1) by blankwu).
+- Update agent readme ([66caa90](https://github.com/cryptape/cita-monitor/commit/66caa908a5ca23a6df53a4f2743a29b7b09e3322) by JiangXL).
+- Homemade grafana image, reducing grafana startup time ([6e579db](https://github.com/cryptape/cita-monitor/commit/6e579db8b4a045301e6b7b47a816613fcd1f1e32) by JiangXL).
+- Refactor: format agent/cita_monitor_agent.py with formatter config ([a2430d5](https://github.com/cryptape/cita-monitor/commit/a2430d5e5d1cbed047aee51a649f84b31fe3a319) by RainChen).
+- Update makefile to add receipts: lint-python-code format-python-code lint-shell-code format-shell-code ([d590cd0](https://github.com/cryptape/cita-monitor/commit/d590cd098540dc1608980bee9e6380d2c53897a4) by RainChen).
+- Delete the ci_install.sh script ([96102f9](https://github.com/cryptape/cita-monitor/commit/96102f9eb9a6cbacc5e28868af7fe6d0a99b8521) by JiangXL).
+- Modify the directory name cita-monitor-agent for agent, cita-monitor-server for server ([7440257](https://github.com/cryptape/cita-monitor/commit/7440257b8d6122deb3770e575e0b77c0c37e4e60) by JiangXL).
+- Reduce the number of custom parameters ([82d88dc](https://github.com/cryptape/cita-monitor/commit/82d88dc7913aabfac064826eac717e16886da6f6) by JiangXL).
+- Create license ([1560354](https://github.com/cryptape/cita-monitor/commit/1560354a0077eba24c7d28bd1d706310b1db6c6e) by Rain Chen).
+
+
+## [v0.1.0](https://github.com/cryptape/cita-monitor/releases/tag/v0.1.0) ([compare](https://github.com/cryptape/cita-monitor/compare/84b2f96431eeb275185a4c8fb9fe3a52bedededf...v0.1.0)) - 2019-04-29
+
+### Added
+- Add rabbitmq-server collect, change collection method ([cad674a](https://github.com/cryptape/cita-monitor/commit/cad674acdbd91305a17d19d2b4c7c1cf9b37a984) by blankwu).
+- Add readme for getting started and contributing ([e6e4e3e](https://github.com/cryptape/cita-monitor/commit/e6e4e3ef7bb2a5af7e4d0eb5e2f0badee89b1ac3) by RainChen).
+- Add alert, and update alertmanager name ([5c6f731](https://github.com/cryptape/cita-monitor/commit/5c6f73105258bb94caea9035cee27338cd17b7cf) by blankwu).
+- Add quota info and change label name ([a445930](https://github.com/cryptape/cita-monitor/commit/a445930627c9ef41ae58142b83ced84b28d8816d) by blankwu).
+- Add quota info ([2dc4f01](https://github.com/cryptape/cita-monitor/commit/2dc4f017c7e4f682fb28a0b4d13b45d4ce7bfb42) by blankwu).
+- Add ci host auto deployment script; ([0faef05](https://github.com/cryptape/cita-monitor/commit/0faef0504f0c490460a2927fcb1dd7d5c93f5cad) by blankwu).
+
+### Changed
+- Change point size, border alignment ([33c2c54](https://github.com/cryptape/cita-monitor/commit/33c2c54dca430d5060102ff3099451c809220a17) by blankwu).
+- Change volume path; add 'check_env_port' string; ([02cee93](https://github.com/cryptape/cita-monitor/commit/02cee93719a878ec696d8425b4914e383d5cf263) by blankwu).
+
+### Documented
+- Docs: add coding style for shell ([ddfd884](https://github.com/cryptape/cita-monitor/commit/ddfd8847c6a98997ed8eb83b33fb4837ed81bede) by RainChen).
+
+### Fixed
+- Fix grafana redeploy admin password is reset ([af56b34](https://github.com/cryptape/cita-monitor/commit/af56b34d9b267ab3a66867f95a48d556bce9f00c) by JiangXL).
+- Fix old version cita no address file script crash problem ([51d5c4d](https://github.com/cryptape/cita-monitor/commit/51d5c4d628e339b28c34ec3767df37be30192c1f) by jiangxianliang).
+
+### Misc
+- Update readme ([a3c5ca6](https://github.com/cryptape/cita-monitor/commit/a3c5ca6d0b8d6694a8f3a6d57f489f05e5e9f82b) by blankwu).
+- Refactor: format ci_install.sh with shfmt ([a82f51a](https://github.com/cryptape/cita-monitor/commit/a82f51a32c47c51a0e06188f1b2202bd0ebd5d50) by RainChen).
+- Refactor: format shell code with code formatterr ([a8aa5b6](https://github.com/cryptape/cita-monitor/commit/a8aa5b61f4d7199932181f6c51c9e12948b9af84) by RainChen).
+- Refactor: format cita_monitor_agent.py with formatter yapf ([b9f8190](https://github.com/cryptape/cita-monitor/commit/b9f8190a55157e1d33d9de3e1402271b0fbbd2f3) by RainChen).
+- Format python script ([c7f3e8f](https://github.com/cryptape/cita-monitor/commit/c7f3e8fa2371d07fd8dde482b4f619e4cfa97f42) by blankwu).
+- Update variable name ([8a7b4ca](https://github.com/cryptape/cita-monitor/commit/8a7b4cac62f03d6656fef0797f9ea1d338effc2c) by blankwu).
+- Update labels name ([2d1e9c6](https://github.com/cryptape/cita-monitor/commit/2d1e9c68e437a643809119ae09139a9cf6910226) by blankwu).
+- Format script and add comment ([7088d6f](https://github.com/cryptape/cita-monitor/commit/7088d6f04599a293c7ba8bb42709e348ce13adeb) by blankwu).
+- Set default grfana login password to 'admin' ([c898fae](https://github.com/cryptape/cita-monitor/commit/c898faef7468966a45ae3ec623fdaf90748a62fe) by blankwu).
+- Sync prometheus job name; ([0342010](https://github.com/cryptape/cita-monitor/commit/03420101bf13d3bf429dfe5b5287c820f0a8c2f1) by blankwu).
+- Modify cita_monitor_agent.py in ci scripts to mount as an absolute path ([18efc5b](https://github.com/cryptape/cita-monitor/commit/18efc5b46770d9fa6e2f48dff66c9a0b67c12068) by jiangxianliang).
+- Modify yml file indentation ([a27ced7](https://github.com/cryptape/cita-monitor/commit/a27ced7848a127a3bc18d46d8aafe8070faf6274) by jiangxianliang).
+- Specification directory structure, name changed to lowercase ([5344bf5](https://github.com/cryptape/cita-monitor/commit/5344bf567bab117900f15cbaef47fd3c181c38b3) by jiangxianliang).
+- Citanodeinfodashboard modify indicator unit; ([397a4da](https://github.com/cryptape/cita-monitor/commit/397a4da8402da2b781eec62c71f6d370b73eaf47) by blankwu).
+- New dashboard; new script; ([d7fdc4e](https://github.com/cryptape/cita-monitor/commit/d7fdc4e4b77e6732bd2a4afcb16435c1da06a78f) by blankwu).
+- Update ci_install.sh, default running other node monitor; ([8e031dd](https://github.com/cryptape/cita-monitor/commit/8e031dd729df745d2f39b4b0d627eb11df696d4f) by blankwu).
+- Server: update default node ip info; ([37ccf56](https://github.com/cryptape/cita-monitor/commit/37ccf56bfcf79a6db87340953a03afd466d568a7) by blankwu).
+- Agent: update default node dir; ([c3b1757](https://github.com/cryptape/cita-monitor/commit/c3b175780caaa727c80fed418acae31c12c8f462) by blankwu).
+- Server: update citaagentexporterdashboard, support automatically switch node id; ([eb07e49](https://github.com/cryptape/cita-monitor/commit/eb07e49d068c5cc30cb4362b968afda28fb7d15c) by blankwu).
+- Server: change 'node' to 'host'; ([703c4d6](https://github.com/cryptape/cita-monitor/commit/703c4d69ef42dce911ff1db965c722a0956cb792) by blankwu).
+- Update directory architecture ([e7b8429](https://github.com/cryptape/cita-monitor/commit/e7b84292bb50b1e15f613606818c9e7d02662259) by blankwu).
+- Adjust the agent directory structure ([02341dd](https://github.com/cryptape/cita-monitor/commit/02341ddf17303c919c914647846068a0fd72b5e1) by jiangxianliang).
+- Modify the docker-compose.yml and dockerfile format normalization ([7ebc3db](https://github.com/cryptape/cita-monitor/commit/7ebc3db75747855b54a75adf7997554fdc647b7f) by jiangxianliang).
+- Agent: del error variable from process_list.yml; update readme; ([097f0cf](https://github.com/cryptape/cita-monitor/commit/097f0cf9757dfefa697d3580e218a94ddce2c3f4) by blankwu).
+- Server: add env file; change server compose.yml use env file and new hostname; ([ed2e5de](https://github.com/cryptape/cita-monitor/commit/ed2e5de64cf9147bcf095d0580edc02eb7a545bd) by blankwu).
+- Agent: add agent image build files; ([d69cf61](https://github.com/cryptape/cita-monitor/commit/d69cf61efbd363eca858365c01bc1ac513689c8b) by blankwu).
+- Agent: add agent files; change directory name; ([6e0626e](https://github.com/cryptape/cita-monitor/commit/6e0626eb21e78811370d034781704a720d6bde17) by blankwu).
+- Server: del old files; update dashboard files; ([26fcf5a](https://github.com/cryptape/cita-monitor/commit/26fcf5ad52759c47500917625d7b1d50b733701f) by blankwu).
+- Create some ddir ([f8d0048](https://github.com/cryptape/cita-monitor/commit/f8d0048594c6d6504a432601f1d3e530d5878128) by blankwu).
+- Create docker-compose_build directory ([abb77af](https://github.com/cryptape/cita-monitor/commit/abb77af6038a741815e38881ca546b4235a5f4ea) by blankwu).
+- Delete old files ([46e2cb9](https://github.com/cryptape/cita-monitor/commit/46e2cb974184fd0a5ccf360470e9bf5a460cce21) by blankwu).
+- Create dockerfile build cita_agent clien ([5e8632f](https://github.com/cryptape/cita-monitor/commit/5e8632f18521f1083a37d01e281125d7df397c21) by blankwu).
+- Init project ([84b2f96](https://github.com/cryptape/cita-monitor/commit/84b2f96431eeb275185a4c8fb9fe3a52bedededf) by RainChen).
+
+
