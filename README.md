@@ -140,6 +140,10 @@ git clone git@github.com:cryptape/cita-monitor.git
 * conventions: https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
 * best-practices: https://suva.sh/posts/well-documented-makefiles/
 
+#### Coding style for Prometheus
+
+* coding style guide: https://prometheus.io/docs/practices/naming/
+
 ### Running the tests
 
 PENDING: Explain how to run the automated tests for this system
