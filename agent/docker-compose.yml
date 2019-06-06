@@ -11,7 +11,6 @@ services:
       - /proc:/host/proc
       - /sys:/host/sys
       - /:/host/rootfs
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     command: "--path.procfs='/host/proc' --path.sysfs='/host/sys' --path.rootfs='/host/rootfs'"
 
@@ -24,7 +23,6 @@ services:
     volumes:
       - /proc:/host/proc
       - ./process_exporter_config:/config
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     command: "--procfs /host/proc --config.path /config/process_list.yml"
 
@@ -36,7 +34,6 @@ services:
     ports:
       - "${RABBITMQ_HOSTPORT}:${RABBITMQ_CONTAINERPORT}"
     volumes:
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     environment:
       - "RABBIT_CAPABILITIES=bert,no_sort"
@@ -54,7 +51,6 @@ services:
       - ${NODE_DIR}:${NODE_DIR}:ro
       - ${SOFT_PATH}:${SOFT_PATH}:ro
       - ./cita_monitor_agent.py:/config/cita_monitor_agent.py:ro
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     environment:
       - NODE_IP_PORT=${NODE_IP}:${NODE_PORT}
