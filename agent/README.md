@@ -39,16 +39,16 @@ docker-compose up -d
 ```
 3、查看数据采集信息
 ```
-#prometheus_host_exporter
+#citamon_agent_host_exporter
 curl http://localhost:1920/metrics
 
-#prometheus_process_exporter
+#citamon_agent_process_exporter
 curl http://localhost:1921/metrics
 
-#prometheus_rabbitmq_exporter
+#citamon_agent_rabbitmq_exporter
 curl http://localhost:1922/metrics
 
-#prometheus_cita_exporter
+#citamon_agent_cita_exporter
 curl http://localhost:1923/metrics
 ```
 4、关闭agent容器
@@ -57,7 +57,7 @@ docker-compose down
 ```
 
 ### 单个容器部署
-如果你希望只采集 CITA 服务的运行状态信息，你可以使用 `docker` 命令来运行一个数据采集进程；
+如果你希望只采集 CITA 服务的运行状态信息，你可以使用 `docker` 命令来运行一个数据采集容器；
 
 #### 步骤
 1、编译镜像
@@ -75,19 +75,17 @@ Tips：
 docker run -d --name="citamon_agent_cita_exporter_1337" \
 --pid="host" \
 -p 1923:1920 \
--v /etc/timezone:/etc/timezone \
 -v /etc/localtime:/etc/localtime \
 -v "/data/cita_secp256k1_sha3/":"/data/cita_secp256k1_sha3/" \
 -v "/data/cita_secp256k1_sha3/test-chain/0":"/data/cita_secp256k1_sha3/test-chain/0" \
 -v "`pwd`/cita_monitor_agent.py":"/config/cita_monitor_agent.py" \
 -e NODE_IP_PORT="x.x.x.x:1337" \
--e PORT=1920 \
 -e NODE_DIR="/data/cita_secp256k1_sha3/test-chain/0" \
 citamon/agent-cita-exporter
 ```
 3、查看数据采集信息
 ```
-#prometheus_cita_exporter
+#citamon_agent_cita_exporter
 curl http://localhost:1923/metrics
 ```
 
