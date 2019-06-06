@@ -8,7 +8,7 @@ SHELL = /bin/sh
 # receipts for Testing
 .PHONY: test test-unit test-intergration
 # receipts for Release
-.PHONY: changelog changelog-check
+.PHONY: changelog changelog-check generate-build-version show-full-version
 
 .SILENT: help
 
@@ -134,6 +134,18 @@ bump-version-file: ## Update version number in VERSION file.
 		new_version=`cat VERSION` ;\
 		echo "New version: $${new_version}" ;\
 	fi
+
+generate-build-version: ## Generate build version using format "yyyymmddHHMMSS.commitshortid", e.g.: "20190606201137.40564fe".
+	@# build version are only ASCII alphanumerics and hyphen [0-9A-Za-z-] alllowed
+	@commitid=$(shell git rev-parse --short HEAD); \
+	builddate=$(shell date +"%Y%m%d%H%M%S");  \
+	printf "%s.%s" $$builddate $$commitid > .build-version
+	@cat .build-version
+
+show-full-version: ## Show product version and build version, e.g.: "v0.3.0+20190606201137.40564fe".
+	@product_version=$(shell cat VERSION); \
+	build_version=$(shell cat .build-version);  \
+	printf "v%s+%s" $$product_version $$build_version
 
 send-pull-request: ## Send a Pull Request with current git branch
 	@repo_url=`git ls-remote --get-url` ;\
