@@ -10,7 +10,6 @@ services:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./config/alert.rules:/etc/prometheus/alert.rules
       - ./data:/etc/prometheus/data
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -26,7 +25,6 @@ services:
     volumes:
       - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
       - ./config/alert.tmpl:/etc/alertmanager/template/alert.tmpl
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
@@ -46,7 +44,6 @@ services:
       - ./config/grafana:/etc/grafana
       - ./grafana/dashboards:/var/lib/grafana/dashboards
       - ./grafana/grafanadb:/var/lib/grafana/grafanadb
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     depends_on:
       - prometheus
