@@ -1,0 +1,127 @@
+# Usage:
+# 1. build base image for cita-node: $ docker-compose -e CITA_VERSION=0.20.2 build cita_node
+# 2. generate node config: $ docker-compose run -e NODES_CONFIG=node0:4000 config
+# 3. start 1 node: $ docker-compose up node0
+# 4. start 4 nodes: $ docker-compose up node0 node1 node2 node3
+
+# to remove all containers/network:
+# docker-compose down
+
+version: '3.4'
+
+services:
+
+  # build base image for CITA node, usage example:
+  # build or update image: $ docker-compose build cita_node
+  # run cita command: $ docker-compose run cita_node cita help
+  # login container: $ docker-compose run cita_node bash
+  # check CITA bin version: $ docker-compose run cita_node bash -c "bin/cita-jsonrpc --version | head -n2"
+  # check CITA all bin version: $ docker-compose run cita_node bash -c "find bin -type f -executable -name cita-*  | xargs -I @ sh -c 'echo @ ; @ --version | head -n2; echo' "
+  cita_node:
+    environment:
+      - USER_ID
+      - CITA_VERSION=0.20.2 # TODO: set this in env file
+    image: cita-node
+    hostname: cita_node
+    build:
+      context: .
+      dockerfile: ./cita-node/Dockerfile
+    tty: true # enables debugging capabilities when attached to this container
+    networks:
+      cita_test_chain:
+
+  # generate CITA 4 nodes config in dummy dir/
+  # usage: $ docker-compose run config
+  # login container: $ docker-compose run config bash
+  # delete test-chain: $ rm -rf dummy/test-chain
+  config:
+    environment:
+      - USER_ID
+      - SUPER_ADMIN=0x4b5ae4567ad5d9fb92bc9afd6a657e6fa13a2523 # TODO: set this in env file
+      # - NODES_CONFIG=node0:4000 # setup 1 node TODO: set this in env file
+      - NODES_CONFIG=node0:4000,node1:4000,node2:4000,node3:4000 # step 4 nodes TODO: set this in env file
+    image: cita-node
+    hostname: config
+    tty: true
+    networks:
+      cita_test_chain:
+    volumes:
+      - ./dummy:/data
+    command: |
+      bash -c '
+      echo "Init nodes config in /data/test-chain";
+      if [ ! -d /data/test-chain ]; then echo "create CITA config" && create_cita_config.py create --super_admin "$${SUPER_ADMIN}" --nodes "$${NODES_CONFIG}"; mv test-chain/ /data/; fi;
+      if [ -d /data/test-chain ]; then echo "nodes config:"; ls -d1 /data/test-chain/* ; fi;
+      echo "Done config"'
+
+  # start a CITA container based on cita_node image and mount config files from dummy/test-chain/$CITA_NODE_ID
+  # start 1 node: $ docker-compose up node0
+  # login a started node container: $ docker-compose exec node0 bash
+  # start 4 nodes: $ docker-compose up node0 node1 node2 node3
+  # get meta data:
+  #   $ curl -sS  -X POST --data ' {"jsonrpc":"2.0","method":"getMetaData","params":["latest"],"id":1} ' 127.0.0.1:1337
+  # get latest block
+  #   $ curl -sS  -X POST --data ' {"jsonrpc":"2.0","method":"blockNumber","params":[],"id":1} ' 127.0.0.1:1337
+  # to stop a node: $ docker-compose stop node3
+  node0:
+    environment:
+      - USER_ID
+      - CITA_NODE_ID=0
+    image: cita-node
+    hostname: node0
+    container_name: node0
+    tty: true
+    volumes:
+      - ./dummy/test-chain/0:/data/test-chain/0
+    ports:
+      - "1337:1337"
+    networks:
+      cita_test_chain:
+
+  node1:
+    environment:
+      - USER_ID
+      - CITA_NODE_ID=1
+    image: cita-node
+    hostname: node1
+    container_name: node1
+    tty: true
+    volumes:
+      - ./dummy/test-chain/1:/data/test-chain/1
+    ports:
+      - "1338:1338"
+    networks:
+      cita_test_chain:
+
+  node2:
+    environment:
+      - USER_ID
+      - CITA_NODE_ID=2
+    image: cita-node
+    hostname: node2
+    container_name: node2
+    tty: true
+    volumes:
+      - ./dummy/test-chain/2:/data/test-chain/2
+    ports:
+      - "1339:1339"
+    networks:
+      cita_test_chain:
+
+  node3:
+    environment:
+      - USER_ID
+      - CITA_NODE_ID=3
+    image: cita-node
+    hostname: node3
+    container_name: node3
+    tty: true
+    volumes:
+      - ./dummy/test-chain/3:/data/test-chain/3
+    ports:
+      - "1340:1340"
+    networks:
+      cita_test_chain:
+
+networks:
+  cita_test_chain:
