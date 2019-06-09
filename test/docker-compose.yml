@@ -1,5 +1,5 @@
 # Usage:
-# 1. build base image for cita-node: $ docker-compose -e CITA_VERSION=0.20.2 build cita_node
+# 1. build base image for cita-node: $ docker-compose build --build-arg CITA_VERSION=0.24.0 cita_node
 # 2. generate node config: $ docker-compose run -e NODES_CONFIG=node0:4000 config
 # 3. start 1 node: $ docker-compose up node0
 # 4. start 4 nodes: $ docker-compose up node0 node1 node2 node3
@@ -16,7 +16,7 @@ services:
   # run cita command: $ docker-compose run cita_node cita help
   # login container: $ docker-compose run cita_node bash
   # check CITA bin version: $ docker-compose run cita_node bash -c "bin/cita-jsonrpc --version | head -n2"
-  # check CITA all bin version: $ docker-compose run cita_node bash -c "find bin -type f -executable -name cita-*  | xargs -I @ sh -c 'echo @ ; @ --version | head -n2; echo' "
+  # check CITA all bin version: $ docker-compose run cita_node bash -c "find bin -name cita-* -exec grep -IL . '{}' \; | xargs -I @ sh -c 'echo @ ; @ --version | head -n2; echo'"
   cita_node:
     environment:
       - USER_ID

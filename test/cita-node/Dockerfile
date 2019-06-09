@@ -1,6 +1,6 @@
 # IMPORTANT: the order of each directive is important, it will effect image cache
 
-FROM cita/cita-run:ubuntu-18.04-20180813
+FROM cita/cita-run:ubuntu-18.04-20190419
 
 # Build packages are system packages that are only required for installing
 # gems, precompiling assets, etc. They are not included in the final Docker
@@ -32,7 +32,7 @@ ENV APP_HOME /opt/cita-run
 
 
 # Pass CITA_VERSION
-ARG CITA_VERSION="0.20.2"
+ARG CITA_VERSION=""
 ENV CITA_VERSION $CITA_VERSION
 ENV CITA_DOWNLOAD_URL=https://github.com/cryptape/cita/releases/download/v${CITA_VERSION}/cita_secp256k1_sha3.tar.gz
 
@@ -61,10 +61,13 @@ RUN echo source /usr/sbin/docker-init >> /etc/profile
 ARG CITA_NODE_ID=""
 ENV CITA_NODE_ID $CITA_NODE_ID
 
-# auto setup and start CITA service with config "test-chain/$CITA_NODE_ID"
-# CMD bash -c 'cd cita_secp256k1_sha3 && if [ -d test-chain ]; then bin/cita setup test-chain/$CITA_NODE_ID; bin/cita start test-chain/$CITA_NODE_ID; bin/cita logs test-chain/$CITA_NODE_ID chain; fi;'
-
 ENV WORKDIR /opt/cita-run/cita_secp256k1_sha3
 WORKDIR ${WORKDIR}
 ENV PATH "$PATH:$WORKDIR/bin:$WORKDIR/scripts"
-CMD bash -c 'if [ -d /data/test-chain/$CITA_NODE_ID ]; then cd /data/; cita setup test-chain/$CITA_NODE_ID; cita start test-chain/$CITA_NODE_ID; cita logs test-chain/$CITA_NODE_ID chain; fi;'
+
+# bugfix NODE_PATH in bin/cita script for CITA v0.24.0
+# ref: https://github.com/cryptape/cita/issues/626
+RUN sed -i 's/NODE_PATH=/NODE_PATH="$(realpath ${NODE_NAME})" # was: /' ${WORKDIR}/bin/cita
+
+# auto setup and start CITA service with config "test-chain/$CITA_NODE_ID"
+CMD bash -c 'if [ -d /data/test-chain/$CITA_NODE_ID ]; then cd /data/; cita bebop setup test-chain/$CITA_NODE_ID; cita bebop start test-chain/$CITA_NODE_ID; cita bebop logs test-chain/$CITA_NODE_ID chain; fi;'
