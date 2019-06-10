@@ -1,0 +1,21 @@
+server {
+    listen ${NGINX_PORT};
+    server_name ${NGINX_HOST};
+            
+    location /metrics/host {
+        proxy_pass  http://prometheus_host_exporter:9100/metrics;
+    }
+            
+    location /metrics/process {
+        proxy_pass http://prometheus_process_exporter:9256/metrics;
+    }
+            
+    location /metrics/rabbitmq {
+        proxy_pass http://${NGINX_HOST}:9419/metrics;
+    }
+
+    location /metrics/cita {
+        proxy_pass http://prometheus_cita_exporter:1923/metrics/cita;
+    }
+
+}

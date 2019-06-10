@@ -183,7 +183,7 @@ def dir_analysis(path):
 
 
 # flask object
-@NODE_FLASK.route("/metrics")
+@NODE_FLASK.route("/metrics/cita")
 def exporter():
     """Agent execution function"""
     # definition tag
@@ -437,7 +437,7 @@ def exporter():
 @NODE_FLASK.route("/")
 def index():
     """Page data view entry"""
-    index_html = "<h2>访问 /metrics 路径获取数据采集信息</h2>"
+    index_html = "<h2>访问 /metrics/cita 路径获取数据采集信息</h2>"
     return index_html
 
 
