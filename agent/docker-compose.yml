@@ -5,39 +5,36 @@ services:
     image: prom/node-exporter:v0.17.0
     hostname: host_exporter
     container_name: citamon_agent_host_exporter
-    ports:
-      - "${HOST_HOSTPORT}:${HOST_CONTAINERPORT}"
     volumes:
       - /proc:/host/proc
       - /sys:/host/sys
       - /:/host/rootfs
       - /etc/localtime:/etc/localtime
     command: "--path.procfs='/host/proc' --path.sysfs='/host/sys' --path.rootfs='/host/rootfs'"
+    networks:
+      - citamon-agent-net
 
   prometheus_process_exporter:
     image: ncabatoff/process-exporter:0.4.0
     hostname: process_exporter
     container_name: citamon_agent_process_exporter
-    ports:
-      - "${PROCESS_HOSTPORT}:${PROCESS_CONTAINERPORT}"
     volumes:
       - /proc:/host/proc
       - ./process_exporter_config:/config
       - /etc/localtime:/etc/localtime
     command: "--procfs /host/proc --config.path /config/process_list.yml"
+    networks:
+      - citamon-agent-net
 
   prometheus_rabbitmq_exporter:
     image: kbudde/rabbitmq-exporter:1.0.0-RC
     hostname: rabbitmq_exporter
     container_name: citamon_agent_rabbitmq_exporter
     network_mode: "host"
-    ports:
-      - "${RABBITMQ_HOSTPORT}:${RABBITMQ_CONTAINERPORT}"
     volumes:
       - /etc/localtime:/etc/localtime
     environment:
       - "RABBIT_CAPABILITIES=bert,no_sort"
-      - "PUBLISH_PORT=${RABBITMQ_CONTAINERPORT}"
 
   prometheus_cita_exporter:
     build: ./cita_exporter
@@ -45,8 +42,6 @@ services:
     hostname: ${HOSTNAME}
     container_name: citamon_agent_cita_exporter_${NODE_IP}_${NODE_PORT}
     pid: "host"
-    ports:
-      - "${AGENT_HOSTPORT}:${AGENT_CONTAINERPORT}"
     volumes:
       - ${NODE_DIR}:${NODE_DIR}:ro
       - ${SOFT_PATH}:${SOFT_PATH}:ro
@@ -55,4 +50,23 @@ services:
     environment:
       - NODE_IP_PORT=${NODE_IP}:${NODE_PORT}
       - NODE_DIR
+    networks:
+      - citamon-agent-net
 
+  prometheus_agent_proxy:
+    image: nginx:1.16.0
+    hostname: agent_proxy
+    container_name: citamon_agent_proxy
+    ports:
+      - "1920:80"
+    volumes:
+      - ./nginx.template:/etc/nginx/conf.d/nginx.template
+    environment:
+      - NGINX_HOST=${NODE_IP}
+      - NGINX_PORT=80
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    networks:
+      - citamon-agent-net
+
+networks:
+  citamon-agent-net:
