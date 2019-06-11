@@ -1,7 +1,7 @@
 version: "3"
 services:
 
-  prometheus_host_exporter:
+  citamon_agent_host_exporter:
     image: prom/node-exporter:v0.17.0
     hostname: host_exporter
     container_name: citamon_agent_host_exporter
@@ -14,7 +14,7 @@ services:
     networks:
       - citamon-agent-net
 
-  prometheus_process_exporter:
+  citamon_agent_process_exporter:
     image: ncabatoff/process-exporter:0.4.0
     hostname: process_exporter
     container_name: citamon_agent_process_exporter
@@ -26,7 +26,7 @@ services:
     networks:
       - citamon-agent-net
 
-  prometheus_rabbitmq_exporter:
+  citamon_agent_rabbitmq_exporter:
     image: kbudde/rabbitmq-exporter:1.0.0-RC
     hostname: rabbitmq_exporter
     container_name: citamon_agent_rabbitmq_exporter
