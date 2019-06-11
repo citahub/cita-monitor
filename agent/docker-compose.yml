@@ -36,7 +36,7 @@ services:
     environment:
       - "RABBIT_CAPABILITIES=bert,no_sort"
 
-  prometheus_cita_exporter:
+  citamon_agent_cita_exporter:
     build: ./cita_exporter
     image: citamon/agent-cita-exporter
     hostname: ${HOSTNAME}
@@ -53,10 +53,10 @@ services:
     networks:
       - citamon-agent-net
 
-  prometheus_agent_proxy:
+  citamon_agent_proxy_exporter:
     image: nginx:1.16.0
-    hostname: agent_proxy
-    container_name: citamon_agent_proxy
+    hostname: proxy_exporter
+    container_name: citamon_agent_proxy_exporter
     ports:
       - "1920:80"
     volumes:
