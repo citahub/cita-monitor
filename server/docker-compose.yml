@@ -1,6 +1,6 @@
 version: '3'
 services:
-  prometheus:
+  citamon_server_prometheus:
     user: root
     image: prom/prometheus:v2.6.0
     container_name: citamon_server_prometheus
@@ -18,7 +18,7 @@ services:
     ports:
       - '${PROMETHEUS_HOSTPORT}:${PROMETHEUS_CONTAINERPORT}'
 
-  alertmanager:
+  citamon_server_alertmanager:
     image: prom/alertmanager:v0.15.3
     container_name: citamon_server_alertmanager
     hostname: prometheus_alertmanager_server
@@ -31,7 +31,7 @@ services:
     ports:
       - '${ALERTMANAGER_HOSTPORT}:${ALERTMANAGER_CONTAINERPORT}'
 
-  grafana:
+  citamon_server_grafana:
     user: root
     build: ./grafana
     image: cryptape/grafana:5.4.2
