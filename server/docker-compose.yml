@@ -14,7 +14,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     depends_on:
-      - alertmanager
+      - citamon_server_alertmanager
     ports:
       - '${PROMETHEUS_HOSTPORT}:${PROMETHEUS_CONTAINERPORT}'
 
@@ -46,7 +46,7 @@ services:
       - ./grafana/grafanadb:/var/lib/grafana/grafanadb
       - /etc/localtime:/etc/localtime
     depends_on:
-      - prometheus
+      - citamon_server_prometheus
     ports:
       - '${GRAFANA_HOSTPORT}:${GRAFANA_CONTAINERPORT}'
 
