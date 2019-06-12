@@ -53,6 +53,8 @@ cd ../..
 ```
 3、启动server容器
 ```
+export VERSION=`cat ../VERSION`
+docker-compose build
 docker-compose up -d
 ```
 4、查看服务运行状态
