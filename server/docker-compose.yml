@@ -33,7 +33,11 @@ services:
 
   citamon_server_grafana:
     user: root
-    build: ./grafana
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+      args:
+        - VERSION
     image: cryptape/grafana:5.4.2
     container_name: citamon_server_grafana
     hostname: grafana_server
@@ -42,7 +46,6 @@ services:
       - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
     volumes:
       - ./config/grafana:/etc/grafana
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
       - ./grafana/grafanadb:/var/lib/grafana/grafanadb
       - /etc/localtime:/etc/localtime
     depends_on:
