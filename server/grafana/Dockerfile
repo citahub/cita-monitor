@@ -13,4 +13,5 @@ ENV VERSION $VERSION
 
 COPY ./dashboards /var/lib/grafana/dashboards
 
+#Replace the placeholder and enter the correct version information
 RUN sed -i "s/\$VERSION_NUMBER/$VERSION/g" /var/lib/grafana/dashboards/SummaryDashboard.json
