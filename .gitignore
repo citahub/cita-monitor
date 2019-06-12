@@ -4,3 +4,4 @@ server/grafana_data/
 server/prometheus_data/
 .vscode/
 .build-version
+test/dummy/*
