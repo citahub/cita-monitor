@@ -37,15 +37,13 @@ clean: ## Clean up.
 
 ##@ Building
 
-build: ## Compile binary targets.
+build: clean deps ## Compile binary targets.
 	$(info Building the project)
 	@echo "[build]build all images"
 	@make generate-build-version
 	@FULL_VERSION=$(shell make show-full-version) ;\
 		cd ./server ;\
-		if [ ! -f ".env" ]; then \
-			cp .env.example .env ;\
-		fi ;\
+		[ ! -f .env ] && cp .env.example .env ;\
 		docker-compose build --build-arg VERSION="$${FULL_VERSION}"
 
 ##@ Testing
