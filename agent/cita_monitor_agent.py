@@ -31,6 +31,7 @@ DISK_USED = None
 DISK_FREE = None
 ADDRESS = None
 FILE_TOTAL_SIZE = None
+DATA_TOTAL_SIZE = None
 SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % (SOFT_FILE_PATH)
 try:
     SOFT_VERSION_EXEC = os.popen(SOFT_VERSION_TXT)
@@ -68,6 +69,9 @@ Get current block time and previous block time, label include CurrentHeight, Pre
 
 NODE_DIR_TOTAL_SIZE_TITLE = "[ value is size ] \
 Get the node directory total size."
+
+NODE_DIR_DATA_SIZE_TITLE = "[ value is size ] \
+Get the node directory data size."
 
 NODE_DISK_USED_SIZE_TITLE = "[ value is size ] \
 Get the disk used size."
@@ -162,7 +166,7 @@ class ExporterFunctions():
 
 def dir_analysis(path):
     """Analyze CITA directory size"""
-    global DISK_TOTAL, DISK_USED, DISK_FREE, ADDRESS, FILE_TOTAL_SIZE
+    global DISK_TOTAL, DISK_USED, DISK_FREE, ADDRESS, FILE_TOTAL_SIZE, DATA_TOTAL_SIZE
     get_privkey_txt = "cat %s/privkey" % (path)
     get_privkey_exec = os.popen(get_privkey_txt)
     privkey = str(get_privkey_exec.read())
@@ -174,12 +178,18 @@ def dir_analysis(path):
     DISK_TOTAL = disk_usage.total
     DISK_USED = disk_usage.used
     DISK_FREE = disk_usage.free
-    file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (path)
+    file_total_size = "cd %s && du | tail -n 1 | awk '{print $1}'" % (path)
     try:
-        file_total_size_exec = os.popen(file_total_size_txt)
+        file_total_size_exec = os.popen(file_total_size)
         FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
     except OSError:
         FILE_TOTAL_SIZE = 0
+    data_total_size = "cd %s/data && du | tail -n 1 | awk '{print $1}'" % (path)
+    try:
+        data_total_size_exec = os.popen(data_total_size)
+        DATA_TOTAL_SIZE = data_total_size_exec.read().split('\n')[0]
+    except OSError:
+        DATA_TOTAL_SIZE = 0
 
 
 # flask object
@@ -239,6 +249,10 @@ def exporter():
                            NODE_DIR_TOTAL_SIZE_TITLE,
                            ["NodeIP", "NodePort", "NodeDir"],
                            registry=registry)
+    dir_data_size = Gauge("Node_Get_DirInfo_DataFileSize",
+                          NODE_DIR_DATA_SIZE_TITLE,
+                          ["NodeIP", "NodePort", "NodeDir"],
+                          registry=registry)
     disk_used_size = Gauge("Node_Get_DiskInfo_UsedSize",
                            NODE_DISK_USED_SIZE_TITLE,
                            ["NodeIP", "NodePort", "NodeDir"],
@@ -285,6 +299,11 @@ def exporter():
         NodePort=node_port,
         NodeDir=NODE_FILE_PATH,
     ).set(FILE_TOTAL_SIZE)
+    dir_data_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(DATA_TOTAL_SIZE)
     disk_used_size.labels(
         NodeIP=node_ip,
         NodePort=node_port,
