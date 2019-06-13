@@ -40,16 +40,16 @@ docker-compose up -d
 3、查看数据采集信息
 ```
 #citamon_agent_host_exporter
-curl http://localhost:1920/metrics
+curl http://localhost:1920/metrics/host
 
 #citamon_agent_process_exporter
-curl http://localhost:1921/metrics
+curl http://localhost:1920/metrics/process
 
 #citamon_agent_rabbitmq_exporter
-curl http://localhost:1922/metrics
+curl http://localhost:1920/metrics/rabbitmq
 
 #citamon_agent_cita_exporter
-curl http://localhost:1923/metrics
+curl http://localhost:1920/metrics/cita
 ```
 4、关闭agent容器
 ```
@@ -86,7 +86,7 @@ citamon/agent-cita-exporter
 3、查看数据采集信息
 ```
 #citamon_agent_cita_exporter
-curl http://localhost:1923/metrics
+curl http://localhost:1920/metrics/cita
 ```
 
 ### 错误信息
