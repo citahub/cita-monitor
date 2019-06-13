@@ -15,13 +15,14 @@ RPC_CALL_COUNT=0 # counter for cita_rpc, so that each "id" in RPC request params
 
 # DEFINE FUNCTIONS
 
-# usage: $(call cita_rpc,method,params)
-# e.g.: $(call cita_rpc,getMetaData,["latest"])
-# e.g.: $(call cita_rpc,blockNumber,[])
+# usage: $(call cita_rpc,host:port,method,params)
+# e.g.: $(call cita_rpc,127.0.0.1:1337,getMetaData,["latest"])
+# e.g.: $(call cita_rpc,127.0.0.1:1337,blockNumber,[])
 define cita_rpc
-	$(eval RPC_CALL_COUNT=$(shell echo $$(($(RPC_CALL_COUNT)+1)))) # inc counter
+ 	@# inc counter
+	$(eval RPC_CALL_COUNT=$(shell echo $$(($(RPC_CALL_COUNT)+1))))
 	@#echo "RPC_CALL_COUNT: $(RPC_CALL_COUNT)"
-	curl -sS  -X POST --data '{"jsonrpc":"2.0","method":"$(1)","params":$(2),"id":$(RPC_CALL_COUNT)}' 127.0.0.1:1337 | jq '.'
+	curl -sS  -X POST --data '{"jsonrpc":"2.0","method":"$(2)","params":$(3),"id":$(RPC_CALL_COUNT)}' $(1) | jq '.'
 endef
 
 # DEFINE RECEIPES
@@ -76,12 +77,20 @@ start-nodes: ## Start nodes, start all by default, to start specified nodes e.g.
 stop-nodes: ## Stop nodes, stop all by default, to stop specified nodes e.g.: $ make start-nodes NODES="node3"
 	docker-compose stop $${NODES:=}
 
-rpc-get-meta-data: ## Call CITA RPC method getMetaData.
-	$(call cita_rpc,getMetaData,["latest"])
+rpc-get-meta-data: ## Call CITA RPC method getMetaData, e.g.: $ make rpc-get-meta-data RPC_PORT=1337.
+	$(call cita_rpc,127.0.0.1:$${RPC_PORT:=1337},getMetaData,["latest"])
 
-rpc-block-number: ## Call CITA RPC method blockNumber.
-	$(call cita_rpc,blockNumber,[])
+rpc-block-number: ## Call CITA RPC method blockNumber, e.g.: $ make rpc-block-number RPC_PORT=1337.
+	$(call cita_rpc,127.0.0.1:$${RPC_PORT:=1337},blockNumber,[])
 
+rpc-block-number-all: ## Call CITA RPC method blockNumber for all nodes.
+	@chain_dir=dummy/test-chain ;\
+	for node_id in `ls -w $${chain_dir} | grep -v template`; do \
+		rpc_port=`awk -F '"' '/listen_port = "(1.*)"/{print $$2}' $${chain_dir}/$${node_id}/jsonrpc.toml` ;\
+		echo "node$${node_id}: rpc-block-number via rpc_port:$${rpc_port}" ;\
+		make rpc-block-number RPC_PORT=$${rpc_port} ;\
+		echo ;\
+	done
 
 ##@ Testing
 
