@@ -16,8 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 8,
-  "iteration": 1559711907174,
+  "iteration": 1560425914678,
   "links": [
     {
       "icon": "external link",
@@ -2106,11 +2105,14 @@
         "x": 4,
         "y": 42
       },
+      "hideTimeOverride": false,
       "id": 58,
       "legend": {
         "alignAsTable": true,
         "avg": false,
         "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
         "max": true,
         "min": true,
         "rightSide": false,
@@ -2119,32 +2121,41 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 0,
       "links": [],
       "nullPointMode": "null",
       "percentage": false,
-      "pointradius": 5,
+      "pointradius": 3,
       "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
-      "steppedLine": false,
+      "steppedLine": true,
       "targets": [
         {
-          "expr": "Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"}",
+          "expr": "Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"} - Node_Get_DirInfo_DataFileSize{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{NodeIP}}:{{NodePort}} - {{NodeDir}}/logs",
+          "refId": "A"
+        },
+        {
+          "expr": "Node_Get_DirInfo_DataFileSize{job=\"$job\",instance=\"$node:$port\"}",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
-          "legendFormat": "{{NodeIP}}:{{NodePort}} - {{NodeDir}}",
-          "refId": "A"
+          "legendFormat": "{{NodeIP}}:{{NodePort}} - {{NodeDir}}/data",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Node Dir Size Used",
+      "title": "Node Directory Usage Size",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2180,7 +2191,7 @@
       ],
       "yaxis": {
         "align": false,
-        "alignLevel": null
+        "alignLevel": 22
       }
     },
     {
