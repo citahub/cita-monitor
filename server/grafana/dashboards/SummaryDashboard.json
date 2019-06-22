@@ -18,6 +18,15 @@
   "graphTooltip": 0,
   "links": [
     {
+      "icon": "info",
+      "tags": [],
+      "targetBlank": true,
+      "title": "$VERSION_NUMBER",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://github.com/cryptape/cita-monitor"
+    },
+    {
       "icon": "external link",
       "tags": [
         "Exporter"
