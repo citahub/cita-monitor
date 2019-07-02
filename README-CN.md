@@ -93,7 +93,7 @@ Rabbitmq Dashboard Demo
     * Prometheus Alertmanager: 1917
     * Prometheus Console: 1918
     * Grafana: 1919
-* CITA-Monitor agent （对外只暴露 1920 端口）
+* CITA-Monitor agent 
     * agent_proxy_exporter：1920
 
 ## 参与贡献
