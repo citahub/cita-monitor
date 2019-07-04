@@ -100,6 +100,9 @@ Get vote list of current block."
 LOCAL_VOTE_TITLE = "[ value is local is voter ] \
 Determine if the local node address is in the voter list."
 
+BLOCK_VOTE_NUMBER_TITLE = "[ value is block vote number ] \
+Number of nodes voted by the statistics block."
+
 # print exporter info
 print("\n----------")
 print("monitor node rpc is : ", NODE)
@@ -281,7 +284,9 @@ def exporter():
     local_voter = Gauge("Node_Get_LocalVoter",
                         LOCAL_VOTE_TITLE, ["NodeIP", "NodePort"],
                         registry=registry)
-
+    vote_number = Gauge("Block_Vote_Number",
+                        BLOCK_VOTE_NUMBER_TITLE, ["NodeIP", "NodePort"],
+                        registry=registry)
     # run exporter
     node_ip = str(NODE.split(':')[0])
     node_port = str(NODE.split(':')[1])
@@ -369,6 +374,7 @@ def exporter():
             block_quota_used = int(block_head_info['gasUsed'], 16)
         block_commits = list(
             block_info['result']['header']['proof']['Bft']['commits'].keys())
+        block_vote_number = len(block_commits)
         consensus_nodes_count = len(consensus_node_list)
         for i in range(consensus_nodes_count):
             voter_address = consensus_node_list[i]
@@ -384,6 +390,8 @@ def exporter():
             is_committer = 1
         else:
             is_committer = 0
+        vote_number.labels(NodeIP=node_ip,
+                           NodePort=node_port).set(block_vote_number)
         local_voter.labels(NodeIP=node_ip, NodePort=node_port).set(is_committer)
         block_hash = block_info['result']['hash']
         block_time = int(block_head_info['timestamp'])
