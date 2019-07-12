@@ -1,0 +1,30 @@
+version: "3"
+services:
+
+  cita-node:
+    environment:
+      - USER_ID
+      - CITA_CHAIN_ID=${CITA_CHAIN_ID}
+
+    image: cita/cita-run:ubuntu-18.04-20190419
+    hostname: $CITA_NODENAME
+    container_name: cita_$CITA_NODENAME
+    tty: true
+    volumes:
+      - $SOFT_PATH:/data
+    ports:
+      - "${NODE_PORT}:${NODE_PORT}"
+      - "${CITA_NETWORKPORT}:${CITA_NETWORKPORT}"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd /data/
+        bin/cita bebop setup $CITA_CHAIN_ID
+        bin/cita bebop start $CITA_CHAIN_ID
+        bin/cita bebop logs $CITA_CHAIN_ID chain
+    networks:
+      - cita-node-net
+
+networks:
+  cita-node-net:
