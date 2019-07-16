@@ -13,6 +13,7 @@ import os
 import sys
 import time
 import platform
+from datetime import datetime, timedelta
 import psutil
 import prometheus_client
 from prometheus_client.core import CollectorRegistry, Gauge
@@ -182,17 +183,36 @@ def dir_analysis(path):
     DISK_USED = disk_usage.used
     DISK_FREE = disk_usage.free
     file_total_size = "cd %s && du | tail -n 1 | awk '{print $1}'" % (path)
-    try:
+    data_total_size = "cd %s/data && du | tail -n 1 | awk '{print $1}'" % (path)
+    directory_size = "file_size.txt"
+    # Determine whether the stored data size file exists, execute the du command once every 1 hour
+    if os.path.exists(directory_size):
+        statinfo = os.stat(directory_size)
+        latest_update_time = statinfo.st_mtime
+        nowtime = datetime.now()
+        filetime = datetime.fromtimestamp(latest_update_time)
+        if nowtime - filetime > timedelta(hours=1):
+            file_input = open(directory_size, "w")
+            file_total_size_exec = os.popen(file_total_size)
+            FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
+            file_input.write(FILE_TOTAL_SIZE)
+            data_total_size_exec = os.popen(data_total_size)
+            DATA_TOTAL_SIZE = data_total_size_exec.read().split('\n')[0]
+            file_input.write('\n')
+            file_input.write(DATA_TOTAL_SIZE)
+        else:
+            readlines = open(directory_size).readlines()
+            FILE_TOTAL_SIZE = readlines[0].strip()
+            DATA_TOTAL_SIZE = readlines[1].strip()
+    else:
+        file_input = open(directory_size, "w")
         file_total_size_exec = os.popen(file_total_size)
         FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
-    except OSError:
-        FILE_TOTAL_SIZE = 0
-    data_total_size = "cd %s/data && du | tail -n 1 | awk '{print $1}'" % (path)
-    try:
+        file_input.write(FILE_TOTAL_SIZE)
         data_total_size_exec = os.popen(data_total_size)
         DATA_TOTAL_SIZE = data_total_size_exec.read().split('\n')[0]
-    except OSError:
-        DATA_TOTAL_SIZE = 0
+        file_input.write('\n')
+        file_input.write(DATA_TOTAL_SIZE)
 
 
 # flask object
