@@ -17,7 +17,7 @@ Monitor Agent 是使用 `Python` 作为脚本语言，使用 `cita-cli` 工具�
 ```
 cd agent
 cp .env.example .env
-修改 .env 配置文件中 HOSTNAME、NODE_IP、NODE_PORT、NODE_DIR、SOFT_PATH 为实际部署的信息
+修改 .env 配置文件中 HOSTNAME、NODE_IP、NODE_PORT、NODE_DIR、SOFT_PATH、CITA_NODENAME、CITA_CHAIN_ID、CITA_NETWORKPORT 为实际部署的信息
 ---
 
 #采集端显示的主机名
@@ -36,6 +36,12 @@ SOFT_PATH=/data/cita_secp256k1_sha3/
 2、启动agent容器
 ```
 docker-compose up -d
+```
+**可选项**
+```
+注意：CITA目录下应当存在bin目录
+启动 CITA 与 Agent 服务容器
+docker-compose -f docker-compose.yml -f cita_with_agent.yml up -d
 ```
 3、查看数据采集信息
 ```
