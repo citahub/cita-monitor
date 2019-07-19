@@ -12,6 +12,27 @@ SHELL = /bin/sh
 
 .SILENT: help
 
+# DEFINE COLOR VARIABLES
+
+INFO_COLOR  = \033[0;36m # Cyan
+OK_COLOR    = \033[0;32m # Green
+ERROR_COLOR = \033[0;31m # Red
+WARN_COLOR  = \033[0;33m # Yellow
+NO_COLOR    = \033[m
+# more color at https://en.wikipedia.org/wiki/ANSI_escape_code
+
+# DEFINE FUNCTIONS
+
+# print message with ANSI color
+# usage:
+#   $(call puts,INFO,"This a INFO")
+#   $(call puts,OK,"This a OK")
+#   $(call puts,ERROR,"This a ERROR")
+#   $(call puts,WARN,"This a WARN")
+define puts
+	echo "${$(1)_COLOR}[$(1)]$(NO_COLOR)" $(2)
+endef
+
 ##@ Dependencies
 
 deps: ## Download the depenedencies.
@@ -21,6 +42,9 @@ deps: ## Download the depenedencies.
 
 	# intall yapf
 	@yapf --version || pip install yapf
+
+	# install bandit as security linter 
+	@bandit --version || pip install bandit
 
 	# intall shfmt
 	@(printf "shfmt " && shfmt --version) || brew install shfmt || (echo "Install shfmt: https://github.com/mvdan/sh" && exit 1)
@@ -68,7 +92,16 @@ code-quality: ## Run linter & formatter.
 
 lint-python-code: ## Run linter for python codes
 	$(info Run linter for python codes)
+	make lint-python-code-quality
+	make lint-python-code-security
+
+lint-python-code-quality: ## Run linter for python codes quality
+	@$(call puts,INFO,"Sniffs code smells in Python code")
 	pylint **/*.py
+
+lint-python-code-security: ## Run linter for python codes security
+	@$(call puts,INFO,"Find common security issues in Python code")
+	bandit **/*.py
 
 format-python-code: ## Run formatter for python codes.
 	$(info Run formatter for python codes)
