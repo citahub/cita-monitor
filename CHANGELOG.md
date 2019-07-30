@@ -4,7 +4,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [v0.3.0](https://github.com/cryptape/cita-monitor/releases/tag/v0.3.0) ([compare](https://github.com/cryptape/cita-monitor/compare/v0.2.0...v0.3.0))
+## [v0.4.0](https://github.com/cryptape/cita-monitor/releases/tag/v0.4.0) ([compare](https://github.com/cryptape/cita-monitor/compare/v0.3.0...v0.4.0))
+
+### Added
+- Agent script gets block consensus node votes ([66dbeb7](https://github.com/cryptape/cita-monitor/commit/66dbeb7683a46c8e204a87c884af19e74f5f2e75) by JiangXL).
+- Control the execution frequency of the du command, once every 1 hour ([ffb1929](https://github.com/cryptape/cita-monitor/commit/ffb192906ed3065396f0d371cb099fc9b744d509) by JiangXL).
+- Add cita_with_agent to Integrate CITA with agent services ([8eeddbd](https://github.com/cryptape/cita-monitor/commit/8eeddbd356ffd14e8dab04efc5004ab0a200ae8c) by mfuuzy).
+- Add block consensus node vote number displayed in chain info ([757a20d](https://github.com/cryptape/cita-monitor/commit/757a20d2e679622fc744153df83d3c0199775ed9) by JiangXL).
+- Add a node directory log file using the size of the display ([e42ad5f](https://github.com/cryptape/cita-monitor/commit/e42ad5f074047133c5a155885e2f06129fcc3018) by JiangXL).
+- Add agent proxy to get data using one port ([c91946b](https://github.com/cryptape/cita-monitor/commit/c91946ba61c5b787068fffe54c236d6f37cb4ebd) by JiangXL).
+- Add test/makefile to bring in build/test recipes ([576d8c9](https://github.com/cryptape/cita-monitor/commit/576d8c9de51c72cefb528197ef35a4916a441a15) by RainChen).
+- Add test dir and init system testing env ([7c3b237](https://github.com/cryptape/cita-monitor/commit/7c3b23746b8f388e0eca05833381c7db66b1f0f2) by RainChen).
+- Add `make generate-build-version`: generate build metadata using format "x.y.z+yyyymmddhhmmss.commitshortid", e.g.: "0.3.0+20190606200449.40564fe"; add `make show-full-version`: show product version and build version, e.g.: "v0.3.0+20190606201137.40564fe" ([bcc76f9](https://github.com/cryptape/cita-monitor/commit/bcc76f90e6bb64d84ba9d3bde4063e0067b022dc) by RainChen).
+- Add genesis block hash display for chain meta data ([2d38c53](https://github.com/cryptape/cita-monitor/commit/2d38c536b7e726ebec48fbb2539e1886948777e8) by JiangXL).
+- Dashboard add version display ([99447fd](https://github.com/cryptape/cita-monitor/commit/99447fd1e54f8220a68cc38d0d61cdbb29058a2a) by blankwu).
+
+
+### Changed
+- Change the service name ([a031404](https://github.com/cryptape/cita-monitor/commit/a031404d7b22ca1f83363eacea19ba0614e57463) by mfuuzy).
+- Update readme agent unified port ([9ccb065](https://github.com/cryptape/cita-monitor/commit/9ccb0658dd691321d91f741fbdd12f5a4076e179) by JiangXL).
+- Update test/makefile to add `make rpc-block-number-all` to call cita rpc method blocknumber for all nodes ([375eab4](https://github.com/cryptape/cita-monitor/commit/375eab44a1e5795127f9e857f58e545af22a2aff) by RainChen).
+- Update prometheus.yml for deployment only when you need to sed once ([c13611e](https://github.com/cryptape/cita-monitor/commit/c13611e073060e074d4e800728430f3bc62cef00) by JiangXL).
+- Update document instructions to modify the agent to expose only one port ([e0abb7b](https://github.com/cryptape/cita-monitor/commit/e0abb7be03d3f0c850ff75994e641bb645f15b07) by JiangXL).
+- Update grafana build process ([50311b5](https://github.com/cryptape/cita-monitor/commit/50311b5c0ddcfca3bb0de326cae0338d00b342bc) by blankwu).
+- Update grafana build process, del compose mount dashboard files ([d228c24](https://github.com/cryptape/cita-monitor/commit/d228c2413a69669fe8adddcb544ac577eb2169c8) by blankwu).
+- Modify the agent .env.example annotation ([359c6dc](https://github.com/cryptape/cita-monitor/commit/359c6dcad118324cbd3ec84fe433199fead4ed8c) by JiangXL).
+
+### Documented
+- Docs: update readme about introduction ([e5d9f00](https://github.com/cryptape/cita-monitor/commit/e5d9f0072850907cfe8e5d1a40c00064beced1ad) by RainChen).
+- Docs: add coding style guide for prometheus ([44ea685](https://github.com/cryptape/cita-monitor/commit/44ea68508037e3eb38bdc97514efb109c37c348c) by RainChen).
+- Update agent readme ([57fa9a5](https://github.com/cryptape/cita-monitor/commit/57fa9a5da3d8b16b6731fa63fa2b31d66215fac7) by JiangXL).
+- Update grafana build command readme ([e98bd4b](https://github.com/cryptape/cita-monitor/commit/e98bd4b16934c121df5421df980b4a474f9e7048) by blankwu).
+
+### Fixed
+- Fix show full pie chart, delete dup ip and port information ([9bc30b6](https://github.com/cryptape/cita-monitor/commit/9bc30b659f6c7cf4708cb39e188672797c87c3ab) by blankwu).
+- Fix the new version image and get the cita version number. ([0d8a763](https://github.com/cryptape/cita-monitor/commit/0d8a7633c2d2f3d9a94bf1d243bd0b45eccaa7a5) by JiangXL).
+- Fix dockerfile comment ([f0c8717](https://github.com/cryptape/cita-monitor/commit/f0c87172b2fdd545650bbd5248285e6fde548db2) by blankwu).
+- Fix container startup failed after modifying docker-compose.xml service name ([154729d](https://github.com/cryptape/cita-monitor/commit/154729ddb2b5bc04215ce7c596806f75081f094a) by JiangXL).
+
+### Removed
+- Remove redundant readme ([3fc0234](https://github.com/cryptape/cita-monitor/commit/3fc02346d2dd2a17cafe800e37c7fa9848c7cefa) by JiangXL).
+- Remove timezone from docker-compose.xml ([da017ab](https://github.com/cryptape/cita-monitor/commit/da017ab5cd73432218e46a6bcf8e302b50c4569a) by JiangXL).
+
+### Misc
+- Specify flask and psuti version number ([abbba92](https://github.com/cryptape/cita-monitor/commit/abbba929b17803d984717982153d1355017977d3) by JiangXL).
+- Reduce the size of the cita-exporter-image from 970mb to 478mb ([1b27e5d](https://github.com/cryptape/cita-monitor/commit/1b27e5d8498662d7010083340f6adcbbf72e6a3e) by JiangXL).
+- Allow to start test node using cita v0.24.0 ([7f07819](https://github.com/cryptape/cita-monitor/commit/7f07819f4a17458c4afbedc7840234f5cd2f4b26) by RainChen).
+
+
+## [v0.3.0](https://github.com/cryptape/cita-monitor/releases/tag/v0.3.0) ([compare](https://github.com/cryptape/cita-monitor/compare/v0.2.0...v0.3.0)) - 2019-06-05
 
 ### Added
 - Add devtools/release/keepachangelog-template ([92dffa1](https://github.com/cryptape/cita-monitor/commit/92dffa1baf0b2a5bfb6f2086f8f2bc310e0cfbf6) by RainChen).
@@ -28,6 +76,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix: install requirements for agent/cita_exporter in `make deps` ([2427dd9](https://github.com/cryptape/cita-monitor/commit/2427dd96735cd1689dfcd19ce18c773da6d74b03) by RainChen).
 
 ### Misc
+- Bump version to v0.3.0 ([6390089](https://github.com/cryptape/cita-monitor/commit/63900895a67cfeecbf2d2e2b45937c5e9dff3d21) by RainChen).
+- Update the readme description of the agent and server ([9c024fb](https://github.com/cryptape/cita-monitor/commit/9c024fbf1423263ca1a3118b4adb0b64873253b4) by JiangXL).
 - Update script format ([05652bc](https://github.com/cryptape/cita-monitor/commit/05652bc35a82390c8e337b6b986c97ab4250927a) by blankwu).
 - Update the cita node info dashboard layout ([a1b9fbb](https://github.com/cryptape/cita-monitor/commit/a1b9fbbdc766bead93b3097530d15df4660355c4) by JiangXL).
 - Update dashboard, fix pie graph ([6c4cfd7](https://github.com/cryptape/cita-monitor/commit/6c4cfd7123e9a984d3ff035987fe51e78b771445) by blankwu).
