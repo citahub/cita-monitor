@@ -13,6 +13,7 @@ import os
 import sys
 import time
 import platform
+from datetime import datetime, timedelta
 import psutil
 import prometheus_client
 from prometheus_client.core import CollectorRegistry, Gauge
@@ -31,6 +32,7 @@ DISK_USED = None
 DISK_FREE = None
 ADDRESS = None
 FILE_TOTAL_SIZE = None
+DATA_TOTAL_SIZE = None
 SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % (SOFT_FILE_PATH)
 try:
     SOFT_VERSION_EXEC = os.popen(SOFT_VERSION_TXT)
@@ -42,8 +44,8 @@ except IndexError:
 SERVICE_STATUS_TITLE = "[ value is 1 or 0 ] \
 Check the running status of the CITA service, service up is 1 or down is 0."
 
-FIRST_BLOCK_DETAILS_TITLE = "[ value is first block timestamp ] \
-Get information about the first block."
+GENESIS_BLOCK_DETAILS_TITLE = "[ value is genesis block timestamp ] \
+Get information about the genesis block."
 
 CHAIN_INFO_TITLE = "[ value is 1 or 0 ] \
 Get the basic information of the chain, the economic model Quota is 0 or Charge is 1."
@@ -68,6 +70,9 @@ Get current block time and previous block time, label include CurrentHeight, Pre
 
 NODE_DIR_TOTAL_SIZE_TITLE = "[ value is size ] \
 Get the node directory total size."
+
+NODE_DIR_DATA_SIZE_TITLE = "[ value is size ] \
+Get the node directory data size."
 
 NODE_DISK_USED_SIZE_TITLE = "[ value is size ] \
 Get the disk used size."
@@ -95,6 +100,9 @@ Get vote list of current block."
 
 LOCAL_VOTE_TITLE = "[ value is local is voter ] \
 Determine if the local node address is in the voter list."
+
+BLOCK_VOTE_NUMBER_TITLE = "[ value is block vote number ] \
+Number of nodes voted by the statistics block."
 
 # print exporter info
 print("\n----------")
@@ -162,7 +170,7 @@ class ExporterFunctions():
 
 def dir_analysis(path):
     """Analyze CITA directory size"""
-    global DISK_TOTAL, DISK_USED, DISK_FREE, ADDRESS, FILE_TOTAL_SIZE
+    global DISK_TOTAL, DISK_USED, DISK_FREE, ADDRESS, FILE_TOTAL_SIZE, DATA_TOTAL_SIZE
     get_privkey_txt = "cat %s/privkey" % (path)
     get_privkey_exec = os.popen(get_privkey_txt)
     privkey = str(get_privkey_exec.read())
@@ -174,16 +182,41 @@ def dir_analysis(path):
     DISK_TOTAL = disk_usage.total
     DISK_USED = disk_usage.used
     DISK_FREE = disk_usage.free
-    file_total_size_txt = "cd %s && du | tail -n 1 | awk '{print $1}'" % (path)
-    try:
-        file_total_size_exec = os.popen(file_total_size_txt)
+    file_total_size = "cd %s && du | tail -n 1 | awk '{print $1}'" % (path)
+    data_total_size = "cd %s/data && du | tail -n 1 | awk '{print $1}'" % (path)
+    directory_size = "file_size.txt"
+    # Determine whether the stored data size file exists, execute the du command once every 1 hour
+    if os.path.exists(directory_size):
+        statinfo = os.stat(directory_size)
+        latest_update_time = statinfo.st_mtime
+        nowtime = datetime.now()
+        filetime = datetime.fromtimestamp(latest_update_time)
+        if nowtime - filetime > timedelta(hours=1):
+            file_input = open(directory_size, "w")
+            file_total_size_exec = os.popen(file_total_size)
+            FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
+            file_input.write(FILE_TOTAL_SIZE)
+            data_total_size_exec = os.popen(data_total_size)
+            DATA_TOTAL_SIZE = data_total_size_exec.read().split('\n')[0]
+            file_input.write('\n')
+            file_input.write(DATA_TOTAL_SIZE)
+        else:
+            readlines = open(directory_size).readlines()
+            FILE_TOTAL_SIZE = readlines[0].strip()
+            DATA_TOTAL_SIZE = readlines[1].strip()
+    else:
+        file_input = open(directory_size, "w")
+        file_total_size_exec = os.popen(file_total_size)
         FILE_TOTAL_SIZE = file_total_size_exec.read().split('\n')[0]
-    except OSError:
-        FILE_TOTAL_SIZE = 0
+        file_input.write(FILE_TOTAL_SIZE)
+        data_total_size_exec = os.popen(data_total_size)
+        DATA_TOTAL_SIZE = data_total_size_exec.read().split('\n')[0]
+        file_input.write('\n')
+        file_input.write(DATA_TOTAL_SIZE)
 
 
 # flask object
-@NODE_FLASK.route("/metrics")
+@NODE_FLASK.route("/metrics/cita")
 def exporter():
     """Agent execution function"""
     # definition tag
@@ -191,10 +224,11 @@ def exporter():
     service_status = Gauge("Node_Get_ServiceStatus",
                            SERVICE_STATUS_TITLE, ["NodeIP", "NodePort"],
                            registry=registry)
-    first_block_details = Gauge("Node_Get_FirstBlockNumberDetails",
-                                FIRST_BLOCK_DETAILS_TITLE,
-                                ["NodeIP", "NodePort", "FirstBlockNumberHash"],
-                                registry=registry)
+    genesis_block_details = Gauge(
+        "Node_Get_GenesisBlockNumberDetails",
+        GENESIS_BLOCK_DETAILS_TITLE,
+        ["NodeIP", "NodePort", "GenesisBlockNumberHash"],
+        registry=registry)
     chain_info = Gauge("Node_Get_ChainInfo",
                        CHAIN_INFO_TITLE, [
                            "NodeIP", "NodePort", "ChainName", "Operator",
@@ -209,8 +243,10 @@ def exporter():
                         registry=registry)
     last_block_number = Gauge(
         "Node_Get_LastBlockNumber",
-        LAST_BLOCK_NUMBER_TITLE,
-        ["NodeIP", "NodePort", "FirstBlockNumberHash", "NodeID", "NodeAddress"],
+        LAST_BLOCK_NUMBER_TITLE, [
+            "NodeIP", "NodePort", "GenesisBlockNumberHash", "NodeID",
+            "NodeAddress"
+        ],
         registry=registry)
     check_proposer = Gauge("Node_CheckProposer",
                            CHECK_PROPOSER_TITLE, ["NodeIP", "NodePort"],
@@ -236,6 +272,10 @@ def exporter():
                            NODE_DIR_TOTAL_SIZE_TITLE,
                            ["NodeIP", "NodePort", "NodeDir"],
                            registry=registry)
+    dir_data_size = Gauge("Node_Get_DirInfo_DataFileSize",
+                          NODE_DIR_DATA_SIZE_TITLE,
+                          ["NodeIP", "NodePort", "NodeDir"],
+                          registry=registry)
     disk_used_size = Gauge("Node_Get_DiskInfo_UsedSize",
                            NODE_DISK_USED_SIZE_TITLE,
                            ["NodeIP", "NodePort", "NodeDir"],
@@ -264,7 +304,9 @@ def exporter():
     local_voter = Gauge("Node_Get_LocalVoter",
                         LOCAL_VOTE_TITLE, ["NodeIP", "NodePort"],
                         registry=registry)
-
+    vote_number = Gauge("Block_Vote_Number",
+                        BLOCK_VOTE_NUMBER_TITLE, ["NodeIP", "NodePort"],
+                        registry=registry)
     # run exporter
     node_ip = str(NODE.split(':')[0])
     node_port = str(NODE.split(':')[1])
@@ -282,6 +324,11 @@ def exporter():
         NodePort=node_port,
         NodeDir=NODE_FILE_PATH,
     ).set(FILE_TOTAL_SIZE)
+    dir_data_size.labels(
+        NodeIP=node_ip,
+        NodePort=node_port,
+        NodeDir=NODE_FILE_PATH,
+    ).set(DATA_TOTAL_SIZE)
     disk_used_size.labels(
         NodeIP=node_ip,
         NodePort=node_port,
@@ -293,23 +340,23 @@ def exporter():
         NodeDir=NODE_FILE_PATH,
     ).set(DISK_FREE)
 
-    first_block_info = class_result.block_number_detail('0x0')
-    if 'result' in first_block_info:
-        first_block_hash = first_block_info['result']['hash']
-        first_block_time = first_block_info['result']['header']['timestamp']
-        first_block_details.labels(
+    genesis_block_info = class_result.block_number_detail('0x0')
+    if 'result' in genesis_block_info:
+        genesis_block_hash = genesis_block_info['result']['hash']
+        genesis_block_time = genesis_block_info['result']['header']['timestamp']
+        genesis_block_details.labels(
             NodeIP=node_ip,
             NodePort=node_port,
-            FirstBlockNumberHash=first_block_hash).set(first_block_time)
+            GenesisBlockNumberHash=genesis_block_hash).set(genesis_block_time)
     else:
-        print(first_block_info)
+        print(genesis_block_info)
     block_number_info = class_result.block_number()
     if 'result' in block_number_info:
         hex_number = block_number_info['result']
         previous_hex_number = hex(int(hex_number, 16) - 1)
         last_block_number.labels(NodeIP=node_ip,
                                  NodePort=node_port,
-                                 FirstBlockNumberHash=first_block_hash,
+                                 GenesisBlockNumberHash=genesis_block_hash,
                                  NodeID=NODE_ID,
                                  NodeAddress=ADDRESS).set(int(hex_number, 16))
     else:
@@ -347,6 +394,7 @@ def exporter():
             block_quota_used = int(block_head_info['gasUsed'], 16)
         block_commits = list(
             block_info['result']['header']['proof']['Bft']['commits'].keys())
+        block_vote_number = len(block_commits)
         consensus_nodes_count = len(consensus_node_list)
         for i in range(consensus_nodes_count):
             voter_address = consensus_node_list[i]
@@ -362,6 +410,8 @@ def exporter():
             is_committer = 1
         else:
             is_committer = 0
+        vote_number.labels(NodeIP=node_ip,
+                           NodePort=node_port).set(block_vote_number)
         local_voter.labels(NodeIP=node_ip, NodePort=node_port).set(is_committer)
         block_hash = block_info['result']['hash']
         block_time = int(block_head_info['timestamp'])
@@ -434,7 +484,7 @@ def exporter():
 @NODE_FLASK.route("/")
 def index():
     """Page data view entry"""
-    index_html = "<h2>访问 /metrics 路径获取数据采集信息</h2>"
+    index_html = "<h2>访问 /metrics/cita 路径获取数据采集信息</h2>"
     return index_html
 
 

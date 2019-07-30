@@ -17,7 +17,7 @@ Monitor Agent 是使用 `Python` 作为脚本语言，使用 `cita-cli` 工具�
 ```
 cd agent
 cp .env.example .env
-修改 .env 配置文件中 HOSTNAME、NODE_IP、NODE_PORT、NODE_DIR、SOFT_PATH 为实际部署的信息
+修改 .env 配置文件中 HOSTNAME、NODE_IP、NODE_PORT、NODE_DIR、SOFT_PATH、CITA_NODENAME、CITA_CHAIN_ID、CITA_NETWORKPORT 为实际部署的信息
 ---
 
 #采集端显示的主机名
@@ -37,19 +37,25 @@ SOFT_PATH=/data/cita_secp256k1_sha3/
 ```
 docker-compose up -d
 ```
+**可选项**
+```
+注意：CITA目录下应当存在bin目录
+启动 CITA 与 Agent 服务容器
+docker-compose -f docker-compose.yml -f cita_with_agent.yml up -d
+```
 3、查看数据采集信息
 ```
-#prometheus_host_exporter
-curl http://localhost:1920/metrics
+#citamon_agent_host_exporter
+curl http://localhost:1920/metrics/host
 
-#prometheus_process_exporter
-curl http://localhost:1921/metrics
+#citamon_agent_process_exporter
+curl http://localhost:1920/metrics/process
 
-#prometheus_rabbitmq_exporter
-curl http://localhost:1922/metrics
+#citamon_agent_rabbitmq_exporter
+curl http://localhost:1920/metrics/rabbitmq
 
-#prometheus_cita_exporter
-curl http://localhost:1923/metrics
+#citamon_agent_cita_exporter
+curl http://localhost:1920/metrics/cita
 ```
 4、关闭agent容器
 ```
@@ -57,7 +63,7 @@ docker-compose down
 ```
 
 ### 单个容器部署
-如果你希望只采集 CITA 服务的运行状态信息，你可以使用 `docker` 命令来运行一个数据采集进程；
+如果你希望只采集 CITA 服务的运行状态信息，你可以使用 `docker` 命令来运行一个数据采集容器；
 
 #### 步骤
 1、编译镜像
@@ -75,20 +81,18 @@ Tips：
 docker run -d --name="citamon_agent_cita_exporter_1337" \
 --pid="host" \
 -p 1923:1920 \
--v /etc/timezone:/etc/timezone \
 -v /etc/localtime:/etc/localtime \
 -v "/data/cita_secp256k1_sha3/":"/data/cita_secp256k1_sha3/" \
 -v "/data/cita_secp256k1_sha3/test-chain/0":"/data/cita_secp256k1_sha3/test-chain/0" \
 -v "`pwd`/cita_monitor_agent.py":"/config/cita_monitor_agent.py" \
 -e NODE_IP_PORT="x.x.x.x:1337" \
--e PORT=1920 \
 -e NODE_DIR="/data/cita_secp256k1_sha3/test-chain/0" \
 citamon/agent-cita-exporter
 ```
 3、查看数据采集信息
 ```
-#prometheus_cita_exporter
-curl http://localhost:1923/metrics
+#citamon_agent_cita_exporter
+curl http://localhost:1920/metrics/cita
 ```
 
 ### 错误信息

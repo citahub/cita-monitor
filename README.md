@@ -90,10 +90,7 @@ For installing agent, read [agent/README.md](agent/README.md)
     * Prometheus Console: 1918
     * Grafana: 1919
 * CITA-Monitor agent
-    * host_exporter：1920
-    * process_exporter：1921
-    * rabbitmq_exporter：1922
-    * cita_exporter：1923 
+    * agent_proxy_exporter：1920
 
 ## Contributing
 
@@ -139,6 +136,10 @@ git clone git@github.com:cryptape/cita-monitor.git
 * tutorial: https://makefiletutorial.com/
 * conventions: https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
 * best-practices: https://suva.sh/posts/well-documented-makefiles/
+
+#### Coding style for Prometheus
+
+* coding style guide: https://prometheus.io/docs/practices/naming/
 
 ### Running the tests
 

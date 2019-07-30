@@ -16,7 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1559202158611,
+  "id": 6,
+  "iteration": 1562231453271,
   "links": [
     {
       "icon": "external link",
@@ -75,7 +76,7 @@
           },
           "gridPos": {
             "h": 3,
-            "w": 10,
+            "w": 4,
             "x": 4,
             "y": 1
           },
@@ -116,7 +117,7 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "Node_Get_FirstBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"}",
+              "expr": "Node_Get_GenesisBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"}",
               "format": "time_series",
               "instant": true,
               "intervalFactor": 1,
@@ -157,8 +158,8 @@
           },
           "gridPos": {
             "h": 3,
-            "w": 10,
-            "x": 14,
+            "w": 4,
+            "x": 8,
             "y": 1
           },
           "id": 22,
@@ -198,7 +199,7 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "time() - (Node_Get_FirstBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"} / 1000)",
+              "expr": "time() - (Node_Get_GenesisBlockNumberDetails{job=\"$job\",instance=\"$node:$port\"} / 1000)",
               "format": "time_series",
               "instant": true,
               "interval": "",
@@ -219,6 +220,20 @@
             }
           ],
           "valueName": "current"
+        },
+        {
+          "content": "<center>\n<br>\n<h2>$GenesisBlockNumberHash</h2>\n</center>",
+          "gridPos": {
+            "h": 3,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 78,
+          "links": [],
+          "mode": "html",
+          "title": "Genesis Block Hash",
+          "type": "text"
         },
         {
           "content": "<center>\n<br>\n<h2>$Version</h2>\n</center>",
@@ -261,7 +276,7 @@
           "id": 25,
           "links": [],
           "mode": "html",
-          "title": "TokenSymbol",
+          "title": "Token Symbol",
           "transparent": false,
           "type": "text"
         },
@@ -543,7 +558,7 @@
       "datasource": "Prometheus",
       "fill": 0,
       "gridPos": {
-        "h": 10,
+        "h": 5,
         "w": 15,
         "x": 9,
         "y": 2
@@ -832,6 +847,95 @@
       "title": "Voting rate of consensus nodes",
       "type": "grafana-piechart-panel",
       "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 0,
+      "gridPos": {
+        "h": 5,
+        "w": 15,
+        "x": 9,
+        "y": 7
+      },
+      "id": 80,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": false,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "Block_Vote_Number{job=\"$job\"}",
+          "format": "time_series",
+          "instant": false,
+          "interval": "3s",
+          "intervalFactor": 1,
+          "legendFormat": "{{NodeIP}}:{{NodePort}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Consensus Node Vote Number of [ Block ]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "collapsed": false,
@@ -2025,7 +2129,7 @@
       "format": "bytes",
       "gridPos": {
         "h": 8,
-        "w": 4,
+        "w": 6,
         "x": 0,
         "y": 42
       },
@@ -2087,15 +2191,18 @@
       "fill": 0,
       "gridPos": {
         "h": 8,
-        "w": 9,
-        "x": 4,
+        "w": 7,
+        "x": 6,
         "y": 42
       },
+      "hideTimeOverride": false,
       "id": 58,
       "legend": {
         "alignAsTable": true,
         "avg": false,
         "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
         "max": true,
         "min": true,
         "rightSide": false,
@@ -2104,32 +2211,41 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 0,
       "links": [],
       "nullPointMode": "null",
       "percentage": false,
-      "pointradius": 5,
+      "pointradius": 3,
       "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
-      "steppedLine": false,
+      "steppedLine": true,
       "targets": [
         {
-          "expr": "Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"}",
+          "expr": "Node_Get_DirInfo_TotalFileSize{job=\"$job\",instance=\"$node:$port\"} - Node_Get_DirInfo_DataFileSize{job=\"$job\",instance=\"$node:$port\"}",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{NodeDir}}/logs",
+          "refId": "A"
+        },
+        {
+          "expr": "Node_Get_DirInfo_DataFileSize{job=\"$job\",instance=\"$node:$port\"}",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
-          "legendFormat": "{{NodeIP}}:{{NodePort}} - {{NodeDir}}",
-          "refId": "A"
+          "legendFormat": "{{NodeDir}}/data",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Node Dir Size Used",
+      "title": "Node Directory Usage Size",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2165,7 +2281,7 @@
       ],
       "yaxis": {
         "align": false,
-        "alignLevel": null
+        "alignLevel": 22
       }
     },
     {
@@ -2542,14 +2658,14 @@
           "value": ""
         },
         "datasource": "Prometheus",
-        "definition": "label_values(Node_Get_FirstBlockNumberDetails{instance=~'$node:$port'},FirstBlockNumberHash)",
+        "definition": "label_values(Node_Get_GenesisBlockNumberDetails{instance=~'$node:$port'},GenesisBlockNumberHash)",
         "hide": 2,
         "includeAll": false,
-        "label": "FirstBlockNumberHash",
+        "label": "GenesisBlockNumberHash",
         "multi": false,
-        "name": "FirstBlockNumberHash",
+        "name": "GenesisBlockNumberHash",
         "options": [],
-        "query": "label_values(Node_Get_FirstBlockNumberDetails{instance=~'$node:$port'},FirstBlockNumberHash)",
+        "query": "label_values(Node_Get_GenesisBlockNumberDetails{instance=~'$node:$port'},GenesisBlockNumberHash)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,

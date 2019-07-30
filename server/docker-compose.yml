@@ -1,6 +1,6 @@
 version: '3'
 services:
-  prometheus:
+  citamon_server_prometheus:
     user: root
     image: prom/prometheus:v2.6.0
     container_name: citamon_server_prometheus
@@ -10,32 +10,34 @@ services:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./config/alert.rules:/etc/prometheus/alert.rules
       - ./data:/etc/prometheus/data
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     depends_on:
-      - alertmanager
+      - citamon_server_alertmanager
     ports:
       - '${PROMETHEUS_HOSTPORT}:${PROMETHEUS_CONTAINERPORT}'
 
-  alertmanager:
+  citamon_server_alertmanager:
     image: prom/alertmanager:v0.15.3
     container_name: citamon_server_alertmanager
     hostname: prometheus_alertmanager_server
     volumes:
       - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
       - ./config/alert.tmpl:/etc/alertmanager/template/alert.tmpl
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     ports:
       - '${ALERTMANAGER_HOSTPORT}:${ALERTMANAGER_CONTAINERPORT}'
 
-  grafana:
+  citamon_server_grafana:
     user: root
-    build: ./grafana
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+      args:
+        - VERSION
     image: cryptape/grafana:5.4.2
     container_name: citamon_server_grafana
     hostname: grafana_server
@@ -44,12 +46,10 @@ services:
       - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
     volumes:
       - ./config/grafana:/etc/grafana
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
       - ./grafana/grafanadb:/var/lib/grafana/grafanadb
-      - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     depends_on:
-      - prometheus
+      - citamon_server_prometheus
     ports:
       - '${GRAFANA_HOSTPORT}:${GRAFANA_CONTAINERPORT}'
 

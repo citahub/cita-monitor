@@ -2,9 +2,13 @@
 
 [EN](README.md) | [CN](README-CN.md)
 
-这是一套基于 Prometheus 框架的 [CITA](https://github.com/cryptape/cita) 区块链服务运行状态监控系统 。
+CITA Monitor 是为监控 [CITA](https://github.com/cryptape/cita) 区块链服务运行状态的开源监控系统。
 
-监控指标包括区块链数据、服务进程状态、运行环境的 CPU /存储器/磁盘使用率等主机信息等。
+监控的指标包括节点的出块高度、出块间隔、交易量历史等区块链数据信息、CITA的各微服务进程状态、节点连接数等软件信息、以及服务运行环境的 CPU /存储器/磁盘使用率等主机信息等。制定了数据可视化的面板，节点管理员可轻松了解节点的运行健康状态。还内置了一些关键的告警规则，例如服务进程状态告警，如各微服务、依赖服务进程存活；区块链数据状态告警，如出块高度、出块间隔时间、交易数据的TPS；运行环境状态告警，如磁盘空间不足，经过简单配置收发邮箱即可第一时间收到相关告警邮件。
+
+软件架构：基于 Prometheus 框架开发；使用 Grafana 做可视化面板；使用 Alertmanager 做告警消息分发；架构上分为用于数据存储、信息展示、告警分发的 Server 端；区块链数据、软件进程、运行环境监控指标收集的 Agent 端；各端均使用微服务架构分离功能职责，并使用 Docker Compose 部署方式解决服务的依赖管理，轻松做到一行命令更新、启动服务。
+
+开源协议：本项目使用 Apache 2.0 开源协议，可自由二次开发、闭源商用。
 
 [![Travis Build Status](https://img.shields.io/travis/com/cryptape/cita-monitor/master.svg)](https://travis-ci.com/cryptape/cita-monitor)
 [![License: Apache-2.0](https://img.shields.io/github/license/cryptape/cita-monitor.svg)](https://github.com/cryptape/cita-monitor/blob/master/LICENSE)
@@ -89,11 +93,8 @@ Rabbitmq Dashboard Demo
     * Prometheus Alertmanager: 1917
     * Prometheus Console: 1918
     * Grafana: 1919
-* CITA-Monitor agent
-    * host_exporter：1920
-    * process_exporter：1921
-    * rabbitmq_exporter：1922
-    * cita_exporter：1923 
+* CITA-Monitor agent 
+    * agent_proxy_exporter：1920
 
 ## 参与贡献
 

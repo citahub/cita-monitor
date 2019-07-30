@@ -1,0 +1,7 @@
+tmp/
+cita-test-chain/
+server/grafana_data/
+server/prometheus_data/
+.vscode/
+.build-version
+test/dummy/*

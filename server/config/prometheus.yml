@@ -14,16 +14,20 @@ rule_files:
 scrape_configs:
   - job_name: 'host_exporter'
     static_configs:
-    - targets: ['host_exporter_ip:port']
+    - targets: ['citamon_agent_host_ip:1920']
+    metrics_path: "/metrics/host"
 
   - job_name: 'process_exporter'
     static_configs:
-    - targets: ['process_exporter_ip:port']
+    - targets: ['citamon_agent_host_ip:1920']
+    metrics_path: "/metrics/process"
 
   - job_name: 'rabbitmq_exporter'
     static_configs:
-    - targets: ['rabbitmq_exporter_ip:port']
+    - targets: ['citamon_agent_host_ip:1920']
+    metrics_path: "/metrics/rabbitmq"
 
   - job_name: 'cita_exporter'
     static_configs:
-    - targets: ['cita_exporter_ip:port']
+    - targets: ['citamon_agent_host_ip:1920']
+    metrics_path: "/metrics/cita"
