@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update grafana build command readme ([e98bd4b](https://github.com/cryptape/cita-monitor/commit/e98bd4b16934c121df5421df980b4a474f9e7048) by blankwu).
 
 ### Fixed
+- Fix show full pie chart, delete dup ip and port information ([9bc30b6](https://github.com/cryptape/cita-monitor/commit/9bc30b659f6c7cf4708cb39e188672797c87c3ab) by blankwu).
+- Fix the new version image and get the cita version number. ([0d8a763](https://github.com/cryptape/cita-monitor/commit/0d8a7633c2d2f3d9a94bf1d243bd0b45eccaa7a5) by JiangXL).
 - Fix dockerfile comment ([f0c8717](https://github.com/cryptape/cita-monitor/commit/f0c87172b2fdd545650bbd5248285e6fde548db2) by blankwu).
 - Fix container startup failed after modifying docker-compose.xml service name ([154729d](https://github.com/cryptape/cita-monitor/commit/154729ddb2b5bc04215ce7c596806f75081f094a) by JiangXL).
 
