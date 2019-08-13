@@ -6,7 +6,7 @@ global:
 alerting:
   alertmanagers:
   - static_configs:
-    - targets: ['cita_monitor_server_alertmanager:9093']
+    - targets: ['citamon_server_alertmanager:9093']
 
 rule_files:
   - 'alert.rules'
