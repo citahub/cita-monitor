@@ -4,7 +4,7 @@
 
 1. Plan: set release date
 2. Freeze: freeze codes into a public release branch e.g.: "release/v0.3.0", based on develop branch
-3. Test: test & bug-fix, prepare changelog & release nodes
+3. Test: test & bug-fix, prepare changelog & release notes
 4. Release: merge release branch into master and push tags
 5. Announcements: send mail to the mailing lists
 
