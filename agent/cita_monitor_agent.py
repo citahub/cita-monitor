@@ -221,100 +221,59 @@ def exporter():
     """Agent execution function"""
     # definition tag
     registry = CollectorRegistry(auto_describe=False)
-    service_status = Gauge("Node_Get_ServiceStatus",
-                           SERVICE_STATUS_TITLE, ["NodeIP", "NodePort"],
-                           registry=registry)
-    genesis_block_details = Gauge(
-        "Node_Get_GenesisBlockNumberDetails",
-        GENESIS_BLOCK_DETAILS_TITLE,
-        ["NodeIP", "NodePort", "GenesisBlockNumberHash"],
-        registry=registry)
+    service_status = Gauge("Node_Get_ServiceStatus", SERVICE_STATUS_TITLE, ["NodeIP", "NodePort"], registry=registry)
+    genesis_block_details = Gauge("Node_Get_GenesisBlockNumberDetails",
+                                  GENESIS_BLOCK_DETAILS_TITLE, ["NodeIP", "NodePort", "GenesisBlockNumberHash"],
+                                  registry=registry)
     chain_info = Gauge("Node_Get_ChainInfo",
-                       CHAIN_INFO_TITLE, [
-                           "NodeIP", "NodePort", "ChainName", "Operator",
-                           "TokenName", "TokenSymbol", "Version"
-                       ],
+                       CHAIN_INFO_TITLE, ["NodeIP", "NodePort", "ChainName", "Operator", "TokenName", "TokenSymbol", "Version"],
                        registry=registry)
-    node_peers = Gauge("Node_Get_NodePeers",
-                       NODE_PEERS_TITLE, ["NodeIP", "NodePort"],
-                       registry=registry)
-    chain_nodes = Gauge("Node_Get_ChainNodes",
-                        CHAIN_NODES_TITLE, ["NodeIP", "NodePort"],
-                        registry=registry)
-    last_block_number = Gauge(
-        "Node_Get_LastBlockNumber",
-        LAST_BLOCK_NUMBER_TITLE, [
-            "NodeIP", "NodePort", "GenesisBlockNumberHash", "NodeID",
-            "NodeAddress"
-        ],
-        registry=registry)
-    check_proposer = Gauge("Node_CheckProposer",
-                           CHECK_PROPOSER_TITLE, ["NodeIP", "NodePort"],
-                           registry=registry)
-    last_block_details = Gauge(
-        "Node_Get_LastBlockNumberDetails",
-        LAST_BLOCK_DETAILS_TITLE, [
-            "NodeIP", "NodePort", "LastBlocknumber", "LastBlockProposer",
-            "LastBlockHash", "NodeID", "HostPlatform", "HostName",
-            "ConsensusStatus", "SoftVersion"
-        ],
-        registry=registry)
-    vote_node = Gauge("Node_Get_VoteNode",
-                      VOTE_NODE_TITLE,
-                      ["NodeIP", "NodePort", "NodeID", "Voter"],
-                      registry=registry)
-    block_height_difference = Gauge(
-        "Node_Get_BlockDifference",
-        BLOCK_HEIGHT_DIFFERENCE_TITLE,
-        ["NodeIP", "NodePort", "CurrentHeight", "PreviousHeight"],
-        registry=registry)
+    node_peers = Gauge("Node_Get_NodePeers", NODE_PEERS_TITLE, ["NodeIP", "NodePort"], registry=registry)
+    chain_nodes = Gauge("Node_Get_ChainNodes", CHAIN_NODES_TITLE, ["NodeIP", "NodePort"], registry=registry)
+    last_block_number = Gauge("Node_Get_LastBlockNumber",
+                              LAST_BLOCK_NUMBER_TITLE, ["NodeIP", "NodePort", "GenesisBlockNumberHash", "NodeID", "NodeAddress"],
+                              registry=registry)
+    check_proposer = Gauge("Node_CheckProposer", CHECK_PROPOSER_TITLE, ["NodeIP", "NodePort"], registry=registry)
+    last_block_details = Gauge("Node_Get_LastBlockNumberDetails",
+                               LAST_BLOCK_DETAILS_TITLE, [
+                                   "NodeIP", "NodePort", "LastBlocknumber", "LastBlockProposer", "LastBlockHash", "NodeID",
+                                   "HostPlatform", "HostName", "ConsensusStatus", "SoftVersion"
+                               ],
+                               registry=registry)
+    vote_node = Gauge("Node_Get_VoteNode", VOTE_NODE_TITLE, ["NodeIP", "NodePort", "NodeID", "Voter"], registry=registry)
+    block_height_difference = Gauge("Node_Get_BlockDifference",
+                                    BLOCK_HEIGHT_DIFFERENCE_TITLE, ["NodeIP", "NodePort", "CurrentHeight", "PreviousHeight"],
+                                    registry=registry)
     dir_total_size = Gauge("Node_Get_DirInfo_TotalFileSize",
-                           NODE_DIR_TOTAL_SIZE_TITLE,
-                           ["NodeIP", "NodePort", "NodeDir"],
+                           NODE_DIR_TOTAL_SIZE_TITLE, ["NodeIP", "NodePort", "NodeDir"],
                            registry=registry)
     dir_data_size = Gauge("Node_Get_DirInfo_DataFileSize",
-                          NODE_DIR_DATA_SIZE_TITLE,
-                          ["NodeIP", "NodePort", "NodeDir"],
+                          NODE_DIR_DATA_SIZE_TITLE, ["NodeIP", "NodePort", "NodeDir"],
                           registry=registry)
     disk_used_size = Gauge("Node_Get_DiskInfo_UsedSize",
-                           NODE_DISK_USED_SIZE_TITLE,
-                           ["NodeIP", "NodePort", "NodeDir"],
+                           NODE_DISK_USED_SIZE_TITLE, ["NodeIP", "NodePort", "NodeDir"],
                            registry=registry)
     disk_free_size = Gauge("Node_Get_DiskInfo_FreeSize",
-                           NODE_DISK_FREE_SIZE_TITLE,
-                           ["NodeIP", "NodePort", "NodeDir"],
+                           NODE_DISK_FREE_SIZE_TITLE, ["NodeIP", "NodePort", "NodeDir"],
                            registry=registry)
-    block_interval = Gauge("Node_Get_BlockTimeDifference",
-                           BLOCK_INTERVAL_TITLE, ["NodeIP", "NodePort"],
-                           registry=registry)
+    block_interval = Gauge("Node_Get_BlockTimeDifference", BLOCK_INTERVAL_TITLE, ["NodeIP", "NodePort"], registry=registry)
     last_block_transactions = Gauge("Node_Get_LastBlockNumberTransactions",
-                                    LAST_BLOCK_TRANSACTIONS_TITLE,
-                                    ["NodeIP", "NodePort"],
+                                    LAST_BLOCK_TRANSACTIONS_TITLE, ["NodeIP", "NodePort"],
                                     registry=registry)
     last_block_quota_used = Gauge("Node_Get_LastBlockNumberQuotaUsed",
-                                  LAST_BLOCK_QUOTA_USED_TITLE,
-                                  ["NodeIP", "NodePort"],
+                                  LAST_BLOCK_QUOTA_USED_TITLE, ["NodeIP", "NodePort"],
                                   registry=registry)
-    chain_quota_price = Gauge("Node_Get_QuotaPrice",
-                              CHAIN_QUOTA_PRICE_TITLE, ["NodeIP", "NodePort"],
-                              registry=registry)
-    block_quota_limit = Gauge("Node_Get_BlockQuotaLimit",
-                              BLOCK_QUOTA_LIMIT_TITLE, ["NodeIP", "NodePort"],
-                              registry=registry)
-    local_voter = Gauge("Node_Get_LocalVoter",
-                        LOCAL_VOTE_TITLE, ["NodeIP", "NodePort"],
-                        registry=registry)
-    vote_number = Gauge("Block_Vote_Number",
-                        BLOCK_VOTE_NUMBER_TITLE, ["NodeIP", "NodePort"],
-                        registry=registry)
+    chain_quota_price = Gauge("Node_Get_QuotaPrice", CHAIN_QUOTA_PRICE_TITLE, ["NodeIP", "NodePort"], registry=registry)
+    block_quota_limit = Gauge("Node_Get_BlockQuotaLimit", BLOCK_QUOTA_LIMIT_TITLE, ["NodeIP", "NodePort"], registry=registry)
+    local_voter = Gauge("Node_Get_LocalVoter", LOCAL_VOTE_TITLE, ["NodeIP", "NodePort"], registry=registry)
+    vote_number = Gauge("Block_Vote_Number", BLOCK_VOTE_NUMBER_TITLE, ["NodeIP", "NodePort"], registry=registry)
     # run exporter
     node_ip = str(NODE.split(':')[0])
     node_port = str(NODE.split(':')[1])
     check_process = os.popen("ps alx |grep 'cita-chain' |grep -c -v grep")
     if check_process.read() == '0\n':
         service_status.labels(NodeIP=node_ip, NodePort=node_port).set(0)
-        return Response(prometheus_client.generate_latest(registry),
-                        mimetype="text/plain")
+        return Response(prometheus_client.generate_latest(registry), mimetype="text/plain")
 
     service_status.labels(NodeIP=node_ip, NodePort=node_port).set(1)
     class_result = ExporterFunctions(node_ip, node_port)
@@ -344,10 +303,8 @@ def exporter():
     if 'result' in genesis_block_info:
         genesis_block_hash = genesis_block_info['result']['hash']
         genesis_block_time = genesis_block_info['result']['header']['timestamp']
-        genesis_block_details.labels(
-            NodeIP=node_ip,
-            NodePort=node_port,
-            GenesisBlockNumberHash=genesis_block_hash).set(genesis_block_time)
+        genesis_block_details.labels(NodeIP=node_ip, NodePort=node_port,
+                                     GenesisBlockNumberHash=genesis_block_hash).set(genesis_block_time)
     else:
         print(genesis_block_info)
     block_number_info = class_result.block_number()
@@ -378,8 +335,7 @@ def exporter():
                           Version=chain_version).set(economical_model)
         consensus_node_list = metadata_info['result']['validators']
         consensus_node_count = len(consensus_node_list)
-        chain_nodes.labels(NodeIP=node_ip,
-                           NodePort=node_port).set(consensus_node_count)
+        chain_nodes.labels(NodeIP=node_ip, NodePort=node_port).set(consensus_node_count)
     else:
         print(metadata_info)
     block_info = class_result.block_number_detail(hex_number)
@@ -392,8 +348,7 @@ def exporter():
             #Get the previous version of CITA v0.19.1 gasUsed
             block_head_info.get('gasUsed')
             block_quota_used = int(block_head_info['gasUsed'], 16)
-        block_commits = list(
-            block_info['result']['header']['proof']['Bft']['commits'].keys())
+        block_commits = list(block_info['result']['header']['proof']['Bft']['commits'].keys())
         block_vote_number = len(block_commits)
         consensus_nodes_count = len(consensus_node_list)
         for i in range(consensus_nodes_count):
@@ -402,24 +357,18 @@ def exporter():
                 vote_status = 1
             else:
                 vote_status = 0
-            vote_node.labels(NodeIP=node_ip,
-                             NodePort=node_port,
-                             NodeID=NODE_ID,
-                             Voter=voter_address).set(vote_status)
+            vote_node.labels(NodeIP=node_ip, NodePort=node_port, NodeID=NODE_ID, Voter=voter_address).set(vote_status)
         if ADDRESS in block_commits:
             is_committer = 1
         else:
             is_committer = 0
-        vote_number.labels(NodeIP=node_ip,
-                           NodePort=node_port).set(block_vote_number)
+        vote_number.labels(NodeIP=node_ip, NodePort=node_port).set(block_vote_number)
         local_voter.labels(NodeIP=node_ip, NodePort=node_port).set(is_committer)
         block_hash = block_info['result']['hash']
         block_time = int(block_head_info['timestamp'])
-        block_transactions = int(
-            len(block_info['result']['body']['transactions']))
+        block_transactions = int(len(block_info['result']['body']['transactions']))
         block_proposer = block_head_info['proposer']
-        previous_block_time = int(
-            previous_block_info['result']['header']['timestamp'])
+        previous_block_time = int(previous_block_info['result']['header']['timestamp'])
         interval = abs(block_time - previous_block_time)
         if ADDRESS in consensus_node_list:
             consensus = 1
@@ -438,14 +387,10 @@ def exporter():
         block_height_difference.labels(NodeIP=node_ip,
                                        NodePort=node_port,
                                        CurrentHeight=int(hex_number, 16),
-                                       PreviousHeight=int(
-                                           previous_hex_number,
-                                           16)).set(interval)
+                                       PreviousHeight=int(previous_hex_number, 16)).set(interval)
         block_interval.labels(NodeIP=node_ip, NodePort=node_port).set(interval)
-        last_block_transactions.labels(
-            NodeIP=node_ip, NodePort=node_port).set(block_transactions)
-        last_block_quota_used.labels(NodeIP=node_ip,
-                                     NodePort=node_port).set(block_quota_used)
+        last_block_transactions.labels(NodeIP=node_ip, NodePort=node_port).set(block_transactions)
+        last_block_quota_used.labels(NodeIP=node_ip, NodePort=node_port).set(block_quota_used)
         if ADDRESS == block_proposer:
             proposer = 1
         else:
@@ -457,27 +402,23 @@ def exporter():
     peer_info = class_result.peer_count()
     if 'result' in peer_info:
         peers = peer_info['result']
-        node_peers.labels(NodeIP=node_ip,
-                          NodePort=node_port).set(int(peers, 16))
+        node_peers.labels(NodeIP=node_ip, NodePort=node_port).set(int(peers, 16))
     else:
         print(peer_info)
     quota_price = class_result.quota_price()
     if 'result' in quota_price:
         price = quota_price['result']
-        chain_quota_price.labels(NodeIP=node_ip,
-                                 NodePort=node_port).set(int(price, 16))
+        chain_quota_price.labels(NodeIP=node_ip, NodePort=node_port).set(int(price, 16))
     else:
         print(quota_price)
     block_limit = class_result.block_limit()
     if 'result' in block_limit:
         limit = block_limit['result']
-        block_quota_limit.labels(NodeIP=node_ip,
-                                 NodePort=node_port).set(int(limit, 16))
+        block_quota_limit.labels(NodeIP=node_ip, NodePort=node_port).set(int(limit, 16))
     else:
         print(block_limit)
 
-    return Response(prometheus_client.generate_latest(registry),
-                    mimetype="text/plain")
+    return Response(prometheus_client.generate_latest(registry), mimetype="text/plain")
 
 
 # flask object
