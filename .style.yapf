@@ -1,2 +1,6 @@
 [style]
 based_on_style=google
+
+# custom rules
+# 132 is the max column size for editor window of VSCODE without scrolling bar on a 13' MacBook 
+COLUMN_LIMIT=132
