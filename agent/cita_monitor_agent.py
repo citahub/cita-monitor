@@ -34,11 +34,6 @@ ADDRESS = None
 FILE_TOTAL_SIZE = None
 DATA_TOTAL_SIZE = None
 SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % (SOFT_FILE_PATH)
-try:
-    SOFT_VERSION_EXEC = os.popen(SOFT_VERSION_TXT)
-    SOFT_VERSION = str(SOFT_VERSION_EXEC.read().split(' ')[1].split('\n')[0])
-except IndexError:
-    SOFT_VERSION = 'null'
 
 # exporter label variable
 SERVICE_STATUS_TITLE = "[ value is 1 or 0 ] \
@@ -374,6 +369,11 @@ def exporter():
             consensus = 1
         else:
             consensus = 0
+        try:
+            soft_version_exec = os.popen(SOFT_VERSION_TXT)
+            soft_version = str(soft_version_exec.read().split(' ')[1].split('\n')[0])
+        except IndexError:
+            soft_version = 'null'
         last_block_details.labels(NodeIP=node_ip,
                                   NodePort=node_port,
                                   LastBlocknumber=int(hex_number, 16),
@@ -383,7 +383,7 @@ def exporter():
                                   HostPlatform=EXPORTER_PLATFORM,
                                   HostName=AGENT_NAME,
                                   ConsensusStatus=consensus,
-                                  SoftVersion=SOFT_VERSION).set(block_time)
+                                  SoftVersion=soft_version).set(block_time)
         block_height_difference.labels(NodeIP=node_ip,
                                        NodePort=node_port,
                                        CurrentHeight=int(hex_number, 16),
