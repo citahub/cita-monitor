@@ -4,7 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [v0.4.0](https://github.com/cryptape/cita-monitor/releases/tag/v0.4.0) ([compare](https://github.com/cryptape/cita-monitor/compare/v0.3.0...v0.4.0))
+## [v0.4.1](https://github.com/cryptape/cita-monitor/releases/tag/v0.5.0) ([compare](https://github.com/cryptape/cita-monitor/compare/v0.4.0...v0.4.1))
+
+### Added
+- Add: show rabbitmq-server process info in process info dashboard ([43d3e57](https://github.com/cryptape/cita-monitor/commit/43d3e5763a522abfa06357e541056f494da8987b) by RainChen).
+
+### Documented
+- Docs: fix typo in release flow ([75bf6eb](https://github.com/cryptape/cita-monitor/commit/75bf6ebd8cb876a23374ecbe7afcd1dfec61584c) by RainChen).
+
+### Fixed
+- Fix prometheus not connected due to incorrect container name alertmanager ([fd0b5b2](https://github.com/cryptape/cita-monitor/commit/fd0b5b276cfef7f72491fa4887c974b7ff3eb662) by JiangXL).
+- Fix live update of soft version ([0e9ea40](https://github.com/cryptape/cita-monitor/commit/0e9ea402b8129944c9f4a27fb5d3b345780ffeff) by blankwu).
+
+### Misc
+- Refactor: format python codes ([3a83b26](https://github.com/cryptape/cita-monitor/commit/3a83b262c4b6f415427002f6fd24ce83e67eaa0a) by RainChen).
+- Change yapf/pylinctrc config with custom rules ([8d54754](https://github.com/cryptape/cita-monitor/commit/8d54754e166bb6a2de57cd233f85b7b5bdab358e) by RainChen).
+
+
+## [v0.4.0](https://github.com/cryptape/cita-monitor/releases/tag/v0.4.0) ([compare](https://github.com/cryptape/cita-monitor/compare/v0.3.0...v0.4.0)) - 2019-07-30
 
 ### Added
 - Agent script gets block consensus node votes ([66dbeb7](https://github.com/cryptape/cita-monitor/commit/66dbeb7683a46c8e204a87c884af19e74f5f2e75) by JiangXL).
