@@ -13,6 +13,7 @@ services:
       - /etc/localtime:/etc/localtime
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'
     depends_on:
       - citamon_server_alertmanager
     ports:
