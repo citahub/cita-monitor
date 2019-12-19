@@ -80,7 +80,7 @@ Tips：
 ```
 docker run -d --name="citamon_agent_cita_exporter_1337" \
 --pid="host" \
--p 1923:1920 \
+-p 1920:1923 \
 -v /etc/localtime:/etc/localtime \
 -v "/data/cita_secp256k1_sha3/":"/data/cita_secp256k1_sha3/" \
 -v "/data/cita_secp256k1_sha3/test-chain/0":"/data/cita_secp256k1_sha3/test-chain/0" \
