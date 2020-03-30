@@ -166,13 +166,8 @@ class ExporterFunctions():
 def dir_analysis(path):
     """Analyze CITA directory size"""
     global DISK_TOTAL, DISK_USED, DISK_FREE, ADDRESS, FILE_TOTAL_SIZE, DATA_TOTAL_SIZE
-    get_privkey_txt = "cat %s/privkey" % (path)
-    get_privkey_exec = os.popen(get_privkey_txt)
-    privkey = str(get_privkey_exec.read())
-    get_address_txt = "cita-cli key from-private --private-key %s" % privkey
-    get_address_exec = os.popen(get_address_txt)
-    get_address_result = json.loads(get_address_exec.read())
-    ADDRESS = str(get_address_result['address'])
+    with open('%s/address' % path, 'r') as f:
+        ADDRESS = f.read().rstrip()
     disk_usage = psutil.disk_usage(SOFT_FILE_PATH)
     DISK_TOTAL = disk_usage.total
     DISK_USED = disk_usage.used
