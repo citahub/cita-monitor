@@ -166,8 +166,8 @@ class ExporterFunctions():
 def dir_analysis(path):
     """Analyze CITA directory size"""
     global DISK_TOTAL, DISK_USED, DISK_FREE, ADDRESS, FILE_TOTAL_SIZE, DATA_TOTAL_SIZE
-    with open('%s/address' % path, 'r') as f:
-        ADDRESS = f.read().rstrip()
+    with open('%s/address' % path, 'r') as r_address:
+        ADDRESS = r_address.read().rstrip()
     disk_usage = psutil.disk_usage(SOFT_FILE_PATH)
     DISK_TOTAL = disk_usage.total
     DISK_USED = disk_usage.used
