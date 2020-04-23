@@ -304,7 +304,7 @@ def exporter():
         print(genesis_block_info)
     block_number_info = class_result.block_number()
     hex_number = 0x1
-    previous_hex_number = 0x1
+    previous_hex_number = 0x0
     if 'result' in block_number_info:
         hex_number = block_number_info['result']
         previous_hex_number = hex(int(hex_number, 16) - 1)
