@@ -101,7 +101,7 @@ lint-python-code-quality: ## Run linter for python codes quality
 
 lint-python-code-security: ## Run linter for python codes security
 	@$(call puts,INFO,"Find common security issues in Python code")
-	bandit **/*.py
+	bandit **/*.py -s B605,B607,B104
 
 format-python-code: ## Run formatter for python codes.
 	$(info Run formatter for python codes)
