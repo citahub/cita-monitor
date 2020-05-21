@@ -4,7 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [v0.4.1](https://github.com/citahub/cita-monitor/releases/tag/v0.4.1) ([compare](https://github.com/citahub/cita-monitor/compare/v0.4.0...v0.4.1))
+## [v0.5.0](https://github.com/citahub/cita-monitor/releases/tag/v0.5.0) ([compare](https://github.com/citahub/cita-monitor/compare/v0.4.1...v0.5.0))
+
+### Added
+- Add dashboard language choices ([fec0975](https://github.com/citahub/cita-monitor/commit/fec0975f02b21693681d948f650d78f76abfdaff) by miaojun).
+- Add disk alarm rules ([bd5f83d](https://github.com/citahub/cita-monitor/commit/bd5f83dfe5e06ad416cd29a515b8a7f8db2b9cad) by mfuuzy).
+- Enable promethues configuration hot update function ([fc8d380](https://github.com/citahub/cita-monitor/commit/fc8d3801f564a0b99af58c746f47aea4638f9f71) by JiangXL).
+
+### Changed
+- Change the way to read node address ([233509a](https://github.com/citahub/cita-monitor/commit/233509a394d1940be2001646abba6bd542cf27b6) by miaojun).
+
+### Documented
+- Docs: fix outdated url in changelog.md ([0c93b5c](https://github.com/citahub/cita-monitor/commit/0c93b5c92dd6f8c478fdad8da97bbfee6d78fc37) by RainChen).
+- Add multi language support explanation in readme.md ([37ea930](https://github.com/citahub/cita-monitor/commit/37ea930ea0d446e52fbe0777a7c08bcc22b93530) by miaojun).
+- Update agent readme citamon/agent-cita-exporter port to 1923 ([3d54916](https://github.com/citahub/cita-monitor/commit/3d549160ecda0f907b71f89ec563648c9d2e6b50) by FengJunSun).
+- Add bandit skip issue explanation ([bddf184](https://github.com/citahub/cita-monitor/commit/bddf184bfbfb8b4ab911a2204bbb6fa23ca62ad5) by miaojun).
+
+### Fixed
+- Fix cita_monitor_agent.py for hex_number initialization issue ([08b0c79](https://github.com/citahub/cita-monitor/commit/08b0c7940a1a9acba8e8bbc1aec66a14195a6ac9) by flyq).
+- Fix security vulnerability in psutil ([20e3056](https://github.com/citahub/cita-monitor/commit/20e30564406848a1a3667fdb0192726cee4a6124) by miaojun).
+
+### Misc
+- Update copyright owner in license ([3169e20](https://github.com/citahub/cita-monitor/commit/3169e20be6d131a42b66abc27cf0ec7a7d75975e) by RainChen).
+- Migrate repo from cryptape to citahub ([03a4ecd](https://github.com/citahub/cita-monitor/commit/03a4ecd219999fe149e4915a6ce6d65d0ee471f0) by RainChen).
+- Show more padding for `make help` ([a755ea5](https://github.com/citahub/cita-monitor/commit/a755ea5b3e19e949dfbdfbba887c85e417f6d64d) by RainChen).
+- Config bandit to skip some issues[b605,b607,b104] ([df78869](https://github.com/citahub/cita-monitor/commit/df788696d266dce63b8e99239e24986ab670d715) by miaojun).
+- Use bandit as linter tool to find common security issues in python code ([45629cd](https://github.com/citahub/cita-monitor/commit/45629cd900c303899bf9ba52e90d51f33c014a64) by RainChen).
+
+
+## [v0.4.1](https://github.com/citahub/cita-monitor/releases/tag/v0.4.1) ([compare](https://github.com/citahub/cita-monitor/compare/v0.4.0...v0.4.1)) - 2019-10-15
 
 ### Added
 - Add: show rabbitmq-server process info in process info dashboard ([43d3e57](https://github.com/citahub/cita-monitor/commit/43d3e5763a522abfa06357e541056f494da8987b) by RainChen).
