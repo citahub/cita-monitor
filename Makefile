@@ -101,6 +101,8 @@ lint-python-code-quality: ## Run linter for python codes quality
 
 lint-python-code-security: ## Run linter for python codes security
 	@$(call puts,INFO,"Find common security issues in Python code")
+	# B605 is "start_process_with_a_shell",B607 is "start_process_with_partial_path", both of them are the way to execute system command。
+	# B104 is "hardcoded_bind_all_interfaces", just like 0.0.0.0
 	bandit **/*.py -s B605,B607,B104
 
 format-python-code: ## Run formatter for python codes.
