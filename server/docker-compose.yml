@@ -10,7 +10,6 @@ services:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./config/alert.rules:/etc/prometheus/alert.rules
       - ./data:/etc/prometheus/data
-      - /etc/localtime:/etc/localtime
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.enable-lifecycle'
@@ -24,9 +23,10 @@ services:
     container_name: citamon_server_alertmanager
     hostname: prometheus_alertmanager_server
     volumes:
-      - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
-      - ./config/alert.tmpl:/etc/alertmanager/template/alert.tmpl
-      - /etc/localtime:/etc/localtime
+      # - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ${PWD}/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      # - /Users/rain/tmp/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      # - ./config/alert.tmpl:/etc/alertmanager/template/alert.tmpl
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     ports:
@@ -48,7 +48,6 @@ services:
     volumes:
       - ./config/grafana:/etc/grafana
       - ./grafana/grafanadb:/var/lib/grafana/grafanadb
-      - /etc/localtime:/etc/localtime
     depends_on:
       - citamon_server_prometheus
     ports:
