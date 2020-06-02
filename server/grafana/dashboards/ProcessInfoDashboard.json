@@ -12,7 +12,7 @@
       }
     ]
   },
-  "description": "Process Info Dashboard",
+  "description": "进程信息",
   "editable": true,
   "gnetId": 249,
   "graphTooltip": 1,
@@ -86,7 +86,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "num processes ( $node )",
+      "title": "进程数 ( $node )",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -270,7 +270,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "read bytes ( $node )",
+      "title": "读取字节 ( $node )",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -362,7 +362,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "write bytes ( $node )",
+      "title": "写入字节 ( $node )",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -454,7 +454,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "resident memory ( $node )",
+      "title": "常驻内存 ( $node )",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -546,7 +546,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "virtual memory ( $node )",
+      "title": "虚拟内存 ( $node )",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -752,7 +752,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Process Info Dashboard",
+  "title": "进程信息",
   "uid": "eKkL1dqiz",
   "version": 1
 }

@@ -12,7 +12,7 @@
       }
     ]
   },
-  "description": "CITA Node Info Dashboard",
+  "description": "CITA 节点信息",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
@@ -42,7 +42,7 @@
       "id": 62,
       "panels": [
         {
-          "content": "<center>\n<h2>Chain Name</h2>\n<br><br>\n<h1>$ChainName</h1>\n</center>",
+          "content": "<center>\n<h2>链名</h2>\n<br><br>\n<h1>$ChainName</h1>\n</center>",
           "gridPos": {
             "h": 6,
             "w": 4,
@@ -125,7 +125,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Genesis Block Time",
+          "title": "创世块时间",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -208,7 +208,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Network Run Time",
+          "title": "运行时间",
           "transparent": false,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -232,7 +232,7 @@
           "id": 78,
           "links": [],
           "mode": "html",
-          "title": "Genesis Block Hash",
+          "title": "创世块哈希",
           "type": "text"
         },
         {
@@ -246,7 +246,7 @@
           "id": 23,
           "links": [],
           "mode": "html",
-          "title": "Protocol Version",
+          "title": "协议版本",
           "transparent": false,
           "type": "text"
         },
@@ -261,7 +261,7 @@
           "id": 24,
           "links": [],
           "mode": "html",
-          "title": "Operator",
+          "title": "操作者",
           "transparent": false,
           "type": "text"
         },
@@ -276,7 +276,7 @@
           "id": 25,
           "links": [],
           "mode": "html",
-          "title": "Token Symbol",
+          "title": "代币符号",
           "transparent": false,
           "type": "text"
         },
@@ -351,7 +351,7 @@
             }
           ],
           "thresholds": "0,1",
-          "title": "Economic Model",
+          "title": "经济模型",
           "type": "singlestat",
           "valueFontSize": "100%",
           "valueMaps": [
@@ -374,7 +374,7 @@
           "valueName": "current"
         }
       ],
-      "title": "Chain Meta Data",
+      "title": "链元信息",
       "type": "row"
     },
     {
@@ -387,7 +387,7 @@
       },
       "id": 64,
       "panels": [],
-      "title": "Chain Info",
+      "title": "链信息",
       "type": "row"
     },
     {
@@ -458,7 +458,7 @@
         }
       ],
       "thresholds": "0,1",
-      "title": "Last Block Number of [ $ChainName ]",
+      "title": "[ $ChainName ] 上一个块",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -538,7 +538,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Block Limit of [ $ChainName ]",
+      "title": "[ $ChainName ] 块上限",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -603,7 +603,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Block Number of [ $ChainName ]",
+      "title": "[ $ChainName ] 块高",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -711,7 +711,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Consensus Nodes of [ $ChainName ]",
+      "title": "[ $ChainName ] 共识节点",
       "type": "singlestat",
       "valueFontSize": "70%",
       "valueMaps": [
@@ -791,7 +791,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Quota Price of [ $ChainName ]",
+      "title": "[ $ChainName ] 配额价格",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -844,7 +844,7 @@
           "refId": "B"
         }
       ],
-      "title": "Voting rate of consensus nodes",
+      "title": "共识节点投票率",
       "type": "grafana-piechart-panel",
       "valueName": "current"
     },
@@ -900,7 +900,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Consensus Node Vote Number of [ Block ]",
+      "title": "共识节点投票数",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -947,11 +947,11 @@
       },
       "id": 28,
       "panels": [],
-      "title": "Node Info",
+      "title": "节点信息",
       "type": "row"
     },
     {
-      "content": "<center>\n<div align=\"left\">\n<h2>Node ID : <span>$node_id</span></h2>\n<h2>Node JSON-RPC : <span>$NodeIP:$NodePort</span></h2>\n</div>\n</center>",
+      "content": "<center>\n<div align=\"left\">\n<h2>节点 ID : <span>$node_id</span></h2>\n<h2>节点 JSON-RPC : <span>$NodeIP:$NodePort</span></h2>\n</div>\n</center>",
       "gridPos": {
         "h": 3,
         "w": 10,
@@ -1016,7 +1016,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Block Number",
+      "title": "块高",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1122,7 +1122,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Last Block Number",
+      "title": "上一个块",
       "type": "singlestat",
       "valueFontSize": "50%",
       "valueMaps": [
@@ -1203,7 +1203,7 @@
         }
       ],
       "thresholds": "10000,10001",
-      "title": "Last Block Time",
+      "title": "上一个块时间",
       "type": "singlestat",
       "valueFontSize": "50%",
       "valueMaps": [
@@ -1285,7 +1285,7 @@
         }
       ],
       "thresholds": "0,1",
-      "title": "Last Block is Proposer",
+      "title": "上一个块是否建议者",
       "type": "singlestat",
       "valueFontSize": "50%",
       "valueMaps": [
@@ -1377,7 +1377,7 @@
         }
       ],
       "thresholds": "0,1",
-      "title": "Last Block TX",
+      "title": "上一个块交易",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1459,7 +1459,7 @@
         }
       ],
       "thresholds": "4000,4001",
-      "title": "Last Block Interval",
+      "title": "上个块间隔",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1543,7 +1543,7 @@
       ],
       "thresholds": "0,1",
       "timeFrom": null,
-      "title": "Avg Block Interval Time",
+      "title": "平均块间隔",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1605,7 +1605,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Block TX History",
+      "title": "块交易记录",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1694,7 +1694,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Block Interval",
+      "title": "块间隔",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1805,7 +1805,7 @@
       ],
       "thresholds": "0,1",
       "timeFrom": "1m",
-      "title": "Last 1m TPS/s",
+      "title": "上一分钟 TPS/s",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1885,7 +1885,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Quota Info",
+      "title": "配额信息",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1990,7 +1990,7 @@
         }
       ],
       "thresholds": "0,1",
-      "title": "Node Type",
+      "title": "节点类型",
       "type": "singlestat",
       "valueFontSize": "50%",
       "valueMaps": [
@@ -2023,7 +2023,7 @@
       "id": 57,
       "links": [],
       "mode": "html",
-      "title": "NodeAddress",
+      "title": "节点地址",
       "type": "text"
     },
     {
@@ -2079,7 +2079,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Local Voter History",
+      "title": "本地投票记录",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2177,7 +2177,7 @@
           "refId": "C"
         }
       ],
-      "title": "Disk Usage",
+      "title": "磁盘使用率",
       "type": "grafana-piechart-panel",
       "valueName": "current"
     },
@@ -2245,7 +2245,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Node Directory Usage Size",
+      "title": "节点目录大小",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2295,7 +2295,7 @@
       "id": 52,
       "links": [],
       "mode": "html",
-      "title": "SoftVersion",
+      "title": "版本号",
       "type": "text"
     },
     {
@@ -2309,7 +2309,7 @@
       "id": 54,
       "links": [],
       "mode": "html",
-      "title": "HostName",
+      "title": "主机名",
       "type": "text"
     },
     {
@@ -2380,7 +2380,7 @@
         }
       ],
       "thresholds": "0,1",
-      "title": "Node Peers Number",
+      "title": "节点连接数",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -2403,7 +2403,7 @@
       "id": 53,
       "links": [],
       "mode": "html",
-      "title": "HostPlatform",
+      "title": "主机平台",
       "type": "text"
     }
   ],
@@ -3041,7 +3041,7 @@
     ]
   },
   "timezone": "",
-  "title": "CITA Node Info Dashboard",
+  "title": "CITA 节点信息",
   "uid": "VXdVrO3iz1",
   "version": 3
 }

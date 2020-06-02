@@ -12,7 +12,7 @@
       }
     ]
   },
-  "description": "Summary Dashboard",
+  "description": "总体概况",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
@@ -88,7 +88,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Running Status",
+      "title": "运行状态",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -178,7 +178,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "CPU usage",
+      "title": "CPU 使用率",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -267,7 +267,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Last Block Number",
+      "title": "上一个块",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -528,7 +528,7 @@
           "refId": "A"
         }
       ],
-      "title": "Last Block Info",
+      "title": "上一个块信息",
       "transform": "table",
       "type": "table"
     }
@@ -573,7 +573,7 @@
     ]
   },
   "timezone": "",
-  "title": "Summary Dashboard",
+  "title": "总体信息",
   "uid": "dLEMP5qik",
   "version": 1
 }

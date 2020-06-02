@@ -12,7 +12,7 @@
       }
     ]
   },
-  "description": "RabbitMQ Dashboard",
+  "description": "RabbitMQ 信息",
   "editable": true,
   "gnetId": 2121,
   "graphTooltip": 0,
@@ -101,7 +101,7 @@
       ],
       "thresholds": "Up,Down",
       "timeFrom": "30s",
-      "title": "RabbitMQ Server",
+      "title": "RabbitMQ 状态",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -238,7 +238,7 @@
       "timeFrom": "30s",
       "timeRegions": [],
       "timeShift": null,
-      "title": "Node up Stats",
+      "title": "节点状态",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -327,7 +327,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Exchanges",
+      "title": "交换机",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -416,7 +416,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Channels",
+      "title": "频道",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -505,7 +505,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Consumers",
+      "title": "消费者",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -593,7 +593,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Connections",
+      "title": "连接数",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -681,7 +681,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Queues",
+      "title": "队列",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -797,7 +797,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Messages/host",
+      "title": "消息树/节点",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -887,7 +887,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Messages / Queue",
+      "title": "消息数/队列",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -984,7 +984,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory",
+      "title": "内存",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1081,7 +1081,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "FIle descriptors",
+      "title": "文件句柄",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1178,7 +1178,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Sockets",
+      "title": "套接字",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1283,7 +1283,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "RabbitMQ Dashboard",
+  "title": "RabbitMQ 信息",
   "uid": "JJ0tJOqmz",
   "version": 1
 }
