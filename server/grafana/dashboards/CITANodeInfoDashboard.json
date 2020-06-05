@@ -261,7 +261,7 @@
           "id": 24,
           "links": [],
           "mode": "html",
-          "title": "Operator",
+          "title": "operator",
           "transparent": false,
           "type": "text"
         },
@@ -2023,7 +2023,7 @@
       "id": 57,
       "links": [],
       "mode": "html",
-      "title": "NodeAddress",
+      "title": "Node Address",
       "type": "text"
     },
     {
@@ -2295,7 +2295,7 @@
       "id": 52,
       "links": [],
       "mode": "html",
-      "title": "SoftVersion",
+      "title": "Soft Version",
       "type": "text"
     },
     {
@@ -2309,7 +2309,7 @@
       "id": 54,
       "links": [],
       "mode": "html",
-      "title": "HostName",
+      "title": "Hostname",
       "type": "text"
     },
     {
@@ -2403,7 +2403,7 @@
       "id": 53,
       "links": [],
       "mode": "html",
-      "title": "HostPlatform",
+      "title": "Host Platform",
       "type": "text"
     }
   ],

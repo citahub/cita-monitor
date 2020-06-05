@@ -48,7 +48,7 @@
       "repeat": "node",
       "repeatDirection": "h",
       "style": {},
-      "title": "Host Name",
+      "title": "Hostname",
       "type": "text"
     },
     {
@@ -124,7 +124,7 @@
         }
       ],
       "thresholds": "",
-      "title": "CPU 核数",
+      "title": "CPU Cores",
       "type": "singlestat",
       "valueFontSize": "100%",
       "valueMaps": [
@@ -211,7 +211,7 @@
         }
       ],
       "thresholds": "50,80",
-      "title": "CPU使用率",
+      "title": "CPU Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -385,7 +385,7 @@
         }
       ],
       "thresholds": "80,90",
-      "title": "内存使用率",
+      "title": "Memory Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [],
@@ -467,7 +467,7 @@
         }
       ],
       "thresholds": "7000,9000",
-      "title": "当前打开的文件描述符",
+      "title": "Opened File Descriptors",
       "transparent": false,
       "type": "singlestat",
       "valueFontSize": "70%",
@@ -548,7 +548,7 @@
         }
       ],
       "thresholds": "70,90",
-      "title": "根分区使用率",
+      "title": "/ Partition Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -571,7 +571,7 @@
       ],
       "datasource": "Prometheus",
       "decimals": null,
-      "description": "通过变量maxmount获取最大的分区。",
+      "description": "",
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -635,7 +635,7 @@
         }
       ],
       "thresholds": "70,90",
-      "title": "最大分区($maxmount)使用率",
+      "title": "($maxmount) Max Partition Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -721,7 +721,7 @@
         }
       ],
       "thresholds": "",
-      "title": "系统运行时间",
+      "title": "System Run Time",
       "transparent": false,
       "type": "singlestat",
       "valueFontSize": "50%",
@@ -808,7 +808,7 @@
         }
       ],
       "thresholds": "",
-      "title": "内存总量",
+      "title": "Total Memory",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -905,7 +905,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "系统平均负载",
+      "title": "Load Average",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -991,7 +991,7 @@
           "refId": "A"
         }
       ],
-      "title": "磁盘总空间",
+      "title": "Total Disk Size",
       "type": "grafana-piechart-panel",
       "valueName": "current"
     },
@@ -1022,7 +1022,7 @@
           "type": "hidden"
         },
         {
-          "alias": "分区",
+          "alias": "partition",
           "colorMode": null,
           "colors": [
             "rgba(50, 172, 45, 0.97)",
@@ -1040,7 +1040,7 @@
           "unit": "bytes"
         },
         {
-          "alias": "可用空间",
+          "alias": "available",
           "colorMode": "value",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -1059,7 +1059,7 @@
           "unit": "bytes"
         },
         {
-          "alias": "使用率",
+          "alias": "usage",
           "colorMode": "cell",
           "colors": [
             "rgba(50, 172, 45, 0.97)",
@@ -1078,7 +1078,7 @@
           "unit": "percentunit"
         },
         {
-          "alias": "总空间",
+          "alias": "total size",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -1095,7 +1095,7 @@
           "unit": "bytes"
         },
         {
-          "alias": "文件系统",
+          "alias": "file system",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -1149,7 +1149,7 @@
           "refId": "B"
         }
       ],
-      "title": "各分区可用空间",
+      "title": "Partition Usage",
       "transform": "table",
       "transparent": false,
       "type": "table"
@@ -1203,7 +1203,7 @@
           "expr": "irate(node_network_receive_bytes_total{instance=\"$instance\",device!~'tap.*'}[5m])*8",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{device}}_in下载",
+          "legendFormat": "{{device}}_in download",
           "refId": "A",
           "step": 4
         },
@@ -1211,7 +1211,7 @@
           "expr": "irate(node_network_transmit_bytes_total{instance=\"$instance\",device!~'tap.*'}[5m])*8",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{device}}_out上传",
+          "legendFormat": "{{device}}_out upload",
           "refId": "B",
           "step": 4
         }
@@ -1220,7 +1220,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "网络流量",
+      "title": "Network Traffic",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1237,7 +1237,7 @@
       "yaxes": [
         {
           "format": "bps",
-          "label": "上传（-）/下载（+）",
+          "label": "upload（-）/download（+）",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1265,7 +1265,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
-      "description": "CurrEstab - 当前状态为 ESTABLISHED 或 CLOSE-WAIT 的 TCP 连接数\n\nActiveOpens - 已从 CLOSED 状态直接转换到 SYN-SENT 状态的 TCP 平均连接数(1分钟内)\n\nPassiveOpens - 已从 LISTEN 状态直接转换到 SYN-RCVD 状态的 TCP 平均连接数(1分钟内)\n\nTCP_alloc - 已分配（已建立、已申请到sk_buff）的TCP套接字数量\n\nTCP_inuse - 正在使用（正在侦听）的TCP套接字数量\n\nTCP_tw - 等待关闭的TCP连接数",
+      "description": "",
       "fill": 0,
       "gridPos": {
         "h": 8,
@@ -1350,7 +1350,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "TCP 连接情况",
+      "title": "TCP Connections",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1389,15 +1389,7 @@
       }
     },
     {
-      "aliasColors": {
-        "内存_Avaliable": "#6ED0E0",
-        "内存_Cached": "#EF843C",
-        "内存_Free": "#629E51",
-        "内存_Total": "#6d1f62",
-        "内存_Used": "#eab839",
-        "可用": "#9ac48a",
-        "总内存": "#bf1b00"
-      },
+      "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -1442,7 +1434,7 @@
           "hide": false,
           "instant": false,
           "intervalFactor": 1,
-          "legendFormat": "CPU 使用率/每分钟",
+          "legendFormat": "per minute usage",
           "refId": "A",
           "step": 4
         }
@@ -1451,7 +1443,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "CPU使用率",
+      "title": "CPU Usage",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1489,15 +1481,7 @@
       }
     },
     {
-      "aliasColors": {
-        "内存_Avaliable": "#6ED0E0",
-        "内存_Cached": "#EF843C",
-        "内存_Free": "#629E51",
-        "内存_Total": "#6d1f62",
-        "内存_Used": "#eab839",
-        "可用": "#9ac48a",
-        "总内存": "#bf1b00"
-      },
+      "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -1542,17 +1526,8 @@
           "hide": false,
           "instant": false,
           "intervalFactor": 2,
-          "legendFormat": "总内存",
+          "legendFormat": "total",
           "refId": "A",
-          "step": 4
-        },
-        {
-          "expr": "node_memory_MemTotal_bytes{instance=\"$instance\"} - node_memory_MemAvailable_bytes{instance=\"$instance\"}",
-          "format": "time_series",
-          "hide": false,
-          "intervalFactor": 2,
-          "legendFormat": "已用",
-          "refId": "B",
           "step": 4
         },
         {
@@ -1560,7 +1535,7 @@
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "内存_Free",
+          "legendFormat": "free",
           "refId": "C",
           "step": 4
         },
@@ -1569,7 +1544,7 @@
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "内存_Buffers",
+          "legendFormat": "buffers",
           "refId": "D",
           "step": 4
         },
@@ -1578,7 +1553,7 @@
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "内存_Cached",
+          "legendFormat": "cached",
           "refId": "E",
           "step": 4
         },
@@ -1588,7 +1563,7 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "可用",
+          "legendFormat": "available",
           "refId": "F",
           "step": 4
         },
@@ -1597,6 +1572,7 @@
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
+          "legendFormat": "used",
           "refId": "G"
         }
       ],
@@ -1604,7 +1580,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "内存信息",
+      "title": "Memory Info",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1714,7 +1690,7 @@
         "definition": "label_values(node_uname_info{job='$job',instance='$instance'},nodename)",
         "hide": 2,
         "includeAll": false,
-        "label": "主机名",
+        "label": "name",
         "multi": false,
         "multiFormat": "regex values",
         "name": "name",

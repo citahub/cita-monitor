@@ -38,7 +38,8 @@ services:
       context: ./grafana
       dockerfile: Dockerfile
       args:
-        - VERSION
+        VERSION: ${VERSION}
+        LANGUAGE: ${LANGUAGE}
     image: cryptape/grafana:5.4.2
     container_name: citamon_server_grafana
     hostname: grafana_server
