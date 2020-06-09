@@ -34,7 +34,7 @@ ENV APP_HOME /opt/cita-run
 # Pass CITA_VERSION
 ARG CITA_VERSION=""
 ENV CITA_VERSION $CITA_VERSION
-ENV CITA_DOWNLOAD_URL=https://github.com/cryptape/cita/releases/download/v${CITA_VERSION}/cita_secp256k1_sha3.tar.gz
+ENV CITA_DOWNLOAD_URL=https://github.com/citahub/cita/releases/download/v${CITA_VERSION}/cita_secp256k1_sha3.tar.gz
 
 # ADD ${CITA_DOWNLOAD_URL} cita_secp256k1_sha3.tar.gz
 # RUN tar zxf cita_secp256k1_sha3.tar.gz
@@ -66,7 +66,7 @@ WORKDIR ${WORKDIR}
 ENV PATH "$PATH:$WORKDIR/bin:$WORKDIR/scripts"
 
 # bugfix NODE_PATH in bin/cita script for CITA v0.24.0
-# ref: https://github.com/cryptape/cita/issues/626
+# ref: https://github.com/citahub/cita/issues/626
 RUN sed -i 's/NODE_PATH=/NODE_PATH="$(realpath ${NODE_NAME})" # was: /' ${WORKDIR}/bin/cita
 
 # auto setup and start CITA service with config "test-chain/$CITA_NODE_ID"

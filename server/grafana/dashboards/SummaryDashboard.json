@@ -24,7 +24,7 @@
       "title": "$VERSION_NUMBER",
       "tooltip": "",
       "type": "link",
-      "url": "https://github.com/cryptape/cita-monitor"
+      "url": "https://github.com/citahub/cita-monitor"
     },
     {
       "icon": "external link",
