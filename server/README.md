@@ -15,7 +15,7 @@ Monitor Server 是使用容器编排的方式来批量创建和启动 `Prometheu
 首先在 `./config` 目录下，对相关服务进行自定义配置，使用 `docker-compose` 命令运行 `docker-compose.yml`，批量启动服务，如果对单个服务的配置进行调整，可以手动执行 `docker restart container-name` 来应用配置变更；
 
 ### 步骤
-1、自定义服务运行端口
+1、自定义服务运行端口及面板语言
 ```
 cd server
 cp .env.example .env
