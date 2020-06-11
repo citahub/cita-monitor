@@ -984,7 +984,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory",
+      "title": "Memory Info",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1081,7 +1081,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "FIle descriptors",
+      "title": "Opened File Descriptors",
       "tooltip": {
         "shared": true,
         "sort": 0,

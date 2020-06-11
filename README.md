@@ -2,13 +2,13 @@
 
 [EN](README.md) | [CN](README-CN.md)
 
-A blockchain monitoring system for [CITA](https://github.com/cryptape/cita), using [Prometheus](https://prometheus.io) to store the monitoring and performance metrics and [Grafana](https://grafana.com/grafana) to visualize these metrics.
+A blockchain monitoring system for [CITA](https://github.com/citahub/cita), using [Prometheus](https://prometheus.io) to store the monitoring and performance metrics and [Grafana](https://grafana.com/grafana) to visualize these metrics.
 
 Metrics are including blockchain data, process status, host info like CPU/memory/disk usage etc.
 
-[![Travis Build Status](https://img.shields.io/travis/com/cryptape/cita-monitor/master.svg)](https://travis-ci.com/cryptape/cita-monitor)
-[![License: Apache-2.0](https://img.shields.io/github/license/cryptape/cita-monitor.svg)](https://github.com/cryptape/cita-monitor/blob/master/LICENSE)
-![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/cryptape/cita-monitor.svg)
+[![Travis Build Status](https://img.shields.io/travis/com/citahub/cita-monitor/master.svg)](https://travis-ci.com/citahub/cita-monitor)
+[![License: Apache-2.0](https://img.shields.io/github/license/citahub/cita-monitor.svg)](https://github.com/citahub/cita-monitor/blob/master/LICENSE)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/citahub/cita-monitor.svg)
 
 ## Screenshots for Dashboards
 
@@ -96,7 +96,7 @@ For installing agent, read [agent/README.md](agent/README.md)
 
 ### Creating a Bug Report
 
-open a new issue: https://github.com/cryptape/cita-monitor/issues/new 
+open a new issue: https://github.com/citahub/cita-monitor/issues/new 
 
 with your version info
 
@@ -107,7 +107,7 @@ Read [docs/tech_stack.md](docs/tech_stack.md) to know the programming languages,
 ### Get source
 
 ```
-git clone git@github.com:cryptape/cita-monitor.git
+git clone git@github.com:citahub/cita-monitor.git
 ```
 
 ### Coding style

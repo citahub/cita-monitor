@@ -79,3 +79,13 @@ groups:
       summary: "Directory growth per second overflow"
       description: "Directory for 1 minutes avg growth of per second exceeds 5 bytes | [exporter info http://{{ $labels.instance }}/metrics]"
       rate: "{{ $value }} bytes/s"
+
+  # Disk 不足告警
+  - alert: Disk_Warning
+    expr: (Node_Get_DiskInfo_FreeSize / ( Node_Get_DiskInfo_UsedSize + Node_Get_DiskInfo_FreeSize)) * 100 < 10
+    labels:
+      severity: high
+    annotations:
+      summary: "Disk is running out of free space"
+      description: "The remaining disk space for 1 minutes avg usaage less than 10% | [exporter info http://{{ $labels.instance }}/metrics]"
+      useage: "{{ $value }}%"
