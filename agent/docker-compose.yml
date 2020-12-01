@@ -20,7 +20,7 @@ services:
     container_name: citamon_agent_process_exporter
     volumes:
       - /proc:/host/proc
-      - ./process_exporter_config:/config
+      - ./process_exporter/config:/config
       - /etc/localtime:/etc/localtime
     command: "--procfs /host/proc --config.path /config/process_list.yml"
     networks:
