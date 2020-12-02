@@ -11,7 +11,7 @@ RUN rustup target add x86_64-unknown-linux-musl \
 	&& RUSTFLAGS='-A deprecated' cargo install --target x86_64-unknown-linux-musl --path .
 
 FROM ubuntu:18.04 AS final
-COPY --from=build /usr/local/cargo/bin/cita-cli /bin/cita-cli
+COPY --from=builder /usr/local/cargo/bin/cita-cli /bin/cita-cli
 RUN chmod +x /bin/cita-cli
 WORKDIR /config
 COPY ./cita_monitor_agent.py ./requirements.txt /config/
