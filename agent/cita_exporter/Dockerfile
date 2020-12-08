@@ -1,3 +1,4 @@
+# compile cita-cli with musl
 FROM rust:1.48 AS builder
 WORKDIR /build
 RUN curl -o musl-1.1.19.tar.gz https://www.musl-libc.org/releases/musl-1.1.19.tar.gz \
@@ -10,6 +11,7 @@ WORKDIR /build/cita-cli.git/cita-cli
 RUN rustup target add x86_64-unknown-linux-musl \
 	&& RUSTFLAGS='-A deprecated' cargo install --target x86_64-unknown-linux-musl --path .
 
+# build the citamon/agent-cita-exporter docker image 
 FROM ubuntu:18.04 AS final
 COPY --from=builder /usr/local/cargo/bin/cita-cli /bin/cita-cli
 RUN chmod +x /bin/cita-cli
@@ -23,3 +25,4 @@ RUN apt-get update \
 RUN pip3 install -r requirements.txt
 ENV PORT=1923
 CMD "python3" "cita_monitor_agent.py" "$NODE_IP_PORT" "$PORT" "$NODE_DIR"
+
