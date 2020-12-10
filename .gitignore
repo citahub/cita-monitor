@@ -5,3 +5,6 @@ server/prometheus_data/
 .vscode/
 .build-version
 test/dummy/*
+.env
+grafana.db
+

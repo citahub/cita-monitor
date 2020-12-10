@@ -1,8 +1,9 @@
 version: '3'
 services:
+
   citamon_server_prometheus:
     user: root
-    image: prom/prometheus:v2.6.0
+    image: prom/prometheus:v2.10.0
     container_name: citamon_server_prometheus
     hostname: prometheus_server
     privileged: true
@@ -20,7 +21,7 @@ services:
       - '${PROMETHEUS_HOSTPORT}:${PROMETHEUS_CONTAINERPORT}'
 
   citamon_server_alertmanager:
-    image: prom/alertmanager:v0.15.3
+    image: prom/alertmanager:v0.17.0
     container_name: citamon_server_alertmanager
     hostname: prometheus_alertmanager_server
     volumes:
@@ -40,7 +41,7 @@ services:
       args:
         VERSION: ${VERSION}
         LANGUAGE: ${LANGUAGE}
-    image: citamon_server/grafana:5.4.2
+    image: citamon_server/grafana:5.4.3
     container_name: citamon_server_grafana
     hostname: grafana_server
     environment:
