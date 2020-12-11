@@ -4,7 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [v0.5.0](https://github.com/citahub/cita-monitor/releases/tag/v0.5.0) ([compare](https://github.com/citahub/cita-monitor/compare/v0.4.1...v0.5.0))
+## [v0.6.0](https://github.com/citahub/cita-monitor/releases/tag/v0.6.0) ([compare](https://github.com/citahub/cita-monitor/compare/v0.5.0...v0.6.0))
+
+### Changed
+- Replace wget with curl to support socks5 protocol ([f1bd6d7](https://github.com/citahub/cita-monitor/commit/f1bd6d719e4af3511ea3d909725cd3c4f040c2d7) by wangpengfei).
+- Update agent images to support arm64/amd64 ([5f5e812](https://github.com/citahub/cita-monitor/commit/5f5e8121cab1e97924af819ac0c12c0987383fb6) by wangpengfei).
+- Upgrade images to support arm/arm64 ([8f33dcc](https://github.com/citahub/cita-monitor/commit/8f33dcc6633ee03b41d0413a2bfc59c060a779cf) by wangpengfei).
+- Upgrade server images to support arm/arm64 ([0f10502](https://github.com/citahub/cita-monitor/commit/0f105025a5099467e827d1e140a5328f68fd80a6) by wangpengfei).
+
+### Documented
+- Update alert policies document ([50ca7ba](https://github.com/citahub/cita-monitor/commit/50ca7ba13124b1d6aaaae790daa5ce7afedf07c1) by RainChen).
+
+### Fixed
+- Fix make recipe: `make commit-release-notes` ([57568f7](https://github.com/citahub/cita-monitor/commit/57568f763b64258ebc35e090070a88625de60f51) by RainChen).
+
+
+## [v0.5.0](https://github.com/citahub/cita-monitor/releases/tag/v0.5.0) ([compare](https://github.com/citahub/cita-monitor/compare/v0.4.1...v0.5.0)) - 2020-06-11
 
 ### Added
 - Add dashboard language choices ([fec0975](https://github.com/citahub/cita-monitor/commit/fec0975f02b21693681d948f650d78f76abfdaff) by miaojun).
