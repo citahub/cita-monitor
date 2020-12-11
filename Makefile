@@ -156,7 +156,7 @@ changelog-auto: ## Auto generate CHANGELOG.md
 	git merge master --no-edit
 	@$(MAKE) changelog
 
-make commit-release-notes: ## Commit VERSION and CHANGELOG.md
+commit-release-notes: ## Commit VERSION and CHANGELOG.md
 	@current_version=`cat VERSION` ;\
 	git add VERSION CHANGELOG.md ;\
 	git commit -m "bump version to v$${current_version}" ;\
