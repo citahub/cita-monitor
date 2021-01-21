@@ -17,7 +17,7 @@ Monitor Agent 是使用 `Python` 作为脚本语言，使用 `cita-cli` 工具�
 ```
 cd agent
 cp .env.example .env
-修改 .env 配置文件中 HOSTNAME、NODE_IP、NODE_PORT、NODE_DIR、SOFT_PATH、CITA_NODENAME、CITA_CHAIN_ID、CITA_NETWORKPORT 为实际部署的信息
+修改 .env 配置文件中 HOSTNAME、NODE_IP、NODE_PORT、NODE_NETWORK_PORT、NODE_DIR、SOFT_PATH、CITA_NODENAME、CITA_CHAIN_ID、CITA_NETWORKPORT 为实际部署的信息
 ---
 
 #采集端显示的主机名
@@ -26,6 +26,7 @@ HOSTNAME=CITA-Node0
 #本地运行的 CITA 节点IP 和 Port
 NODE_IP=192.168.1.100
 NODE_PORT=1337
+NODE_NETWORK_PORT=4000
 
 #本地运行的 CITA 节点目录
 NODE_DIR=/data/cita_secp256k1_sha3/test-chain/0
@@ -87,6 +88,7 @@ docker run -d --name="citamon_agent_cita_exporter_1337" \
 -v "`pwd`/cita_monitor_agent.py":"/config/cita_monitor_agent.py" \
 -e NODE_IP_PORT="x.x.x.x:1337" \
 -e NODE_DIR="/data/cita_secp256k1_sha3/test-chain/0" \
+-e NODE_NETWORK_PORT=4000 \
 citamon/agent-cita-exporter
 ```
 3、查看数据采集信息

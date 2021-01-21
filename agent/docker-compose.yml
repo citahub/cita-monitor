@@ -48,6 +48,7 @@ services:
     environment:
       - NODE_IP_PORT=${NODE_IP}:${NODE_PORT}
       - NODE_DIR
+      - NODE_NETWORK_PORT
     networks:
       - citamon-agent-net
 
