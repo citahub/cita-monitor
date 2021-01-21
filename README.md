@@ -16,7 +16,7 @@ Summary Dashboard Demo
 ![summary-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57682153-b9a5c700-7663-11e9-93c6-a29758e7d3a1.png)
 
 CITA Node Info Dashboard Demo
-![cita-node-info-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57681838-15bc1b80-7663-11e9-91b4-202c306a0f3b.png)
+![cita-node-info-dashboard-demo-fs8](https://user-images.githubusercontent.com/20398034/106434137-18504b80-64ac-11eb-86be-f3c1133e7bd3.png)
 
 Host Info Dashboard Demo
 ![host-info-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57681906-3ab08e80-7663-11e9-9229-76b85c0eaaa4.png)

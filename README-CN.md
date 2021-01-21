@@ -20,7 +20,7 @@ Summary Dashboard Demo
 ![summary-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57682153-b9a5c700-7663-11e9-93c6-a29758e7d3a1.png)
 
 CITA Node Info Dashboard Demo
-![cita-node-info-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57681838-15bc1b80-7663-11e9-91b4-202c306a0f3b.png)
+![cita-node-info-dashboard-demo-fs8](https://user-images.githubusercontent.com/20398034/106434137-18504b80-64ac-11eb-86be-f3c1133e7bd3.png)
 
 Host Info Dashboard Demo
 ![host-info-dashboard-demo-fs8](https://user-images.githubusercontent.com/71397/57681906-3ab08e80-7663-11e9-9229-76b85c0eaaa4.png)
@@ -33,7 +33,7 @@ Rabbitmq Dashboard Demo
 * CITA 服务进程监控
   - CITA 微服务及MQ进程的存活、进程的 CPU、内存使用率、IO
 * 区块链数据健康监控
-  - 节点出块高度历史、出块时间、出块间隔趋势、Quota、交易量历史、TPS、磁盘占用比例、数据目录大小增长趋势
+  - 节点出块高度历史、出块时间、出块间隔趋势、Quota、交易量历史、TPS、磁盘占用比例、数据目录大小增长趋势、节点网络连通状态
 * 运行环境监控
   - 主机运行环境的系统负载、CPU、内存、磁盘空间使用情况、网络流量、TCP 连接数等
 * 监控面板语言
