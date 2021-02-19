@@ -1,0 +1,12 @@
+process_names:
+  - comm:
+    - cita-forever
+    - cita-network
+    - cita-jsonrpc
+    - cita-bft
+    - cita-chain
+    - cita-auth
+    - cita-executor
+  - name: "{{.Comm}}"
+    cmdline:
+    - 'rabbitmq-server'

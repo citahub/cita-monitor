@@ -1,0 +1,12 @@
+[submodule "agent/rabbitmq_exporter/rabbitmq_exporter.git"]
+	path = agent/rabbitmq_exporter/rabbitmq_exporter.git
+	url = https://github.com/kbudde/rabbitmq_exporter.git
+	branch = v1.0.0-RC4
+[submodule "agent/cita_exporter/cita-cli.git"]
+	path = agent/cita_exporter/cita-cli.git
+	url = https://github.com/citahub/cita-cli.git
+	branch = master
+[submodule "agent/process_exporter/process-exporter.git"]
+	path = agent/process_exporter/process-exporter.git
+	url = https://github.com/ncabatoff/process-exporter.git
+	branch = master

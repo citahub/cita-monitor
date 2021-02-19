@@ -97,7 +97,7 @@ lint-python-code: ## Run linter for python codes
 
 lint-python-code-quality: ## Run linter for python codes quality
 	@$(call puts,INFO,"Sniffs code smells in Python code")
-	pylint **/*.py
+	pylint $$(git ls-files '*.py')
 
 lint-python-code-security: ## Run linter for python codes security
 	@$(call puts,INFO,"Find common security issues in Python code")
@@ -108,11 +108,11 @@ lint-python-code-security: ## Run linter for python codes security
 format-python-code: ## Run formatter for python codes.
 	$(info Run formatter for python codes)
 	cat .style.yapf
-	yapf --diff --recursive **/*.py
+	yapf --diff --recursive $$(git ls-files '*.py')
 
 lint-shell-code: ## Run linter for shell codes.
 	$(info Run linter for shell codes)
-	find . -name "*.sh" | xargs -I @ shellcheck @
+	shellcheck $$(git ls-files '*.sh')
 
 format-shell-code: ## Run formatter for shell codes.
 	$(info Run formatter for shell codes)
@@ -156,7 +156,7 @@ changelog-auto: ## Auto generate CHANGELOG.md
 	git merge master --no-edit
 	@$(MAKE) changelog
 
-make commit-release-notes: ## Commit VERSION and CHANGELOG.md
+commit-release-notes: ## Commit VERSION and CHANGELOG.md
 	@current_version=`cat VERSION` ;\
 	git add VERSION CHANGELOG.md ;\
 	git commit -m "bump version to v$${current_version}" ;\
