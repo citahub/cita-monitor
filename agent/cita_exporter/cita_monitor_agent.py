@@ -10,14 +10,16 @@ The data on the chain is obtained by cita-cli and then pulled by prometheus.
 
 import json
 import os
-import sys
-import time
 import platform
+import sys
+import telnetlib
+import time
 from datetime import datetime, timedelta
-import psutil
+
 import prometheus_client
+import psutil
+from flask import Flask, Response
 from prometheus_client.core import CollectorRegistry, Gauge
-from flask import Response, Flask
 
 # exporter value variable
 NODE = sys.argv[1]
@@ -33,7 +35,7 @@ DISK_FREE = None
 ADDRESS = None
 FILE_TOTAL_SIZE = None
 DATA_TOTAL_SIZE = None
-SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % (SOFT_FILE_PATH)
+SOFT_VERSION_TXT = '%s/bin/cita-chain -V' % SOFT_FILE_PATH
 
 # exporter label variable
 SERVICE_STATUS_TITLE = "[ value is 1 or 0 ] \
@@ -99,6 +101,9 @@ Determine if the local node address is in the voter list."
 BLOCK_VOTE_NUMBER_TITLE = "[ value is block vote number ] \
 Number of nodes voted by the statistics block."
 
+NETWORK_PORT_STATUS_TITLE = "[ value is 1 or 0 ] \
+Check network port status, port up is 1 or down is 0."
+
 # print exporter info
 print("\n----------")
 print("monitor node rpc is : ", NODE)
@@ -108,7 +113,7 @@ print("----------\n")
 
 
 # class
-class ExporterFunctions():
+class ExporterFunctions:
     """This class is to get CITA data"""
 
     def __init__(self, node_ip, node_port):
@@ -212,6 +217,7 @@ def exporter():
     # definition tag
     registry = CollectorRegistry(auto_describe=False)
     service_status = Gauge("Node_Get_ServiceStatus", SERVICE_STATUS_TITLE, ["NodeIP", "NodePort"], registry=registry)
+    network_port_status = Gauge("Node_Get_NetworkStatus", NETWORK_PORT_STATUS_TITLE, ["NodeIP", "NetworkPort"], registry=registry)
     genesis_block_details = Gauge("Node_Get_GenesisBlockNumberDetails",
                                   GENESIS_BLOCK_DETAILS_TITLE, ["NodeIP", "NodePort", "GenesisBlockNumberHash"],
                                   registry=registry)
@@ -266,6 +272,14 @@ def exporter():
         return Response(prometheus_client.generate_latest(registry), mimetype="text/plain")
 
     service_status.labels(NodeIP=node_ip, NodePort=node_port).set(1)
+
+    network_port = int(os.getenv('NODE_NETWORK_PORT'))
+    try:
+        telnetlib.Telnet(node_ip, network_port, timeout=2)
+        network_port_status.labels(NodeIP=node_ip, NetworkPort=network_port).set(1)
+    except ConnectionRefusedError:
+        network_port_status.labels(NodeIP=node_ip, NetworkPort=network_port).set(0)
+
     class_result = ExporterFunctions(node_ip, node_port)
     dir_analysis(NODE_FILE_PATH)
     dir_total_size.labels(

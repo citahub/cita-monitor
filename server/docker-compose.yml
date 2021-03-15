@@ -15,6 +15,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.enable-lifecycle'
+      - '--storage.tsdb.path=/etc/prometheus/data'
     depends_on:
       - citamon_server_alertmanager
     ports:
@@ -55,8 +56,3 @@ services:
       - citamon_server_prometheus
     ports:
       - '${GRAFANA_HOSTPORT}:${GRAFANA_CONTAINERPORT}'
-
-volumes:
-  grafana_data: {}
-  prometheus_data: {}
-
